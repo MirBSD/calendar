@@ -1,3 +1,4 @@
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.2 2005/03/13 18:32:44 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.28 2004/12/10 21:03:11 mickey Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
@@ -114,6 +115,11 @@ They may be entered in almost any format, either numeric or as character
 strings.
 If proper locale is set, national months and weekdays
 names can be used.
+On
+.Ox
+and
+.Mx ,
+support for locales is non-existent.
 A single asterisk (`*') matches every month.
 A day without a month matches that day of every week.
 A month without a day matches the first of that month.
@@ -179,16 +185,16 @@ Ostern-2\fB\et\fRGood Friday (2 days before Easter)
 Paskha\fB\et\fROrthodox Easter
 .Ed
 .Sh FILES
-.Bl -tag -width ~/.calendar/calendar -compact
+.Bl -tag -width ~/.etc/calendar/calendar -compact
 .It Pa calendar
 File in current directory.
-.It Pa ~/.calendar
+.It Pa ~/.etc/calendar
 Directory in the user's home directory (which
 .Nm
 changes into, if it exists).
-.It Pa ~/.calendar/calendar
+.It Pa ~/.etc/calendar/calendar
 File to use if no calendar file exists in the current directory.
-.It Pa ~/.calendar/nomail
+.It Pa ~/.etc/calendar/nomail
 .Nm
 will not send mail if this file exists.
 .It Pa calendar.birthday
@@ -219,6 +225,8 @@ so that roving holidays are set correctly for the current year).
 Musical events, births, and deaths (strongly oriented toward rock n' roll).
 .It Pa calendar.openbsd
 .Ox
+and
+.Mx
 related events.
 .It Pa calendar.pagan
 Pagan holidays, celebrations and festivals.
