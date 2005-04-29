@@ -1,8 +1,8 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.3 2005/04/17 04:24:12 tg Exp $
- * $OpenBSD: calendar.openbsd,v 1.23 2005/04/01 10:44:06 mickey Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.4 2005/04/29 18:35:06 tg Exp $
+ * $OpenBSD: calendar.openbsd,v 1.24 2005/04/21 12:32:48 mickey Exp $
  */
 
 #ifndef _calendar_openbsd_
@@ -55,6 +55,7 @@ Apr 10	evilwm added to MirOS base, 2003
 Apr 11	MirOS developers provide sample files (.Xmodmap), 2003
 Apr 16	MirOS #4 released (rock solid), 2003
 Apr 16	OpenBSD/i386 is ELF, 2003
+Apr 19	OpenBSD/solbourne port is added, 2005
 Apr 21	OpenBSD/luna88k port is added, 2004
 Apr 25	MirOS boots via pxegrub, 2003
 Apr 28	MirOS /cvs is 1337 Mebibytes, 2004
