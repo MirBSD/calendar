@@ -1,6 +1,7 @@
 /*
  * Feiertage
  *
+ * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.feiertag,v 1.2 2005/05/08 16:26:34 tg Exp $
  * $OpenBSD: calendar.feiertag,v 1.1 1996/12/05 06:04:53 millert Exp $
  */
 
@@ -20,7 +21,7 @@ Easter		Ostersonntag
 Easter+1 	Ostermontag
 Easter+49	Pfingstsonntag
 Easter+50	Pfingstmontag
-Easter+39	Christi Himmelfahrt
+Easter+39	Christi Himmelfahrt (Vatertag)
 
 /*  Gedenktage - nicht arbeitsfreie Feiertage :-( */
 06/17	Arbeiteraufstand am 17. Juni 1953
