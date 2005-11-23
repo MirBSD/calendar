@@ -1,8 +1,8 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.4 2005/04/29 18:35:06 tg Exp $
- * $OpenBSD: calendar.openbsd,v 1.24 2005/04/21 12:32:48 mickey Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.5 2005/11/23 17:36:10 tg Exp $
+ * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
 #ifndef _calendar_openbsd_
@@ -67,12 +67,14 @@ May 02	MirPorts pgp+ gets better entropy collection, 2004
 May 05	MirOS first releases snapshots via BitTorrent, 2004
 May 08	MirOS gains <stdint.h> as per C99, 2004
 May 08	MirOS gains the '0 != NULL' equation and fixes, 2004
+May 09	First commit to OpenBSD stable branch, OPENBSD_2_7, 2000
 May 09	MirWiki founded, 2004
-May 10	c2k3 hackathon, Calgary, Canada, 62 developers, 2003
+May 10	c2k3 hackathon, Calgary, Canada, 51 developers, 2003
 May 12	MirOS is C++-free (nroff), 2003
 May 15	MirOS gets rid of GNU "Free" Documentation License, 2003
 May 15	MirOS lists at gmane.org, 2004
 May 19	OpenBSD 2.3 released, including ``ports'' system, 1998
+May 21	c2k5 hackathon, 60 developers and Sitting Idol, 2005
 May 21	chemistry section added to MirPorts, 2004
 May 25	MirOS boot code, NTFS mount, NTFS install refinements, 2003
 May 29	IPF is removed for license incompatibility, 2001
