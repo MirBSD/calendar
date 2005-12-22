@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.5 2005/11/23 17:36:10 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.6 2005/12/22 01:35:05 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -197,9 +197,12 @@ Dec 10	MirOS starts "ncvs" repository using GNU cvs 1.12, 2004
 Dec 17	Welkomen OpenBGPD, 2003
 Dec 21	MirOS gains fully working CD-ROM "no emulation" boot loader, 2003
 Dec 21	OpenBSD/powerpc port is added, 1996
+Dec 22	MirOS BSD #8 ("MirOS XP") is completed, 2005
 Dec 25	MirOS changes uname from OpenBSD to MirBSD, 2003
 Dec 27	MirOS #7-stable branch initiated, 2003
 Dec 27	MirOS attends 20C3, 2003
+Dec 27	MirOS attends 21C3, 2004
+Dec 27	MirOS attends 22C3, 2005
 Dec 27	MirOS changes uname from OpenBSD to MirBSD, 2003
 Dec 28	MirOS #7quinquies released and EOL for #7-stable, 2004
 Dec 28	MirOS X birthed, 2004
