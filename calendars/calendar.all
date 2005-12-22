@@ -1,6 +1,7 @@
 /*
  * International and national calendar files
  *
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.all,v 1.2 2005/03/13 18:32:45 tg Exp $
  * $OpenBSD: calendar.all,v 1.2 2004/03/15 14:35:53 xsa Exp $
  */
 
@@ -13,5 +14,6 @@
 #include <calendar.usholiday>
 #include <calendar.croatian>
 #include <calendar.russian>
+#include <calendar.openbsd>
 
 #endif /* !_calendar_all_ */

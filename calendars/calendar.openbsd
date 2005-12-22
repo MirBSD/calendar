@@ -1,75 +1,211 @@
 /*
- * OpenBSD-related dates to celebrate
+ * OpenBSD- (and fork) related dates to celebrate
  *
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.6 2005/12/22 01:35:05 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
 #ifndef _calendar_openbsd_
 #define _calendar_openbsd_
 
+Jan 03	MirOS initiates source merging to new CVS, 2005
+Jan 04	Import of GCC 3.4.4 into MirOS, 2005
+Jan 05	MirOS gets hd alias (later becomes hd(1) command), 2003
 Jan 06	IPF gets integrated into the OpenBSD kernel, 1996
 Jan 06	NRL IPv6 addition to OpenBSD, 1999
+Jan 07	MirOS BSD kernel builds with GCC 3.4.4, 2005
+Jan 08	MirOS XFree86 recognises $CC, $CXX, $CFLAGS etc., 2004
+Jan 11	MirOS dhclient does not forcefully overwrite resolv.conf, 2004
+Jan 18	MirOS gets the kern.allowpsa and kern.allowpse sysctls, 2003
+Jan 18	MirOS stabilizes on gcc 3.2 with propolice as system compiler, 2003
 Jan 20	Bind 9 goes into the tree, 2003
 Jan 26	Anoncvs service inaugurated, 1996
 Jan 27	OpenBSD/amd64 port is added, from NetBSD, 2004
+Jan 28	MirOS #2 released (statically built a.out with exec-ELF support), 2003
 Jan 29	``second anoncvs server is 100 miles from the first'', 1996
+Jan 31	MirOS feature-rich release-quality snapshot, 2004
+Jan 31	MirPorts work for ekkoBSD and OpenBSD support, 2004
 Jan 31	OpenBSD/cats port is added, from NetBSD, 2004
 Feb 03	Describe the ports mechanism [in OpenBSD], 1997
+Feb 04	MirPorts gain MirLibtool, 2004
+Feb 08	MirOS team attends FOSDEM, 2003
+Feb 10	full ELF support in MirOS with gcc 3.x, 2003
 Feb 13	Unpatented fast block cipher for new password hashing, 1997
+Feb 16	MirOS sirc gains UTF-8 support, 2003
 Feb 19	IPsec package by John Ioannidis and Angelos D. Keromytis, 1997
 Feb 26	OpenBSD/Amiga gets ISA bus support, 1996
 Feb 26	bridge(4) transparent firewall added to OpenBSD, 1999
 Feb 28	Cryptographic services framework in OpenBSD, 2000
+Mar 02	MirOS #3 released (full ELF enabled), 2003
+Mar 02	MirPorts package tools fix round, 2004
 Mar 10	OpenBSD/WWW translation started -- German, Spanish, Dutch, 2000
+Mar 13	MirOS now delivers PNG in the base system, 2004
+Mar 13	MirOS supplies snapshots with XFree86 4.4, Ada, Pascal, 2004
+Mar 13	MirOS updates to XFree86 4.4.0, 2004
+Mar 13	MirPorts on MirOS uses .cgz as package format, 2004
+Mar 17	MirOS Licence Template discussion for final version, 2004
+Mar 22	MirOS starts own CVS repository, 2003
+Mar 25	ISDN4BSD for OpenBSD 2.7 added to MirOS, 2003
+Mar 27	MirOS borrows src/lib/csu from NetBSD, 2003
 Apr 01	OpenBSD/hppa64 port is added, 2005
+Apr 05	MirOS gains CTM, growfs and ffsinfo from FreeBSD, 2003
+Apr 06	MirOS gains CVSweb, 2003
+Apr 06	MirOS gets real ISDN4BSD support from NetBSD, 2003
+Apr 10	evilwm added to MirOS base, 2003
+Apr 11	MirOS developers provide sample files (.Xmodmap), 2003
+Apr 16	MirOS #4 released (rock solid), 2003
 Apr 16	OpenBSD/i386 is ELF, 2003
 Apr 19	OpenBSD/solbourne port is added, 2005
 Apr 21	OpenBSD/luna88k port is added, 2004
+Apr 25	MirOS boots via pxegrub, 2003
+Apr 28	MirOS /cvs is 1337 Mebibytes, 2004
 May 01	OpenBSD 3.3 released, exploiting W^X, 2003
+May 02	MirOS bootmanager improvements, 2004
+May 02	MirPorts gain dual MirLibtool (1.4/1.5 based), 2004
+May 02	MirPorts not allowed to sysctl, add/remove users/groups, 2004
+May 02	MirPorts pgp+ gets better entropy collection, 2004
+May 05	MirOS first releases snapshots via BitTorrent, 2004
+May 08	MirOS gains <stdint.h> as per C99, 2004
+May 08	MirOS gains the '0 != NULL' equation and fixes, 2004
 May 09	First commit to OpenBSD stable branch, OPENBSD_2_7, 2000
+May 09	MirWiki founded, 2004
 May 10	c2k3 hackathon, Calgary, Canada, 51 developers, 2003
+May 12	MirOS is C++-free (nroff), 2003
+May 15	MirOS gets rid of GNU "Free" Documentation License, 2003
+May 15	MirOS lists at gmane.org, 2004
 May 19	OpenBSD 2.3 released, including ``ports'' system, 1998
 May 21	c2k5 hackathon, 60 developers and Sitting Idol, 2005
+May 21	chemistry section added to MirPorts, 2004
+May 25	MirOS boot code, NTFS mount, NTFS install refinements, 2003
 May 29	IPF is removed for license incompatibility, 2001
 May 31	Initial cut at OpenNTP, 2004
 Jun 01	OpenBSD 2.1 released, first time on CD (double set), 1997
+Jun 02	MirOS T-Shirt and Daemon Pin sales planning, 2004
+Jun 02	MirOS adds back "learn" programme, 2004
+Jun 02	MirOS gets its own PT_NOTE ELF section, 2004
+Jun 02	portable mirbsdksh 1.10 released, 2004
 Jun 04	First hackathon, Calgary, Canada, 10 developers, 1999
 Jun 04	c2k2 hackathon, "Shutup and Hack", Calgary, Canada, 42 developers, 2002
-Jun 15	c2k hackathon, Calgary, Canada, 18 developers, 2000
+Jun 09	MirOS leap second fixes, 64 bit time_t considerations, 2004
+Jun 10	MirPorts gain cups, 2004
+Jun 11	MirOS #5 released (interim, exec format fixes, best tests), 2003
+Jun 11	MirOS lint fixes, 2004
+Jun 11	MirOS renames Apache(TM) to httpd, 2004
+Jun 13	MirOS djbdns port redesign, update, 2003
+Jun 14	MirOS #7quater (#7-stable) released (i386 and sparc), 2004
 Jun 15	OpenBSD 2.7 released, including OpenSSH, 2000
+Jun 15	c2k hackathon, Calgary, Canada, 18 developers, 2000
+Jun 16	MirOS gets <bsd.cfwrap.mk>, 2004
+Jun 19	MirOS switches to 64-bit time_t, 2004
 Jun 19	c2k4 hackathon, Calgary, Canada, 46 developers, 2004
 Jun 21	!c2k1 hackathon, Cambridge, MA, 35 developers, 2001
 Jun 23	OpenBSD/hppa started, based on Utah Lites and OSF MkLinux, 1998
+Jun 24	MirOS make builds on Mac OSX, GNU/Linux, 2004
 Jun 24	PF added. Insane amounts of work done by dhartmei@, 2001
 Jul 01	OpenBSD 1.2 released on ftp, 1996
 Jul 01	add strlcpy/strlcat, safe and sensible string copy/append, 1998
+Jul 02	MirOS kernel and userland get correct leap second handling, 2004
+Jul 04	MirOS fixes gcc to handle %+, %b in printf correctly, 2004
+Jul 04	MirOS lets GNU diff die, thanks OpenBSD, 2004
+Jul 04	MirPorts gets rewritten update-patches, 2004
+Jul 05	MirOS installs X.509 CA Certificates by default, 2003
+Jul 06	MirOS boots via pxeboot, from OpenBSD, 2004
+Jul 08	MirOS #6 released (LinuxTag special edition), 2003
+Jul 10	MirOS provides sample keyboard layout with Japanese, 2004
 Jul 11	OpenBSD goes wireless w/ if_wi addition, 1999
+Jul 15	MirOS BSD/sparc dies due to lack of time, 2004
+Jul 15	MirOS removes MANSUBDIR, 2004
+Jul 18	MirOS removes gcc-2.x permanently, 2004
+Jul 20	MirOS developer Dave Steinberg (dave) joins, 2004
+Jul 22	MirOS developer Stephen Paskaluk (sap) joins, 2004
 Jul 23	OpenBSD goes multimedia with Brooktree 848 support, 1998
 Jul 24	Non-executable stack on most architectures, 2002
 Jul 25	Gigabit speed to OpenBSD with the addition of if_ti, 1999
+Jul 29	MirOS IRC support channel moves to OFTC, 2004
+Jul 29	MirOS evilwm can now resize windows via keyboard even better, 2004
+Jul 30	MirOS $PS1 gets size limit, 2004
+Aug 10	MirOS gains online manpages, 2004
+Aug 10	MirPorts MirLibtool now works with both autoconfs, 2004
 Aug 11	OpenBSD/sparc is ELF, 2002
+Aug 12	MirOS ports binutils 2.15-current over itself, 2004
 Aug 12	OpenBSD/sparc is switched to wscons, 2002
+Aug 14	MirOS removes GENERIC, renames RAMDISK to GENERIC kernel, 2004
 Aug 16	IPX network stack added to OpenBSD, from FreeBSD, 1996
-Aug 17	c2k1-II hackathon, Washington D.C., 12 developers, 2001
+Aug 17	MirOS can vnconfig read-only files, 2003
 Aug 17	OpenBSD/sparc64 port is added, from NetBSD, 2001
+Aug 17	c2k1-II hackathon, Washington D.C., 12 developers, 2001
+Aug 18	MirOS sirc does IPv6, 2003
+Aug 19	MirPorts XFCE4 works, 2004
+Aug 21	MirPorts Emacs21 works, 2004
+Aug 22	MirOS binutils handle all possible targets, 2004
+Aug 29	MirOS Project started by Thorsten Glaser (tg), 2002
+Sep 01	MirOS first hooks for Linux port, 2003
+Sep 02	PLIP support in MirOS, 2003
+Sep 04	MirOS links gzip statically, 2003
+Sep 09	MirOS gains 66h.42h.de subdomain, 2003
+Sep 10	MirOS developer Benny Siegert (bsiegert) joins, 2003
+Sep 14	MirOS gets rid of broken fake NLS/LOCALE support, 2003
+Sep 17	MirOS successfully defaults to -fstack-protector-all, 2004
+Sep 22	MirPorts GNOME2 works, 2003
 Sep 26	OpenSSH born, Sunday 11:56 MST, 1999
+Sep 26	MirOS developer Richard Tyler Ballance (tyler) joins, 2004
+Sep 27	MirOS djbdns uses ipv6.arpa, 2003
+Sep 27	MirOS gets more papers from 4.4BSD under the Caldera licence, 2003
+Sep 27	MirOS papers now built to text format, 2003
+Sep 27	MirOS sendmail now uses STARTTLS by default, 2003
+Sep 28	MirOS #7 released (commercial-quality product), 2003
 Sep 29	OpenBSD/hppa gets PCI bus support, 2003
+Oct 10	MirOS #7bis released (must-update critical fixes), 2003
+Oct 10	MirOS developer Waldemar Brodkorb (wbx) leaves for his diploma, 2004
+Oct 11	MirOS #0 released (first one ever), 2002
 Oct 14	OpenBSD born, Saturday 16:36 MST, 1995
 Oct 17	CARP added, introducing OpenBSD into High Availability market, 2003
 Oct 18	OpenBSD/mvme88k port added, from nivas, based on MACH/luna88k, 1995
+Oct 21	MirOS developer Waldemar Brodkorb (wbx) joins, 2003
+Oct 23	MirOS BSD/sparc added, 2003
+Oct 28	MirOS gains full OpenBSD 3.6-current binary emul, 2004
 Oct 29	OpenBSD 3.6 released, featuring i386 and amd64 SMP, 2004
 Oct 30	OpenBSD 3.4 released, implementing W^X on i386 and AES in VIA C3, 2003
 Nov 01	OpenBSD 3.2 released, ftp mirrors preload for the first time, 2002
+Nov 03	ELF exec support in MirOS, from NetBSD, 2002
+Nov 07	MirOS cd bootloader fixes, switch to boot.cfg, 2003
+Nov 07	MirOS release buildable in chroot, 2003
+Nov 07	MirOS reworking the random number generator stuff, 2003
+Nov 08	MirOS website relaunch, 2003
+Nov 09	MirOS elf2aout fixed for sparc boot support, 2003
+Nov 09	MirOS embeds kernel config in kernel binary, 2002
 Nov 11	want.html added to OpenBSD/www, 1998
+Nov 13	MirOS fixes timezone data, breaks POSIX brokenness, 2002
 Nov 18	altq merged into pf, 2002
+Nov 22	MirOS #7ter released (sparc, errata), 2003
+Nov 26	MirOS starts a series of political fixes (british, no `, KiB), 2002
+Nov 26	MirOS starts to move from patch kit to own CVS, 2002
+Nov 27	MirOS and ekkoBSD exchange code and ideas, 2003
 Nov 27	Unified buffer & VM cache enters OpenBSD, 2001
+Nov 29	Last cvs-1.11.1p1 snapshot build for MirOS, 2004
 Nov 30	OpenBSD gets RAID support w/ a dpt(4) addition, 1999
+Nov 31	MirOS #1 released (diversion from OpenBSD), 2002
+Dec 01	MirOS gets Berkeley DB 4 port, 2003
 Dec 01	OpenBSD 3.0 released, including PF, triple set, 2001
 Dec 02	ProPolice stack smash protector incorporated, 2002
+Dec 04	MirOS gets rid of a.out, iBCS2 and SVR4 compatibility, 2003
+Dec 05	MirOS leaves the 80486 series of CPUs behind, 2003
 Dec 05	OpenCVS moves development into the tree, 2004
 Dec 07	KAME IPv6 merger TODOs.  you may want to see them earlier..., 1999
+Dec 10	MirOS first build with propolice gcc 3.x, 2003
+Dec 10	MirOS starts "ncvs" repository using GNU cvs 1.12, 2004
 Dec 17	Welkomen OpenBGPD, 2003
+Dec 21	MirOS gains fully working CD-ROM "no emulation" boot loader, 2003
 Dec 21	OpenBSD/powerpc port is added, 1996
+Dec 22	MirOS BSD #8 ("MirOS XP") is completed, 2005
+Dec 25	MirOS changes uname from OpenBSD to MirBSD, 2003
+Dec 27	MirOS #7-stable branch initiated, 2003
+Dec 27	MirOS attends 20C3, 2003
+Dec 27	MirOS attends 21C3, 2004
+Dec 27	MirOS attends 22C3, 2005
+Dec 27	MirOS changes uname from OpenBSD to MirBSD, 2003
+Dec 28	MirOS #7quinquies released and EOL for #7-stable, 2004
+Dec 28	MirOS X birthed, 2004
 Dec 30	OpenBSD/zaurus port is added, 2004
 
 #endif /* !_calendar_openbsd_ */

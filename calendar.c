@@ -1,3 +1,4 @@
+/**	$MirOS: src/usr.bin/calendar/calendar.c,v 1.2 2005/03/13 18:32:44 tg Exp $ */
 /*	$OpenBSD: calendar.c,v 1.23 2004/12/10 15:31:01 mickey Exp $	*/
 
 /*
@@ -35,14 +36,6 @@ static const char copyright[] =
 	The Regents of the University of California.  All rights reserved.\n";
 #endif /* not lint */
 
-#ifndef lint
-#if 0
-static const char sccsid[] = "@(#)calendar.c  8.3 (Berkeley) 3/25/94";
-#else
-static const char rcsid[] = "$OpenBSD: calendar.c,v 1.23 2004/12/10 15:31:01 mickey Exp $";
-#endif
-#endif /* not lint */
-
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -62,8 +55,11 @@ static const char rcsid[] = "$OpenBSD: calendar.c,v 1.23 2004/12/10 15:31:01 mic
 #include "pathnames.h"
 #include "calendar.h"
 
+__SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.2 2005/03/13 18:32:44 tg Exp $");
+
 char *calendarFile = "calendar";  /* default calendar file */
-char *calendarHome = ".calendar"; /* HOME */
+char *calendarHome = ".etc/calendar"; /* HOME */
 char *calendarNoMail = "nomail";  /* don't sent mail if this file exists */
 
 struct passwd *pw;
@@ -189,7 +185,7 @@ main(int argc, char *argv[])
 				if (acstat) {
 					if (chdir(pw->pw_dir) ||
 					    stat(calendarFile, &sbuf) != 0 ||
-					    chdir(calendarHome) || 
+					    chdir(calendarHome) ||
 					    stat(calendarNoMail, &sbuf) == 0 ||
 					    stat(calendarFile, &sbuf) != 0)
 						exit(0);
