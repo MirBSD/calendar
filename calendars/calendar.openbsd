@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.6 2005/12/22 01:35:05 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.7 2005/12/30 16:18:24 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -206,6 +206,7 @@ Dec 27	MirOS attends 22C3, 2005
 Dec 27	MirOS changes uname from OpenBSD to MirBSD, 2003
 Dec 28	MirOS #7quinquies released and EOL for #7-stable, 2004
 Dec 28	MirOS X birthed, 2004
+Dec 30	MirOS fixes rpath, shlib-on-shlib depends at 22C3, 2005
 Dec 30	OpenBSD/zaurus port is added, 2004
 
 #endif /* !_calendar_openbsd_ */
