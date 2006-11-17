@@ -56,7 +56,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.3 2006/11/17 02:48:09 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.4 2006/11/17 02:57:21 tg Exp $");
 
 struct iovec header[] = {
 	{"From: ", 6},
@@ -114,6 +114,8 @@ cal(void)
 			{
 				const char *s_charset;
 
+				if (s_conv != (iconv_t)-1)
+					iconv_close(s_conv);
 				if ((s_charset = strchr(buf, '.')) == NULL)
 					s_charset = buf + 5;
 				else
