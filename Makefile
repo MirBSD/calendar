@@ -1,4 +1,13 @@
-#	$OpenBSD: Makefile,v 1.9 2004/12/10 20:47:30 mickey Exp $
+# $MirOS: src/usr.bin/calendar/Makefile,v 1.2 2006/11/17 02:48:09 tg Exp $
+# $OpenBSD: Makefile,v 1.9 2004/12/10 20:47:30 mickey Exp $
+
+.include <bsd.own.mk>
+
+.if ${NOPIC:L} == "no"
+UNICODE?=yes
+.else
+UNICODE:=no
+.endif
 
 PROG=	calendar
 SRCS=   calendar.c io.c day.c pesach.c ostern.c paskha.c
@@ -14,5 +23,11 @@ beforeinstall:
     		${.CURDIR}/calendars/${lang}/calendar.* \
 		${DESTDIR}/usr/share/calendar/${lang}; 
 .endfor
+
+.if ${UNICODE:L} == "yes"
+DPADD+=		${LIBICONV}
+LDADD+=		-liconv
+CPPFLAGS+=	-DUNICODE
+.endif
 
 .include <bsd.prog.mk>

@@ -1,4 +1,4 @@
-.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.3 2005/04/17 04:24:12 tg Exp $
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.4 2006/11/17 02:48:09 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.29 2005/03/22 10:57:27 xsa Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
@@ -30,7 +30,7 @@
 .\"
 .\"     @(#)calendar.1  8.1 (Berkeley) 6/29/93
 .\"
-.Dd June 29, 1993
+.Dd November 17, 2006
 .Dt CALENDAR 1
 .Os
 .Sh NAME
@@ -257,6 +257,14 @@ A
 .Nm
 command appeared in
 .At v7 .
+.Pp
+Since
+.Mx 10 ,
+if the
+.Dv UNICODE
+variable is set during compilation,
+.Xr iconv 3
+is used to convert any input to UTF-8 output.
 .Sh BUGS
 .Nm
 doesn't handle all Jewish holidays or moon phases.

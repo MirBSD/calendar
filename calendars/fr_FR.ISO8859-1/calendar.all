@@ -11,4 +11,7 @@
 #include <fr_FR.ISO8859-1/calendar.fetes>
 #include <fr_FR.ISO8859-1/calendar.proverbes>
 
+/* reset */
+LANG=C
+
 #endif /* !_fr_FR.ISO8859-1_all_ */
