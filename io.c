@@ -29,24 +29,9 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static const char copyright[] =
-"@(#) Copyright (c) 1989, 1993\n\
-	The Regents of the University of California.  All rights reserved.\n";
-#endif /* not lint */
-
-#ifndef lint
-#if 0
-static const char sccsid[] = "@(#)calendar.c  8.3 (Berkeley) 3/25/94";
-#else
-static const char rcsid[] = "$OpenBSD: io.c,v 1.29 2005/04/15 14:28:56 otto Exp $";
-#endif
-#endif /* not lint */
-
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#include <sys/types.h>
 #include <sys/uio.h>
 #include <sys/wait.h>
 
@@ -65,6 +50,10 @@ static const char rcsid[] = "$OpenBSD: io.c,v 1.29 2005/04/15 14:28:56 otto Exp 
 #include "pathnames.h"
 #include "calendar.h"
 
+__COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
+	The Regents of the University of California.  All rights reserved.\n");
+__SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.2 2006/11/17 02:06:07 tg Exp $");
 
 struct iovec header[] = {
 	{"From: ", 6},
@@ -175,7 +164,7 @@ cal(void)
 				var = 0;
 			if (printing) {
 				struct match *foo;
-				
+
 				ev1 = NULL;
 				while (m) {
 				cur_evt = (struct event *) malloc(sizeof(struct event));
@@ -314,7 +303,7 @@ getfield(p, endp, flags)
 			    * number of special events. */
 			   break;
 			}
-		*flags |= F_SPECIAL;	
+		*flags |= F_SPECIAL;
 		}
 		if (!(*flags & F_SPECIAL)) {
 		/* undefined rest */
@@ -365,7 +354,7 @@ opencal(void)
 			(void)close(pdes[1]);
 		}
 		(void)close(pdes[0]);
-		/* 
+		/*
 		 * Set stderr to /dev/null.  Necessary so that cron does not
 		 * wait for cpp to finish if it's running calendar -a.
 		 */
