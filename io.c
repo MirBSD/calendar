@@ -56,7 +56,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.4 2006/11/17 02:57:21 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.5 2007/01/05 03:41:16 tg Exp $");
 
 struct iovec header[] = {
 	{"From: ", 6},
@@ -137,7 +137,7 @@ cal(void)
 					free(prefix);
 				prefix = NULL;
 			} else
-				bodun_maybe = 0;
+				bodun = bodun_maybe = 0;
 			continue;
 		}
 #ifdef UNICODE
