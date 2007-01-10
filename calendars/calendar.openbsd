@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.7 2005/12/30 16:18:24 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.8 2007/01/10 14:29:04 bsiegert Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -15,6 +15,8 @@ Jan 06	IPF gets integrated into the OpenBSD kernel, 1996
 Jan 06	NRL IPv6 addition to OpenBSD, 1999
 Jan 07	MirOS BSD kernel builds with GCC 3.4.4, 2005
 Jan 08	MirOS XFree86 recognises $CC, $CXX, $CFLAGS etc., 2004
+Jan 09	tg@ updates the subversion port, following advice from
+	the Gentoo Wiki, 2006
 Jan 11	MirOS dhclient does not forcefully overwrite resolv.conf, 2004
 Jan 18	MirOS gets the kern.allowpsa and kern.allowpse sysctls, 2003
 Jan 18	MirOS stabilizes on gcc 3.2 with propolice as system compiler, 2003
