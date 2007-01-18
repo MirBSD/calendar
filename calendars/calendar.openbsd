@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.8 2007/01/10 14:29:04 bsiegert Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.9 2007/01/18 01:34:32 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -19,7 +19,7 @@ Jan 09	tg@ updates the subversion port, following advice from
 	the Gentoo Wiki, 2006
 Jan 11	MirOS dhclient does not forcefully overwrite resolv.conf, 2004
 Jan 18	MirOS gets the kern.allowpsa and kern.allowpse sysctls, 2003
-Jan 18	MirOS stabilizes on gcc 3.2 with propolice as system compiler, 2003
+Jan 18	MirOS stabilises on gcc 3.2 with propolice as system compiler, 2003
 Jan 20	Bind 9 goes into the tree, 2003
 Jan 26	Anoncvs service inaugurated, 1996
 Jan 27	OpenBSD/amd64 port is added, from NetBSD, 2004
