@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.9 2007/01/18 01:34:32 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.10 2007/04/29 23:24:37 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -61,6 +61,7 @@ Apr 19	OpenBSD/solbourne port is added, 2005
 Apr 21	OpenBSD/luna88k port is added, 2004
 Apr 25	MirOS boots via pxegrub, 2003
 Apr 28	MirOS /cvs is 1337 Mebibytes, 2004
+Apr 29	MirOS Unicode support leads to working ntfsprogs, 2007
 May 01	OpenBSD 3.3 released, exploiting W^X, 2003
 May 02	MirOS bootmanager improvements, 2004
 May 02	MirPorts gain dual MirLibtool (1.4/1.5 based), 2004
@@ -104,6 +105,7 @@ Jun 21	!c2k1 hackathon, Cambridge, MA, 35 developers, 2001
 Jun 23	OpenBSD/hppa started, based on Utah Lites and OSF MkLinux, 1998
 Jun 24	MirOS make builds on Mac OSX, GNU/Linux, 2004
 Jun 24	PF added. Insane amounts of work done by dhartmei@, 2001
+Jun 24	MirPorts games/frozen-bubble added from pkgsrc, 2005
 Jul 01	OpenBSD 1.2 released on ftp, 1996
 Jul 01	add strlcpy/strlcat, safe and sensible string copy/append, 1998
 Jul 02	MirOS kernel and userland get correct leap second handling, 2004
@@ -170,6 +172,7 @@ Oct 29	OpenBSD 3.6 released, featuring i386 and amd64 SMP, 2004
 Oct 30	OpenBSD 3.4 released, implementing W^X on i386 and AES in VIA C3, 2003
 Nov 01	OpenBSD 3.2 released, ftp mirrors preload for the first time, 2002
 Nov 03	ELF exec support in MirOS, from NetBSD, 2002
+Nov 04	MirPorts games/frozen-bubble 2.0 network multiplayer update, 2006
 Nov 07	MirOS cd bootloader fixes, switch to boot.cfg, 2003
 Nov 07	MirOS release buildable in chroot, 2003
 Nov 07	MirOS reworking the random number generator stuff, 2003
@@ -200,6 +203,7 @@ Dec 17	Welkomen OpenBGPD, 2003
 Dec 21	MirOS gains fully working CD-ROM "no emulation" boot loader, 2003
 Dec 21	OpenBSD/powerpc port is added, 1996
 Dec 22	MirOS BSD #8 ("MirOS XP") is completed, 2005
+Dec 23	MirPorts has frozen-bubble 2.1, FreeBSD 2.0, pkgsrc 1.0, OpenBSD none, 2006
 Dec 25	MirOS changes uname from OpenBSD to MirBSD, 2003
 Dec 27	MirOS #7-stable branch initiated, 2003
 Dec 27	MirOS attends 20C3, 2003
