@@ -56,7 +56,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.5 2007/01/05 03:41:16 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.6 2007/07/05 23:09:38 tg Exp $");
 
 struct iovec header[] = {
 	{"From: ", 6},
@@ -126,7 +126,9 @@ cal(void)
 				    iconv_open("UTF-8", s_charset);
 			}
 #endif
+#ifndef __MirBSD__
 			(void) setlocale(LC_ALL, buf + 5);
+#endif
 			setnnames();
 			if (!strcmp(buf + 5, "ru_RU.KOI8-R") ||
 			    !strcmp(buf + 5, "uk_UA.KOI8-U") ||
