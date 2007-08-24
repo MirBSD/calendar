@@ -40,6 +40,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #ifdef UNICODE
+#define _ALL_SOURCE
 #include <iconv.h>
 #endif
 #include <locale.h>
@@ -56,7 +57,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.6 2007/07/05 23:09:38 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.7 2007/08/24 14:20:08 tg Exp $");
 
 struct iovec header[] = {
 	{"From: ", 6},
@@ -144,7 +145,8 @@ cal(void)
 		}
 #ifdef UNICODE
 		if (s_conv != (iconv_t)-1) {
-			char *src = buf, *dst = buf2;
+			const char *src = buf;
+			char *dst = buf2;
 			size_t slen = strlen(buf), dlen = sizeof (buf2);
 
 			__iconv(s_conv, &src, &slen, &dst, &dlen, 1, NULL);
