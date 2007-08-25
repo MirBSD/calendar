@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.11 2007/05/07 14:10:31 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.12 2007/08/25 18:22:09 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -120,6 +120,7 @@ Jul 10	MirOS provides sample keyboard layout with Japanese, 2004
 Jul 11	OpenBSD goes wireless w/ if_wi addition, 1999
 Jul 15	MirOS BSD/sparc dies due to lack of time, 2004
 Jul 15	MirOS removes MANSUBDIR, 2004
+Jul 16	mksh becomes default shell in FreeWRT, 2007
 Jul 18	MirOS removes gcc-2.x permanently, 2004
 Jul 20	MirOS developer Dave Steinberg (dave) joins, 2004
 Jul 22	MirOS developer Stephen Paskaluk (sap) joins, 2004
@@ -129,6 +130,7 @@ Jul 25	Gigabit speed to OpenBSD with the addition of if_ti, 1999
 Jul 29	MirOS IRC support channel moves to OFTC, 2004
 Jul 29	MirOS evilwm can now resize windows via keyboard even better, 2004
 Jul 30	MirOS $PS1 gets size limit, 2004
+Aug 08	MirOS/sparc is a prime supported target for #10, 2007
 Aug 10	MirOS gains online manpages, 2004
 Aug 10	MirPorts MirLibtool now works with both autoconfs, 2004
 Aug 11	OpenBSD/sparc is ELF, 2002
@@ -140,6 +142,7 @@ Aug 17	MirOS can vnconfig read-only files, 2003
 Aug 17	OpenBSD/sparc64 port is added, from NetBSD, 2001
 Aug 17	c2k1-II hackathon, Washington D.C., 12 developers, 2001
 Aug 18	MirOS sirc does IPv6, 2003
+Aug 18	mksh becomes default Korn shell in MidnightBSD, 2007
 Aug 19	MirPorts XFCE4 works, 2004
 Aug 21	MirPorts Emacs21 works, 2004
 Aug 22	MirOS binutils handle all possible targets, 2004
