@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.12 2007/08/25 18:22:09 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.13 2007/09/08 00:00:48 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -150,6 +150,7 @@ Aug 29	MirOS Project started by Thorsten Glaser (tg), 2002
 Sep 01	MirOS first hooks for Linux port, 2003
 Sep 02	PLIP support in MirOS, 2003
 Sep 04	MirOS links gzip statically, 2003
+Sep 07	mksh R31 released, 2007
 Sep 09	MirOS gains 66h.42h.de subdomain, 2003
 Sep 10	MirOS developer Benny Siegert (bsiegert) joins, 2003
 Sep 14	MirOS gets rid of broken fake NLS/LOCALE support, 2003
