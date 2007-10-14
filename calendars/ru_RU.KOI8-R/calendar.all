@@ -14,4 +14,7 @@
 #include <ru_RU.KOI8-R/calendar.primety>
 #include <ru_RU.KOI8-R/calendar.history>
 
+/* reset */
+LANG=C
+
 #endif /* !_ru_RU_KOI8_R_all */

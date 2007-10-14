@@ -9,4 +9,7 @@
 
 #include <hr_HR.ISO_8859-2/calendar.praznici>
 
+/* reset */
+LANG=C
+
 #endif /* !_hr_HR_ISO_8859_2_all */
