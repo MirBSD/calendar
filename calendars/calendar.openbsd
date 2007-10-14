@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.13 2007/09/08 00:00:48 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.14 2007/10/14 14:07:39 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -169,6 +169,7 @@ Oct 10	MirOS #7bis released (must-update critical fixes), 2003
 Oct 10	MirOS developer Waldemar Brodkorb (wbx) leaves for his diploma, 2004
 Oct 11	MirOS #0 released (first one ever), 2002
 Oct 14	OpenBSD born, Saturday 16:36 MST, 1995
+Oct 14	mksh R31d released, no known regressions, 2007
 Oct 17	CARP added, introducing OpenBSD into High Availability market, 2003
 Oct 18	OpenBSD/mvme88k port added, from nivas, based on MACH/luna88k, 1995
 Oct 21	MirOS developer Waldemar Brodkorb (wbx) joins, 2003
