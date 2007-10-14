@@ -1,3 +1,4 @@
+/**	$MirOS: src/usr.bin/calendar/calendar.c,v 1.3 2007/07/05 23:09:38 tg Exp $ */
 /*	$OpenBSD: calendar.c,v 1.23 2004/12/10 15:31:01 mickey Exp $	*/
 
 /*
@@ -29,22 +30,12 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static const char copyright[] =
-"@(#) Copyright (c) 1989, 1993\n\
-	The Regents of the University of California.  All rights reserved.\n";
-#endif /* not lint */
+#include <sys/cdefs.h>
+__COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
+	The Regents of the University of California.  All rights reserved.\n");
 
-#ifndef lint
-#if 0
-static const char sccsid[] = "@(#)calendar.c  8.3 (Berkeley) 3/25/94";
-#else
-static const char rcsid[] = "$OpenBSD: calendar.c,v 1.23 2004/12/10 15:31:01 mickey Exp $";
-#endif
-#endif /* not lint */
-
-#include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <err.h>
 #include <errno.h>
@@ -62,8 +53,11 @@ static const char rcsid[] = "$OpenBSD: calendar.c,v 1.23 2004/12/10 15:31:01 mic
 #include "pathnames.h"
 #include "calendar.h"
 
+__SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.3 2007/07/05 23:09:38 tg Exp $");
+
 char *calendarFile = "calendar";  /* default calendar file */
-char *calendarHome = ".calendar"; /* HOME */
+char *calendarHome = ".etc/calendar"; /* HOME */
 char *calendarNoMail = "nomail";  /* don't sent mail if this file exists */
 
 struct passwd *pw;
@@ -84,7 +78,9 @@ main(int argc, char *argv[])
 	int ch;
 	char *caldir;
 
+#ifndef __MirBSD__
 	(void)setlocale(LC_ALL, "");
+#endif
 
 	while ((ch = getopt(argc, argv, "abf:t:A:B:-")) != -1)
 		switch (ch) {
@@ -181,7 +177,9 @@ main(int argc, char *argv[])
 				warn("fork");
 				continue;
 			case 0:	/* child */
+#ifndef __MirBSD__
 				(void)setlocale(LC_ALL, "");
+#endif
 				if (setusercontext(NULL, pw, pw->pw_uid,
 				    LOGIN_SETALL ^ LOGIN_SETLOGIN))
 					err(1, "unable to set user context (uid %u)",
@@ -189,7 +187,7 @@ main(int argc, char *argv[])
 				if (acstat) {
 					if (chdir(pw->pw_dir) ||
 					    stat(calendarFile, &sbuf) != 0 ||
-					    chdir(calendarHome) || 
+					    chdir(calendarHome) ||
 					    stat(calendarNoMail, &sbuf) == 0 ||
 					    stat(calendarFile, &sbuf) != 0)
 						exit(0);

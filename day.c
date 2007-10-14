@@ -29,19 +29,11 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static const char copyright[] =
-"@(#) Copyright (c) 1989, 1993\n\
-	The Regents of the University of California.  All rights reserved.\n";
-#endif /* not lint */
-
-#ifndef lint
-#if 0
-static const char sccsid[] = "@(#)calendar.c  8.3 (Berkeley) 3/25/94";
-#else
-static const char rcsid[] = "$OpenBSD: day.c,v 1.18 2004/12/10 20:47:30 mickey Exp $";
-#endif
-#endif /* not lint */
+#include <sys/cdefs.h>
+__COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
+	The Regents of the University of California.  All rights reserved.\n");
+__SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.2 2007/07/05 23:09:38 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -180,9 +172,13 @@ settime(now)
 		offset = 0;	/* Except not when range is set explicitly */
 	header[5].iov_base = dayname;
 
+#ifndef __MirBSD__
 	(void) setlocale(LC_TIME, "C");
+#endif
 	header[5].iov_len = strftime(dayname, sizeof(dayname), "%A", tp);
+#ifndef __MirBSD__
 	(void) setlocale(LC_TIME, "");
+#endif
 
 	setnnames();
 }

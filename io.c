@@ -29,24 +29,9 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static const char copyright[] =
-"@(#) Copyright (c) 1989, 1993\n\
-	The Regents of the University of California.  All rights reserved.\n";
-#endif /* not lint */
-
-#ifndef lint
-#if 0
-static const char sccsid[] = "@(#)calendar.c  8.3 (Berkeley) 3/25/94";
-#else
-static const char rcsid[] = "$OpenBSD: io.c,v 1.29 2005/04/15 14:28:56 otto Exp $";
-#endif
-#endif /* not lint */
-
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#include <sys/types.h>
 #include <sys/uio.h>
 #include <sys/wait.h>
 
@@ -54,6 +39,10 @@ static const char rcsid[] = "$OpenBSD: io.c,v 1.29 2005/04/15 14:28:56 otto Exp 
 #include <err.h>
 #include <errno.h>
 #include <fcntl.h>
+#ifdef UNICODE
+#define _ALL_SOURCE
+#include <iconv.h>
+#endif
 #include <locale.h>
 #include <pwd.h>
 #include <stdio.h>
@@ -65,6 +54,10 @@ static const char rcsid[] = "$OpenBSD: io.c,v 1.29 2005/04/15 14:28:56 otto Exp 
 #include "pathnames.h"
 #include "calendar.h"
 
+__COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
+	The Regents of the University of California.  All rights reserved.\n");
+__SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.7 2007/08/24 14:20:08 tg Exp $");
 
 struct iovec header[] = {
 	{"From: ", 6},
@@ -73,9 +66,18 @@ struct iovec header[] = {
 	{NULL, 0},
 	{"\nSubject: ", 10},
 	{NULL, 0},
+#ifdef UNICODE
+	{"'s Calendar\nMIME-Version: 1.0\n"
+	 "Content-type: text/plain; charset=utf-8\n"
+	 "Precedence: bulk\n\n", 88},
+#else
 	{"'s Calendar\nPrecedence: bulk\n\n",  30},
+#endif
 };
 
+#ifdef UNICODE
+iconv_t s_conv;
+#endif
 
 void
 cal(void)
@@ -86,6 +88,9 @@ cal(void)
 	int ch, l, i, bodun = 0, bodun_maybe = 0;
 	int var;
 	char buf[2048 + 1], *prefix = NULL;
+#ifdef UNICODE
+	char buf2[2048 * 4 + 1];
+#endif
 	struct event *events, *cur_evt, *ev1, *tmp;
 	struct match *m;
 	size_t nlen;
@@ -94,6 +99,7 @@ cal(void)
 	cur_evt = NULL;
 	if ((fp = opencal()) == NULL)
 		return;
+	s_conv = (iconv_t)-1;
 	for (printing = 0; fgets(buf, sizeof(buf), stdin) != NULL;) {
 		if ((p = strchr(buf, '\n')) != NULL)
 			*p = '\0';
@@ -105,7 +111,25 @@ cal(void)
 		if (buf[0] == '\0')
 			continue;
 		if (strncmp(buf, "LANG=", 5) == 0) {
+#ifdef UNICODE
+			{
+				const char *s_charset;
+
+				if (s_conv != (iconv_t)-1)
+					iconv_close(s_conv);
+				if ((s_charset = strchr(buf, '.')) == NULL)
+					s_charset = buf + 5;
+				else
+					++s_charset;
+				if (s_charset[0] == 'C' && s_charset[1] == '\0')
+					++s_charset;
+				s_conv = (*s_charset == '\0') ? (iconv_t)-1 :
+				    iconv_open("UTF-8", s_charset);
+			}
+#endif
+#ifndef __MirBSD__
 			(void) setlocale(LC_ALL, buf + 5);
+#endif
 			setnnames();
 			if (!strcmp(buf + 5, "ru_RU.KOI8-R") ||
 			    !strcmp(buf + 5, "uk_UA.KOI8-U") ||
@@ -116,9 +140,24 @@ cal(void)
 					free(prefix);
 				prefix = NULL;
 			} else
-				bodun_maybe = 0;
+				bodun = bodun_maybe = 0;
 			continue;
-		} else if (strncmp(buf, "CALENDAR=", 9) == 0) {
+		}
+#ifdef UNICODE
+		if (s_conv != (iconv_t)-1) {
+			const char *src = buf;
+			char *dst = buf2;
+			size_t slen = strlen(buf), dlen = sizeof (buf2);
+
+			__iconv(s_conv, &src, &slen, &dst, &dlen, 1, NULL);
+			*dst = '\0';
+			if (slen)
+				strlcat(buf2, src, sizeof (buf2));
+		} else
+			memmove(buf2, buf, strlen(buf) + 1);
+#define buf buf2
+#endif
+		if (strncmp(buf, "CALENDAR=", 9) == 0) {
 			char *ep;
 
 			if (buf[9] == '\0')
@@ -175,7 +214,7 @@ cal(void)
 				var = 0;
 			if (printing) {
 				struct match *foo;
-				
+
 				ev1 = NULL;
 				while (m) {
 				cur_evt = (struct event *) malloc(sizeof(struct event));
@@ -219,6 +258,9 @@ cal(void)
 			snprintf(ev1->ldesc, nlen, "%s\n%s", ev1->ldesc, buf);
 		}
 	}
+#ifdef UNICODE
+#undef buf
+#endif
 	tmp = events;
 	while (tmp) {
 		(void)fprintf(fp, "%s%s\n", tmp->print_date, *(tmp->desc));
@@ -314,7 +356,7 @@ getfield(p, endp, flags)
 			    * number of special events. */
 			   break;
 			}
-		*flags |= F_SPECIAL;	
+		*flags |= F_SPECIAL;
 		}
 		if (!(*flags & F_SPECIAL)) {
 		/* undefined rest */
@@ -365,7 +407,7 @@ opencal(void)
 			(void)close(pdes[1]);
 		}
 		(void)close(pdes[0]);
-		/* 
+		/*
 		 * Set stderr to /dev/null.  Necessary so that cron does not
 		 * wait for cpp to finish if it's running calendar -a.
 		 */
@@ -378,7 +420,10 @@ opencal(void)
 			(void)close(fderr);
 		}
 		execl(_PATH_CPP, "cpp", "-traditional", "-undef", "-U__GNUC__",
-		    "-P", "-I.", _PATH_INCLUDE, (char *)NULL);
+#ifdef UNICODE
+		    "-DUNICODE",
+#endif
+		    "-P", "-I.", _PATH_INCLUDE, NULL);
 		warn(_PATH_CPP);
 		_exit(1);
 	}
