@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.14 2007/10/14 14:07:39 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.15 2008/03/17 02:22:33 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -46,6 +46,8 @@ Mar 13	MirOS now delivers PNG in the base system, 2004
 Mar 13	MirOS supplies snapshots with XFree86 4.4, Ada, Pascal, 2004
 Mar 13	MirOS updates to XFree86 4.4.0, 2004
 Mar 13	MirPorts on MirOS uses .cgz as package format, 2004
+Mar 14	MirPorts works on MidnightBSD, 2008
+Mar 16	MirOS #10 ("MirOS xi") released (i386, sparc), Unicode, 2008
 Mar 17	MirOS Licence Template discussion for final version, 2004
 Mar 22	MirOS starts own CVS repository, 2003
 Mar 25	ISDN4BSD for OpenBSD 2.7 added to MirOS, 2003
@@ -219,6 +221,7 @@ Dec 27	MirOS attends 22C3, 2005
 Dec 27	MirOS changes uname from OpenBSD to MirBSD, 2003
 Dec 28	MirOS #7quinquies released and EOL for #7-stable, 2004
 Dec 28	MirOS X birthed, 2004
+Dec 28	DJB places daemontools, djbdns, ucspi-tcp into Public Domain, 2007
 Dec 30	MirOS fixes rpath, shlib-on-shlib depends at 22C3, 2005
 Dec 30	OpenBSD/zaurus port is added, 2004
 
