@@ -57,7 +57,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.7 2007/08/24 14:20:08 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.8 2008/11/18 21:14:30 tg Exp $");
 
 struct iovec header[] = {
 	{"From: ", 6},
@@ -419,7 +419,7 @@ opencal(void)
 			(void)dup2(fderr, STDERR_FILENO);
 			(void)close(fderr);
 		}
-		execl(_PATH_CPP, "cpp", "-traditional", "-undef", "-U__GNUC__",
+		execl(_PATH_CPP, "cpp", "-t",
 #ifdef UNICODE
 		    "-DUNICODE",
 #endif
