@@ -1,13 +1,14 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.15 2008/03/17 02:22:33 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.16 2009/01/12 21:54:42 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
 #ifndef _calendar_openbsd_
 #define _calendar_openbsd_
 
+Jan 02	MirOS/i386 boot can chain to other sectors, loaders, GRUB, 2009
 Jan 03	MirOS initiates source merging to new CVS, 2005
 Jan 04	Import of GCC 3.4.4 into MirOS, 2005
 Jan 05	MirOS gets hd alias (later becomes hd(1) command), 2003
@@ -18,6 +19,7 @@ Jan 08	MirOS XFree86 recognises $CC, $CXX, $CFLAGS etc., 2004
 Jan 09	tg@ updates the subversion port, following advice from
 	the Gentoo Wiki, 2006
 Jan 11	MirOS dhclient does not forcefully overwrite resolv.conf, 2004
+Jan 12	MirOS boot is network capable on all architectures, 2009
 Jan 18	MirOS gets the kern.allowpsa and kern.allowpse sysctls, 2003
 Jan 18	MirOS stabilises on gcc 3.2 with propolice as system compiler, 2003
 Jan 20	Bind 9 goes into the tree, 2003
@@ -222,6 +224,7 @@ Dec 27	MirOS changes uname from OpenBSD to MirBSD, 2003
 Dec 28	MirOS #7quinquies released and EOL for #7-stable, 2004
 Dec 28	MirOS X birthed, 2004
 Dec 28	DJB places daemontools, djbdns, ucspi-tcp into Public Domain, 2007
+Dec 28	MirOS/i386 boot runs as COMBOOT module, 2008
 Dec 30	MirOS fixes rpath, shlib-on-shlib depends at 22C3, 2005
 Dec 30	OpenBSD/zaurus port is added, 2004
 
