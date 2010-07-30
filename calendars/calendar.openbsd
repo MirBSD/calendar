@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.16 2009/01/12 21:54:42 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.17 2010/07/30 07:49:41 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -133,7 +133,7 @@ Jul 24	Non-executable stack on most architectures, 2002
 Jul 25	Gigabit speed to OpenBSD with the addition of if_ti, 1999
 Jul 29	MirOS IRC support channel moves to OFTC, 2004
 Jul 29	MirOS evilwm can now resize windows via keyboard even better, 2004
-Jul 30	MirOS $PS1 gets size limit, 2004
+Jul 30	MirOS default $PS1 gets width limit, 2004
 Aug 08	MirOS/sparc is a prime supported target for #10, 2007
 Aug 10	MirOS gains online manpages, 2004
 Aug 10	MirPorts MirLibtool now works with both autoconfs, 2004
