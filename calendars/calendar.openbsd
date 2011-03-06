@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.17 2010/07/30 07:49:41 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.18 2011/03/06 01:54:50 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -42,7 +42,7 @@ Feb 26	bridge(4) transparent firewall added to OpenBSD, 1999
 Feb 28	Cryptographic services framework in OpenBSD, 2000
 Mar 02	MirOS #3 released (full ELF enabled), 2003
 Mar 02	MirPorts package tools fix round, 2004
-May 07	MirOS gains WHIRLPOOL hash, 2007
+Mar 05	MirBSD Korn Shell gains recursive $(...) parser
 Mar 10	OpenBSD/WWW translation started -- German, Spanish, Dutch, 2000
 Mar 13	MirOS now delivers PNG in the base system, 2004
 Mar 13	MirOS supplies snapshots with XFree86 4.4, Ada, Pascal, 2004
@@ -73,6 +73,7 @@ May 02	MirPorts gain dual MirLibtool (1.4/1.5 based), 2004
 May 02	MirPorts not allowed to sysctl, add/remove users/groups, 2004
 May 02	MirPorts pgp+ gets better entropy collection, 2004
 May 05	MirOS first releases snapshots via BitTorrent, 2004
+May 07	MirOS gains WHIRLPOOL hash, 2007
 May 08	MirOS gains <stdint.h> as per C99, 2004
 May 08	MirOS gains the '0 != NULL' equation and fixes, 2004
 May 09	First commit to OpenBSD stable branch, OPENBSD_2_7, 2000
