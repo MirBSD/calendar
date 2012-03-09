@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.18 2011/03/06 01:54:50 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.19 2012/03/09 16:31:36 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -42,7 +42,7 @@ Feb 26	bridge(4) transparent firewall added to OpenBSD, 1999
 Feb 28	Cryptographic services framework in OpenBSD, 2000
 Mar 02	MirOS #3 released (full ELF enabled), 2003
 Mar 02	MirPorts package tools fix round, 2004
-Mar 05	MirBSD Korn Shell gains recursive $(...) parser
+Mar 05	MirBSD Korn Shell gains recursive $(...) parser, 2011
 Mar 10	OpenBSD/WWW translation started -- German, Spanish, Dutch, 2000
 Mar 13	MirOS now delivers PNG in the base system, 2004
 Mar 13	MirOS supplies snapshots with XFree86 4.4, Ada, Pascal, 2004
