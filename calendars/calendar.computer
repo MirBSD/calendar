@@ -1,7 +1,7 @@
 /*
  * Computer
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.4 2010/07/30 07:49:41 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.5 2012/09/21 17:03:37 tg Exp $
  * $OpenBSD: calendar.computer,v 1.8 2003/12/09 02:39:58 mickey Exp $
  */
 
@@ -80,5 +80,7 @@
 12/01	W3C (World Wide Web Consortium) founded, 1994
 11/04	UNIVAC I program predicts Eisenhower victory based on 7% of votes, 1952
 12/08	First Ph.D. awarded by Computer Science Dept, Univ. of Penna, 1965
+
+Sep 22	First official "Marry a DD" day, 2012
 
 #endif /* !_calendar_computer_ */
