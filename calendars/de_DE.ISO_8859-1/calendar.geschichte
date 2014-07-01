@@ -13,6 +13,7 @@
  * 
  * ISBN 3-924521-59-X
  * 
+ * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.geschichte,v 1.2 2014/07/01 20:49:29 tg Exp $
  * $OpenBSD: calendar.geschichte,v 1.2 1997/08/27 11:20:38 provos Exp $
  */
 
@@ -121,11 +122,11 @@ LANG=de_DE.ISO_8859-1
 06/20	Währungsreform in den Westzonen, 1948
 06/24	Beginn der Berliner Blockade, 1948
 07/01	Wahl von Heinrich Lübke zum Bundespräsidenten, 1959
-07/01	Währungs- und Währungsunion, 1990
+07/01	Wirtschafts- und Währungsunion, 1990
 08/12	deutsch-sowjetischer Gewaltverzichtsvertrag, Moskau 1970
 08/14	Wahl zum ersten deutschen Bundestag, 1949
 09/03	Vier-Mächte-Abkommen über Berlin, 1971
-09/05	Entführung und Ermordung von Arbeitgeberpräsident Schleyer,                    Entführung einer Lufthansa-Maschine nach Mogadischu, 1977
+09/05	Entführung und Ermordung von Arbeitgeberpräsident Schleyer, Entführung einer Lufthansa-Maschine nach Mogadischu, 1977
 09/07	DDR-Staatsratsvorsitzender Honecker in der Bundesrepublik, 1987
 09/12	Wahl von Theodor Heuss (FDP) zum Bundespräsidenten, 1949
 09/15	Wahl von Konrad Adenauer (CDU) zum Bundeskanzler, 1949
@@ -189,7 +190,7 @@ LANG=de_DE.ISO_8859-1
 10/18	Ablösung von Erich Honecker als SED-Generalsekretär, 1989
 11/09	Fall der Berliner Mauer, 1989
 09/09	Mao Tse-Tung gestorben im Alter von 82 Jahren, 1976
-11/10	Sowjetischer  Präsident Leonid Breschnew gestorben, Alter 75, 1982
+11/10	Sowjetischer Präsident Leonid Breschnew gestorben, Alter 75, 1982
 03/27	Chruschtschow wird sowjetischer Präsident, 1958
 10/12	Chruschtschow schlägt während einer Rede in der UNO mit den
 	Schuhen auf den Tisch, 1960
