@@ -1,7 +1,7 @@
 /*
  * Computer
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.5 2012/09/21 17:03:37 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.6 2015/07/07 17:56:28 tg Exp $
  * $OpenBSD: calendar.computer,v 1.8 2003/12/09 02:39:58 mickey Exp $
  */
 
@@ -58,7 +58,7 @@
 06/30	First advanced degree on computer related topic: to H. Karamanian,
 	Temple Univ., Phila, 1948, for symbolic differentiation on the ENIAC
 07/01	MITS delivers newly founded Microsoft's 4K and 8K BASIC, 1975
-07/08	Bell Telephone Co. formed (predecessor of AT&T), 1877
+07/08	Bell Telephone Co. formed (antecessor of AT&T), 1877
 07/08	CDC incorporated, 1957
 07/22	MITS and Microsoft seal distribution agreement for Altair BASIC 2.0, 1975
 07/FriLast	System Administrator Appreciation Day
