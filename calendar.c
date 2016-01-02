@@ -1,4 +1,4 @@
-/**	$MirOS: src/usr.bin/calendar/calendar.c,v 1.3 2007/07/05 23:09:38 tg Exp $ */
+/**	$MirOS: src/usr.bin/calendar/calendar.c,v 1.4 2016/01/02 21:33:07 tg Exp $ */
 /*	$OpenBSD: calendar.c,v 1.23 2004/12/10 15:31:01 mickey Exp $	*/
 
 /*
@@ -54,7 +54,7 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 #include "calendar.h"
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.3 2007/07/05 23:09:38 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.4 2016/01/02 21:33:07 tg Exp $");
 
 char *calendarFile = "calendar";  /* default calendar file */
 char *calendarHome = ".etc/calendar"; /* HOME */
@@ -78,9 +78,7 @@ main(int argc, char *argv[])
 	int ch;
 	char *caldir;
 
-#ifndef __MirBSD__
 	(void)setlocale(LC_ALL, "");
-#endif
 
 	while ((ch = getopt(argc, argv, "abf:t:A:B:-")) != -1)
 		switch (ch) {
@@ -177,9 +175,7 @@ main(int argc, char *argv[])
 				warn("fork");
 				continue;
 			case 0:	/* child */
-#ifndef __MirBSD__
 				(void)setlocale(LC_ALL, "");
-#endif
 				if (setusercontext(NULL, pw, pw->pw_uid,
 				    LOGIN_SETALL ^ LOGIN_SETLOGIN))
 					err(1, "unable to set user context (uid %u)",

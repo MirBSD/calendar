@@ -33,7 +33,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.3 2010/09/21 21:24:33 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.4 2016/01/02 21:33:07 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -172,13 +172,9 @@ settime(now)
 		offset = 0;	/* Except not when range is set explicitly */
 	header[5].iov_base = dayname;
 
-#ifndef __MirBSD__
 	(void) setlocale(LC_TIME, "C");
-#endif
 	header[5].iov_len = strftime(dayname, sizeof(dayname), "%A", tp);
-#ifndef __MirBSD__
 	(void) setlocale(LC_TIME, "");
-#endif
 
 	setnnames();
 }
