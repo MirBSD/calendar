@@ -1,7 +1,7 @@
 /*
  * Computer
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.6 2015/07/07 17:56:28 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.7 2016/05/03 20:48:42 tg Exp $
  * $OpenBSD: calendar.computer,v 1.8 2003/12/09 02:39:58 mickey Exp $
  */
 
@@ -41,6 +41,8 @@
 04/09	ENIAC Project begun, 1943
 04/20	Apple announces the Apple ][ at the 1st West Coast Computer Faire, 1977
 04/28	Zilog Z-80 introduced
+05/02	GPS Selective Availability disabled, 2000
+05/03	First GPS Stash hidden, 2000
 05/06	EDSAC demonstrated, 1949
 05/01	First BASIC program run at Dartmouth, 1964
 05/16	First report on SNOBOL distributed (within BTL), 1963
