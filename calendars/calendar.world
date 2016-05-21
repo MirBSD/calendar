@@ -1,6 +1,7 @@
 /*
  * World wide calendar files, except national calendars
  *
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.world,v 1.2 2016/05/21 02:41:16 tg Exp $
  * $OpenBSD: calendar.world,v 1.1 1996/12/05 06:04:51 millert Exp $
  */
 
@@ -14,5 +15,6 @@
 #include <calendar.holiday>
 #include <calendar.judaic>
 #include <calendar.music>
+#include <calendar.pagan>
 
 #endif /* !_calendar_world_ */
