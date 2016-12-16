@@ -1,6 +1,7 @@
 /*
  * Musik
  *
+ * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.musik,v 1.2 2016/12/16 11:54:24 tg Exp $
  * $OpenBSD: calendar.musik,v 1.3 1997/08/27 11:20:41 provos Exp $
  */
 
@@ -48,7 +49,7 @@ LANG=de_DE.ISO_8859-1
 11/19	Franz Schubert in Wien gestorben, 1828
 11/26	Paul Hindemith in Hanau geboren, 1895
 12/05	Wolfgang Amadeus Mozart in Wien gestorben, 1791
-12/16	Ludwig van Beethoven in Bonn geboren, 1770
+12/17	Ludwig van Beethoven in Bonn getauft, 1770
 12/28	Paul Hindemith in Frankfurt am Main gestorben, 1963
 
 /* Pop */
