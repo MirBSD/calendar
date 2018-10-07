@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.19 2012/03/09 16:31:36 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.20 2018/10/07 01:11:00 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -90,7 +90,7 @@ May 29	IPF is removed for license incompatibility, 2001
 May 31	Initial cut at OpenNTP, 2004
 Jun 01	OpenBSD 2.1 released, first time on CD (double set), 1997
 Jun 02	MirOS T-Shirt and Daemon Pin sales planning, 2004
-Jun 02	MirOS adds back "learn" programme, 2004
+Jun 02	MirOS adds back "learn" program, 2004
 Jun 02	MirOS gets its own PT_NOTE ELF section, 2004
 Jun 02	portable mirbsdksh 1.10 released, 2004
 Jun 04	First hackathon, Calgary, Canada, 10 developers, 1999
