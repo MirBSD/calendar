@@ -1,4 +1,4 @@
-/*	$OpenBSD: io.c,v 1.29 2005/04/15 14:28:56 otto Exp $	*/
+/*	$OpenBSD: io.c,v 1.29+backports from 1.49 2005/04/15 14:28:56 otto Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993, 1994
@@ -29,21 +29,6 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static const char copyright[] =
-"@(#) Copyright (c) 1989, 1993\n\
-	The Regents of the University of California.  All rights reserved.\n";
-#endif /* not lint */
-
-#ifndef lint
-#if 0
-static const char sccsid[] = "@(#)calendar.c  8.3 (Berkeley) 3/25/94";
-#else
-static const char rcsid[] = "$OpenBSD: io.c,v 1.29 2005/04/15 14:28:56 otto Exp $";
-#endif
-#endif /* not lint */
-
-#include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -59,21 +44,22 @@ static const char rcsid[] = "$OpenBSD: io.c,v 1.29 2005/04/15 14:28:56 otto Exp 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <tzfile.h>
 #include <unistd.h>
+#include <limits.h>
 
 #include "pathnames.h"
 #include "calendar.h"
 
 
 struct iovec header[] = {
-	{"From: ", 6},
-	{NULL, 0},
-	{" (Reminder Service)\nTo: ", 24},
-	{NULL, 0},
-	{"\nSubject: ", 10},
-	{NULL, 0},
-	{"'s Calendar\nPrecedence: bulk\n\n",  30},
+	{ "From: ", 6 },
+	{ NULL, 0 },
+	{ " (Reminder Service)\nTo: ", 24 },
+	{ NULL, 0 },
+	{ "\nSubject: ", 10 },
+	{ NULL, 0 },
+	{ "'s Calendar\nPrecedence: bulk\n",  29 },
+	{ "Auto-Submitted: auto-generated\n\n", 32 },
 };
 
 
@@ -112,8 +98,7 @@ cal(void)
 			    !strcmp(buf + 5, "by_BY.KOI8-B")) {
 				bodun_maybe++;
 				bodun = 0;
-				if (prefix)
-					free(prefix);
+				free(prefix);
 				prefix = NULL;
 			} else
 				bodun_maybe = 0;
@@ -138,8 +123,7 @@ cal(void)
 				calendar = LUNAR;
 		} else if (bodun_maybe && strncmp(buf, "BODUN=", 6) == 0) {
 			bodun++;
-			if (prefix)
-				free(prefix);
+			free(prefix);
 			if ((prefix = strdup(buf + 6)) == NULL)
 				err(1, NULL);
 			continue;
@@ -227,8 +211,7 @@ cal(void)
 	tmp = events;
 	while (tmp) {
 		events = tmp;
-		if (tmp->ldesc)
-			free(tmp->ldesc);
+		free(tmp->ldesc);
 		tmp = tmp->next;
 		free(events);
 	}
@@ -236,9 +219,7 @@ cal(void)
 }
 
 int
-getfield(p, endp, flags)
-	char *p, **endp;
-	int *flags;
+getfield(char *p, char **endp, int *flags)
 {
 	int val, var, i;
 	char *start, savech;
@@ -345,17 +326,20 @@ opencal(void)
 			if (!(chdir(home) == 0 &&
 			    chdir(calendarHome) == 0 &&
 			    (fdin = open(calendarFile, O_RDONLY)) != -1))
-				errx(1, "no calendar file: ``%s'' or ``~/%s/%s''",
+				errx(1, "no calendar file: \"%s\" or \"~/%s/%s\"",
 				    calendarFile, calendarHome, calendarFile);
 		}
 	}
 
-	if (pipe(pdes) < 0)
+	if (pipe(pdes) == -1) {
+		close(fdin);
 		return (NULL);
+	}
 	switch (vfork()) {
 	case -1:			/* error */
 		(void)close(pdes[0]);
 		(void)close(pdes[1]);
+		close(fdin);
 		return (NULL);
 	case 0:
 		dup2(fdin, STDIN_FILENO);
@@ -365,7 +349,7 @@ opencal(void)
 			(void)close(pdes[1]);
 		}
 		(void)close(pdes[0]);
-		/* 
+		/*
 		 * Set stderr to /dev/null.  Necessary so that cron does not
 		 * wait for cpp to finish if it's running calendar -a.
 		 */
@@ -396,12 +380,12 @@ opencal(void)
 }
 
 void
-closecal(fp)
-	FILE *fp;
+closecal(FILE *fp)
 {
 	struct stat sbuf;
 	int nread, pdes[2], status;
 	char buf[1024];
+	pid_t pid = -1;
 
 	if (!doall)
 		return;
@@ -409,9 +393,9 @@ closecal(fp)
 	(void)rewind(fp);
 	if (fstat(fileno(fp), &sbuf) || !sbuf.st_size)
 		goto done;
-	if (pipe(pdes) < 0)
+	if (pipe(pdes) == -1)
 		goto done;
-	switch (vfork()) {
+	switch ((pid = vfork())) {
 	case -1:			/* error */
 		(void)close(pdes[0]);
 		(void)close(pdes[1]);
@@ -433,20 +417,22 @@ closecal(fp)
 
 	header[1].iov_base = header[3].iov_base = pw->pw_name;
 	header[1].iov_len = header[3].iov_len = strlen(pw->pw_name);
-	writev(pdes[1], header, 7);
+	writev(pdes[1], header, 8);
 	while ((nread = read(fileno(fp), buf, sizeof(buf))) > 0)
 		(void)write(pdes[1], buf, nread);
 	(void)close(pdes[1]);
 done:	(void)fclose(fp);
-	while (wait(&status) >= 0)
-		;
+	if (pid != -1) {
+		while (waitpid(pid, &status, 0) == -1) {
+			if (errno != EINTR)
+				break;
+		}
+	}
 }
 
 
 void
-insert(head, cur_evt)
-	struct event **head;
-	struct event *cur_evt;
+insert(struct event **head, struct event *cur_evt)
 {
 	struct event *tmp, *tmp2;
 
