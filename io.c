@@ -51,15 +51,19 @@
 #include <tzfile.h>
 #include <unistd.h>
 
+#ifndef ioweg
+#define ioweg iovec /* cf. MirBSD writev(2) manpage; do NOT move! */
+#endif
+
 #include "pathnames.h"
 #include "calendar.h"
 
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.10 2016/01/02 21:33:08 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.11 2019/07/20 23:07:33 tg Exp $");
 
-struct iovec header[] = {
+struct ioweg header[] = {
 	{"From: ", 6},
 	{NULL, 0},
 	{" (Reminder Service)\nTo: ", 24},
@@ -276,9 +280,7 @@ cal(void)
 }
 
 int
-getfield(p, endp, flags)
-	char *p, **endp;
-	int *flags;
+getfield(char *p, char **endp, int *flags)
 {
 	int val, var, i;
 	char *start, savech;
@@ -439,8 +441,7 @@ opencal(void)
 }
 
 void
-closecal(fp)
-	FILE *fp;
+closecal(FILE *fp)
 {
 	struct stat sbuf;
 	int nread, pdes[2], status;
@@ -487,9 +488,7 @@ done:	(void)fclose(fp);
 
 
 void
-insert(head, cur_evt)
-	struct event **head;
-	struct event *cur_evt;
+insert(struct event **head, struct event *cur_evt)
 {
 	struct event *tmp, *tmp2;
 

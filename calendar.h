@@ -1,3 +1,4 @@
+/**	$MirOS: src/usr.bin/calendar/calendar.h,v 1.2 2019/07/20 23:07:32 tg Exp $ */
 /*	$OpenBSD: calendar.h,v 1.11 2004/12/10 20:47:30 mickey Exp $	*/
 
 /*
@@ -29,16 +30,14 @@
  * SUCH DAMAGE.
  */
 
-
 extern struct passwd *pw;
 extern int doall;
 extern int bodun_always;
 extern time_t f_time;
-extern struct iovec header[];
+extern struct ioweg header[];
 extern struct tm *tp;
-extern char *calendarFile;
-extern char *calendarHome;
-extern char *optarg;
+extern const char *calendarFile;
+extern const char *calendarHome;
 
 struct fixs {
 	char *name;
@@ -83,7 +82,7 @@ struct match	*isnow(char *, int);
 FILE	*opencal(void);
 void	 settime(time_t *);
 time_t	 Mktime(char *);
-void	 usage(void);
+void	 usage(void) __dead;
 int	 foy(int);
 void	 variable_weekday(int *, int, int);
 void	 setnnames(void);
