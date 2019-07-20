@@ -61,7 +61,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.12 2019/07/20 23:19:34 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.14 2019/07/20 23:21:42 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -96,7 +96,7 @@ cal(void)
 #ifdef UNICODE
 	char buf2[2048 * 4 + 1];
 #endif
-	struct event *events, *cur_evt, *ev1, *tmp;
+	struct event *events, *cur_evt, *ev1 = NULL, *tmp;
 	struct match *m;
 	size_t nlen;
 
@@ -372,7 +372,8 @@ getfield(char *p, char **endp, int *flags)
 FILE *
 opencal(void)
 {
-	int pdes[2], fdin;
+	int pdes[2];
+	volatile int fdin; /* vfork clobber warning, needs investigation */
 	struct stat st;
 
 	/* open up calendar file as stdin */
