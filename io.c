@@ -61,7 +61,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.14 2019/07/20 23:21:42 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.15 2019/07/20 23:42:30 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -187,19 +187,19 @@ cal(void)
 		/* User defined names for special events */
 		if ((p = strchr(buf, '='))) {
 			for (i = 0; i < NUMEV; i++) {
-			if (strncasecmp(buf, spev[i].name, spev[i].nlen) == 0 &&
-			    (p - buf == spev[i].nlen) && buf[spev[i].nlen + 1]) {
-				p++;
-				if (spev[i].uname != NULL)
-					free(spev[i].uname);
-				if ((spev[i].uname = strdup(p)) == NULL)
-					err(1, NULL);
-				spev[i].ulen = strlen(p);
-				i = NUMEV + 1;
+				if (strncasecmp(buf, spev[i].name, spev[i].nlen) == 0 &&
+				    (p - buf == spev[i].nlen) && buf[spev[i].nlen + 1]) {
+					p++;
+					if (spev[i].uname != NULL)
+						free(spev[i].uname);
+					if ((spev[i].uname = strdup(p)) == NULL)
+						err(1, NULL);
+					spev[i].ulen = strlen(p);
+					i = NUMEV + 1;
+				}
 			}
-			}
-		if (i > NUMEV)
-			continue;
+			if (i > NUMEV)
+				continue;
 		}
 		if (buf[0] != '\t') {
 			printing = (m = isnow(buf, bodun)) ? 1 : 0;
