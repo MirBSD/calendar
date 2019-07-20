@@ -1,4 +1,4 @@
-/*	$OpenBSD: io.c,v 1.29 2005/04/15 14:28:56 otto Exp $	*/
+/*	$OpenBSD: io.c,v 1.29+backports from 1.49 2005/04/15 14:28:56 otto Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993, 1994
@@ -48,8 +48,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <tzfile.h>
 #include <unistd.h>
+#include <limits.h>
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage; do NOT move! */
@@ -61,22 +61,23 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.11 2019/07/20 23:07:33 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.12 2019/07/20 23:19:34 tg Exp $");
 
 struct ioweg header[] = {
-	{"From: ", 6},
-	{NULL, 0},
-	{" (Reminder Service)\nTo: ", 24},
-	{NULL, 0},
-	{"\nSubject: ", 10},
-	{NULL, 0},
+	{ "From: ", 6 },
+	{ NULL, 0 },
+	{ " (Reminder Service)\nTo: ", 24 },
+	{ NULL, 0 },
+	{ "\nSubject: ", 10 },
+	{ NULL, 0 },
 #ifdef UNICODE
-	{"'s Calendar\nMIME-Version: 1.0\n"
-	 "Content-type: text/plain; charset=utf-8\n"
-	 "Precedence: bulk\n\n", 88},
+	{ "'s Calendar\nMIME-Version: 1.0\n"
+	  "Content-type: text/plain; charset=utf-8\n"
+	  "Precedence: bulk\n", 87 },
 #else
-	{"'s Calendar\nPrecedence: bulk\n\n",  30},
+	{ "'s Calendar\nPrecedence: bulk\n", 29 },
 #endif
+	{ "Auto-Submitted: auto-generated\n\n", 32 },
 };
 
 #ifdef UNICODE
@@ -138,8 +139,7 @@ cal(void)
 			    !strcmp(buf + 5, "by_BY.KOI8-B")) {
 				bodun_maybe++;
 				bodun = 0;
-				if (prefix)
-					free(prefix);
+				free(prefix);
 				prefix = NULL;
 			} else
 				bodun = bodun_maybe = 0;
@@ -179,8 +179,7 @@ cal(void)
 				calendar = LUNAR;
 		} else if (bodun_maybe && strncmp(buf, "BODUN=", 6) == 0) {
 			bodun++;
-			if (prefix)
-				free(prefix);
+			free(prefix);
 			if ((prefix = strdup(buf + 6)) == NULL)
 				err(1, NULL);
 			continue;
@@ -271,8 +270,7 @@ cal(void)
 	tmp = events;
 	while (tmp) {
 		events = tmp;
-		if (tmp->ldesc)
-			free(tmp->ldesc);
+		free(tmp->ldesc);
 		tmp = tmp->next;
 		free(events);
 	}
@@ -387,17 +385,20 @@ opencal(void)
 			if (!(chdir(home) == 0 &&
 			    chdir(calendarHome) == 0 &&
 			    (fdin = open(calendarFile, O_RDONLY)) != -1))
-				errx(1, "no calendar file: ``%s'' or ``~/%s/%s''",
+				errx(1, "no calendar file: \"%s\" or \"~/%s/%s\"",
 				    calendarFile, calendarHome, calendarFile);
 		}
 	}
 
-	if (pipe(pdes) < 0)
+	if (pipe(pdes) == -1) {
+		close(fdin);
 		return (NULL);
+	}
 	switch (vfork()) {
 	case -1:			/* error */
 		(void)close(pdes[0]);
 		(void)close(pdes[1]);
+		close(fdin);
 		return (NULL);
 	case 0:
 		dup2(fdin, STDIN_FILENO);
@@ -446,6 +447,7 @@ closecal(FILE *fp)
 	struct stat sbuf;
 	int nread, pdes[2], status;
 	char buf[1024];
+	pid_t pid = -1;
 
 	if (!doall)
 		return;
@@ -453,9 +455,9 @@ closecal(FILE *fp)
 	(void)rewind(fp);
 	if (fstat(fileno(fp), &sbuf) || !sbuf.st_size)
 		goto done;
-	if (pipe(pdes) < 0)
+	if (pipe(pdes) == -1)
 		goto done;
-	switch (vfork()) {
+	switch ((pid = vfork())) {
 	case -1:			/* error */
 		(void)close(pdes[0]);
 		(void)close(pdes[1]);
@@ -477,13 +479,17 @@ closecal(FILE *fp)
 
 	header[1].iov_base = header[3].iov_base = pw->pw_name;
 	header[1].iov_len = header[3].iov_len = strlen(pw->pw_name);
-	writev(pdes[1], header, 7);
+	writev(pdes[1], header, 8);
 	while ((nread = read(fileno(fp), buf, sizeof(buf))) > 0)
 		(void)write(pdes[1], buf, nread);
 	(void)close(pdes[1]);
 done:	(void)fclose(fp);
-	while (wait(&status) >= 0)
-		;
+	if (pid != -1) {
+		while (waitpid(pid, &status, 0) == -1) {
+			if (errno != EINTR)
+				break;
+		}
+	}
 }
 
 
