@@ -35,12 +35,13 @@ static const char rcsid[] = "$OpenBSD: paskha.c,v 1.4 2004/12/10 15:31:01 mickey
 
 #include "calendar.h"
 
+__RCSID("$MirOS: src/usr.bin/calendar/paskha.c,v 1.2 2019/07/20 23:31:30 tg Exp $");
+
 /* return year day for Orthodox Easter using Gauss formula */
 /* (new style result); subtract 13 for old style */
 
 int
-paskha (R)
-	int R;  /*year*/
+paskha(/* year */ int R)
 {
 	int a, b, c, d, e;
 	static int x = 15;

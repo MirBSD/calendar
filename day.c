@@ -33,7 +33,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.4 2016/01/02 21:33:07 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.5 2019/07/20 23:31:29 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -55,23 +55,24 @@ __RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.4 2016/01/02 21:33:07 tg Exp $")
 #define YEARLY 3
 
 struct tm *tp;
-int *cumdays, offset;
+static const int *cumdays1;
+int offset1;
 char dayname[10];
 enum calendars calendar;
 u_long julian;
 
 
 /* 1-based month, 0-based days, cumulative */
-int daytab[][14] = {
+const int daytab[][14] = {
 	{ 0, -1, 30, 58, 89, 119, 150, 180, 211, 242, 272, 303, 333, 364 },
 	{ 0, -1, 30, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 },
 };
 
-static char *days[] = {
+static const char *days[] = {
 	"sun", "mon", "tue", "wed", "thu", "fri", "sat", NULL,
 };
 
-static char *months[] = {
+static const char *months[] = {
 	"jan", "feb", "mar", "apr", "may", "jun",
 	"jul", "aug", "sep", "oct", "nov", "dec", NULL,
 };
@@ -152,8 +153,7 @@ void setnnames(void)
 }
 
 void
-settime(now)
-	time_t *now;
+settime(time_t *now)
 {
 	tp = localtime(now);
 	tp->tm_sec = 0;
@@ -163,13 +163,13 @@ settime(now)
 	tp->tm_hour = 12;
 	*now = mktime(tp);
 	if (isleap(tp->tm_year + TM_YEAR_BASE))
-		cumdays = daytab[1];
+		cumdays1 = daytab[1];
 	else
-		cumdays = daytab[0];
+		cumdays1 = daytab[0];
 	/* Friday displays Monday's events */
-	offset = tp->tm_wday == 5 ? 3 : 1;
+	offset1 = tp->tm_wday == 5 ? 3 : 1;
 	if (f_dayAfter)
-		offset = 0;	/* Except not when range is set explicitly */
+		offset1 = 0;	/* Except not when range is set explicitly */
 	header[5].iov_base = dayname;
 
 	(void) setlocale(LC_TIME, "C");
@@ -182,8 +182,8 @@ settime(now)
 /* convert [Year][Month]Day into unix time (since 1970)
  * Year: two or four digits, Month: two digits, Day: two digits
  */
-time_t Mktime (date)
-    char *date;
+time_t
+Mktime(char *date)
 {
     time_t t;
     int len;
@@ -228,14 +228,14 @@ time_t Mktime (date)
 		tm.tm_year -= TM_YEAR_BASE;
     }
 
-#if DEBUG
+#ifdef DEBUG
     printf("Mktime: %d %d %d %s\n", (int)mktime(&tm), (int)t, len,
 	   asctime(&tm));
 #endif
     return(mktime(&tm));
 }
 
-void
+static void
 adjust_calendar(int *day, int *month)
 {
 	switch (calendar) {
@@ -244,8 +244,8 @@ adjust_calendar(int *day, int *month)
 
 	case JULIAN:
 		*day += julian;
-		if (*day > (cumdays[*month + 1] - cumdays[*month])) {
-			*day -= (cumdays[*month + 1] - cumdays[*month]);
+		if (*day > (cumdays1[*month + 1] - cumdays1[*month])) {
+			*day -= (cumdays1[*month + 1] - cumdays1[*month]);
 			if (++*month > 12)
 				*month = 1;
 		}
@@ -266,9 +266,7 @@ adjust_calendar(int *day, int *month)
  * with \t, is shown along with the matched line.
  */
 struct match *
-isnow(endp, bodun)
-	char	*endp;
-	int	bodun;
+isnow(char *endp, int bodun)
 {
 	int day = 0, flags = 0, month = 0, v1, v2, i;
 	int monthp, dayp, varp = 0;
@@ -392,7 +390,7 @@ isnow(endp, bodun)
 	 *       'SundayLast' -> ??
 	 */
 	if (flags & F_ISDAY) {
-#if DEBUG
+#ifdef DEBUG
 		fprintf(stderr, "\nday: %d %s month %d\n", day, endp, month);
 #endif
 
@@ -407,7 +405,7 @@ isnow(endp, bodun)
 	} else
 	/* Check for silliness.  Note we still catch Feb 29 */
 		if (!(flags & F_SPECIAL) &&
-		    (day > (cumdays[month + 1] - cumdays[month]) || day < 1)) {
+		    (day > (cumdays1[month + 1] - cumdays1[month]) || day < 1)) {
 			if (!((month == 2 && day == 29) ||
 			    (interval == MONTHLY && day <= 31)))
 				return (NULL);
@@ -416,8 +414,8 @@ isnow(endp, bodun)
 	if (!(flags & F_SPECIAL)) {
 		monthp = month;
 		dayp = day;
-		day = cumdays[month] + day;
-#if DEBUG
+		day = cumdays1[month] + day;
+#ifdef DEBUG
 		fprintf(stderr, "day2: day %d(%d) yday %d\n", dayp, day, tp->tm_yday);
 #endif
 	/* Speed up processing for the most common situation:  yearly events
@@ -426,7 +424,7 @@ isnow(endp, bodun)
 	 * leap years).  Only one event can match, and it's easy to find.
 	 * Note we can't check special events, because they can wander widely.
 	 */
-		if (((v1 = offset + f_dayAfter) < 50) && (interval == YEARLY)) {
+		if (((v1 = offset1 + f_dayAfter) < 50) && (interval == YEARLY)) {
 			memcpy(&tmtmp, tp, sizeof(struct tm));
 			tmtmp.tm_mday = dayp;
 			tmtmp.tm_mon = monthp - 1;
@@ -441,7 +439,7 @@ isnow(endp, bodun)
 				else
 					variable_weekday(&vwd, tmtmp.tm_mon + 1,
 					    tmtmp.tm_year + TM_YEAR_BASE);
-				day = cumdays[tmtmp.tm_mon + 1] + vwd;
+				day = cumdays1[tmtmp.tm_mon + 1] + vwd;
 				tmtmp.tm_mday = vwd;
 			}
 			v2 = day - tp->tm_yday;
@@ -552,7 +550,7 @@ isnow(endp, bodun)
 				warnx("time out of range: %s", endp);
 			else {
 				tdiff = difftime(ttmp, f_time)/ SECSPERDAY;
-				if (tdiff <= offset + f_dayAfter ||
+				if (tdiff <= offset1 + f_dayAfter ||
 				    (bodun && tdiff == -1)) {
 					if (tdiff >=  0 ||
 					    (bodun && tdiff == -1)) {
@@ -584,10 +582,9 @@ isnow(endp, bodun)
 
 
 int
-getmonth(s)
-	char *s;
+getmonth(char *s)
 {
-	char **p;
+	const char **p;
 	struct fixs *n;
 
 	for (n = fnmonths; n->name; ++n)
@@ -604,10 +601,9 @@ getmonth(s)
 
 
 int
-getday(s)
-	char *s;
+getday(char *s)
 {
-	char **p;
+	const char **p;
 	struct fixs *n;
 
 	for (n = fndays; n->name; ++n)
@@ -628,22 +624,21 @@ getday(s)
  * ... etc ...
  */
 int
-getdayvar(s)
-	char *s;
+getdayvar(char *s)
 {
-	int offset;
+	int offset2;
 
 
-	offset = strlen(s);
+	offset2 = strlen(s);
 
 	/* Sun+1 or Wednesday-2
 	 *    ^              ^   */
 
-	/* printf ("x: %s %s %d\n", s, s + offset - 2, offset); */
-	switch(*(s + offset - 2)) {
+	/* printf ("x: %s %s %d\n", s, s + offset2 - 2, offset2); */
+	switch(*(s + offset2 - 2)) {
 	case '-':
 	case '+':
-	    return(atoi(s + offset - 2));
+	    return(atoi(s + offset2 - 2));
 	    break;
 	}
 
@@ -652,15 +647,15 @@ getdayvar(s)
 	 */
 
 	/* last */
-	if      (offset > 4 && !strcasecmp(s + offset - 4, "last"))
+	if      (offset2 > 4 && !strcasecmp(s + offset2 - 4, "last"))
 	    return(-1);
-	else if (offset > 5 && !strcasecmp(s + offset - 5, "first"))
+	else if (offset2 > 5 && !strcasecmp(s + offset2 - 5, "first"))
 	    return(+1);
-	else if (offset > 6 && !strcasecmp(s + offset - 6, "second"))
+	else if (offset2 > 6 && !strcasecmp(s + offset2 - 6, "second"))
 	    return(+2);
-	else if (offset > 5 && !strcasecmp(s + offset - 5, "third"))
+	else if (offset2 > 5 && !strcasecmp(s + offset2 - 5, "third"))
 	    return(+3);
-	else if (offset > 6 && !strcasecmp(s + offset - 6, "fourth"))
+	else if (offset2 > 6 && !strcasecmp(s + offset2 - 6, "fourth"))
 	    return(+4);
 
 	/* no offset detected */
@@ -669,8 +664,7 @@ getdayvar(s)
 
 
 int
-foy(year)
-	int year;
+foy(int year)
 {
 	/* 0-6; what weekday Jan 1 is */
 	year--;
@@ -680,17 +674,16 @@ foy(year)
 
 
 void
-variable_weekday(day, month, year)
-	int *day, month, year;
+variable_weekday(int *day, int month, int year)
 {
 	int v1, v2;
-	int *cumdays;
+	const int *cumdays2;
 	int day1;
 
 	if (isleap(year))
-		cumdays = daytab[1];
+		cumdays2 = daytab[1];
 	else
-		cumdays = daytab[0];
+		cumdays2 = daytab[0];
 	day1 = foy(year);
 	/* negative offset; last, -4 .. -1 */
 	if (*day < 0) {
@@ -698,12 +691,12 @@ variable_weekday(day, month, year)
 		*day = 10 + (*day % 10);    /* day 1 ... 7 */
 
 		/* which weekday the end of the month is (1-7) */
-		v2 = (cumdays[month + 1] + day1) % 7 + 1;
+		v2 = (cumdays2[month + 1] + day1) % 7 + 1;
 
 		/* and subtract enough days */
-		*day = cumdays[month + 1] - cumdays[month] +
+		*day = cumdays2[month + 1] - cumdays2[month] +
 		    (v1 + 1) * 7 - (v2 - *day + 7) % 7;
-#if DEBUG
+#ifdef DEBUG
 		fprintf(stderr, "\nMonth %d ends on weekday %d\n", month, v2);
 #endif
 	}
@@ -714,11 +707,11 @@ variable_weekday(day, month, year)
 		*day = *day % 10;
 
 		/* which weekday the first of the month is (1-7) */
-		v2 = (cumdays[month] + 1 + day1) % 7 + 1;
+		v2 = (cumdays2[month] + 1 + day1) % 7 + 1;
 
 		/* and add enough days */
 		*day = 1 + (v1 - 1) * 7 + (*day - v2 + 7) % 7;
-#if DEBUG
+#ifdef DEBUG
 		fprintf(stderr, "\nMonth %d starts on weekday %d\n", month, v2);
 #endif
 	}

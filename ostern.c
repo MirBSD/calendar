@@ -38,10 +38,12 @@ static const char rcsid[] = "$OpenBSD: ostern.c,v 1.5 2004/12/10 15:31:01 mickey
 
 #include "calendar.h"
 
+__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.2 2019/07/20 23:31:29 tg Exp $");
+
 /* return year day for Easter */
 
-int easter (year)
-    int year;            /* 0 ... abcd, NOT since 1900 */
+int
+easter(/* 0‥abcd, NOT since 1900 */ int year)
 {
 
     int e_a, e_b, e_c, e_d, e_e,e_f, e_g, e_h, e_i, e_k,
@@ -72,7 +74,7 @@ int easter (year)
     if (e_n == 4)
 	e_q += 31;
 
-#if DEBUG
+#ifdef DEBUG
     printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", e_a , e_b , e_c , e_d , e_e , e_f , e_g , e_h , e_i , e_k , e_l , e_m , e_n  , e_p , e_q);
 #endif
 
