@@ -61,7 +61,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.15 2019/07/20 23:42:30 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.16 2019/07/20 23:46:14 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -218,41 +218,40 @@ cal(void)
 
 				ev1 = NULL;
 				while (m) {
-				cur_evt = (struct event *) malloc(sizeof(struct event));
-				if (cur_evt == NULL)
-					err(1, NULL);
-
-				cur_evt->when = m->when;
-				snprintf(cur_evt->print_date,
-				    sizeof(cur_evt->print_date), "%s%c",
-				    m->print_date, (var + m->var) ? '*' : ' ');
-				if (ev1) {
-					cur_evt->desc = ev1->desc;
-					cur_evt->ldesc = NULL;
-				} else {
-					if (m->bodun && prefix) {
-						int l1 = strlen(prefix);
-						int l2 = strlen(p);
-						int len = l1 + l2 + 2;
-						if ((cur_evt->ldesc =
-						    malloc(len)) == NULL)
-							err(1, NULL);
-						snprintf(cur_evt->ldesc, len,
-						    "\t%s %s", prefix, p + 1);
-					} else if ((cur_evt->ldesc =
-					    strdup(p)) == NULL)
+					cur_evt = (struct event *) malloc(sizeof(struct event));
+					if (cur_evt == NULL)
 						err(1, NULL);
-					cur_evt->desc = &(cur_evt->ldesc);
-					ev1 = cur_evt;
-				}
-				insert(&events, cur_evt);
-				foo = m;
-				m = m->next;
-				free(foo);
+
+					cur_evt->when = m->when;
+					snprintf(cur_evt->print_date,
+					    sizeof(cur_evt->print_date), "%s%c",
+					    m->print_date, (var + m->var) ? '*' : ' ');
+					if (ev1) {
+						cur_evt->desc = ev1->desc;
+						cur_evt->ldesc = NULL;
+					} else {
+						if (m->bodun && prefix) {
+							int l1 = strlen(prefix);
+							int l2 = strlen(p);
+							int len = l1 + l2 + 2;
+							if ((cur_evt->ldesc =
+							    malloc(len)) == NULL)
+								err(1, NULL);
+							snprintf(cur_evt->ldesc, len,
+							    "\t%s %s", prefix, p + 1);
+						} else if ((cur_evt->ldesc =
+						    strdup(p)) == NULL)
+							err(1, NULL);
+						cur_evt->desc = &(cur_evt->ldesc);
+						ev1 = cur_evt;
+					}
+					insert(&events, cur_evt);
+					foo = m;
+					m = m->next;
+					free(foo);
 				}
 			}
-		}
-		else if (printing) {
+		} else if (printing) {
 			nlen = strlen(ev1->ldesc) + strlen(buf) + 2;
 			if ((ev1->ldesc = realloc(ev1->ldesc, nlen)) == NULL)
 				err(1, NULL);
