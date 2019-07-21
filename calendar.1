@@ -1,4 +1,4 @@
-.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.6 2019/07/21 01:00:11 tg Exp $
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.7 2019/07/21 01:02:37 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.29 2005/03/22 10:57:27 xsa Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
@@ -110,7 +110,7 @@ you should specify
 .Dq LANG=<local_name>
 and
 .Dq BODUN=<bodun_prefix>
-where <local_name> can be ru_RU.KOI8-R, uk_UA.KOI8-U or by_BY.KOI8-B.
+where <local_name> can be ru_RU.KOI8\-R, uk_UA.KOI8\-U or by_BY.KOI8\-B.
 .Pp
 To enable specific anniversary handling, applied to all complete
 event texts that either start with a four-digit year plus comma
@@ -156,7 +156,7 @@ multiple line specifications for a single date.
 (may be followed by a positive or negative integer) is
 Orthodox Easter for this year.
 Weekdays may be followed by
-.Dq -4
+.Dq \-4
 .Li ...
 .Dq +5
 (aliases last, first, second, third, fourth) for moving events like
@@ -205,7 +205,7 @@ May Sun+2\fB\et\fRsecond Sunday in May (Muttertag)
 04/SunLast\fB\et\fRlast Sunday in April,
 \fB\et\fRsummer time in Europe
 Easter\fB\et\fREaster
-Ostern-2\fB\et\fRGood Friday (2 days before Easter)
+Ostern\-2\fB\et\fRGood Friday (2 days before Easter)
 Paskha\fB\et\fROrthodox Easter
 .Ed
 .Sh FILES
@@ -274,7 +274,7 @@ The
 .Nm
 program previously selected lines which had the correct date anywhere
 in the line.
-This is no longer true: the date is only recognized when it occurs
+This is no longer true: the date is only recognised when it occurs
 at the beginning of a line.
 .Sh HISTORY
 A
@@ -289,6 +289,13 @@ if the
 variable is set during compilation,
 .Xr iconv 3
 is used to convert any input to OPTU-8 output.
+.Pp
+The
+.Dv ANNIV
+handling appeared in
+.Mx 11 .
+Other implementations silently ignore the field assignment,
+so this is backwards-compatible.
 .Sh BUGS
 .Nm
 doesn't handle all Jewish holidays or moon phases.
