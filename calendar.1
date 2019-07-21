@@ -1,8 +1,10 @@
-.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.5 2008/08/02 00:57:31 tg Exp $
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.6 2019/07/21 01:00:11 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.29 2005/03/22 10:57:27 xsa Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
 .\"     The Regents of the University of California.  All rights reserved.
+.\" Copyright (c) 2019
+.\"	mirabilos <m@mirbsd.org>
 .\"
 .\" Redistribution and use in source and binary forms, with or without
 .\" modification, are permitted provided that the following conditions
@@ -30,7 +32,7 @@
 .\"
 .\"     @(#)calendar.1  8.1 (Berkeley) 6/29/93
 .\"
-.Dd November 17, 2006
+.Dd $Mdocdate: July 21 2019 $
 .Dt CALENDAR 1
 .Os
 .Sh NAME
@@ -109,6 +111,28 @@ you should specify
 and
 .Dq BODUN=<bodun_prefix>
 where <local_name> can be ru_RU.KOI8-R, uk_UA.KOI8-U or by_BY.KOI8-B.
+.Pp
+To enable specific anniversary handling, applied to all complete
+event texts that either start with a four-digit year plus comma
+and space, or end with comma and space and a four-digit year,
+appending a formatted text instead, set
+.Dq ANNIV=<ago_text><fs><cur_text><fs><future_text>
+(where
+.Ic fs
+is the ASCII field separator (Ctrl-\e, 0x1C) and the texts are used
+if the event happened in the past, present or future, respectively;
+.Dq "%1$d"
+and
+.Dq "%2$d"
+in the texts are replaced by the year and the absolute year delta
+respectively),
+.Em or
+use
+.Dq ANNIV=1
+which enacts the default value of
+.Dq "%1$d: %2$d year(s) ago",
+.Dq "%1$d: this year" ,
+.Dq "%1$d: in %2$d year(s)" .
 .Pp
 Other lines should begin with a month and day.
 They may be entered in almost any format, either numeric or as character

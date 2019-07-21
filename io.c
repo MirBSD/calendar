@@ -3,6 +3,8 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
+ * Copyright (c) 2019
+ *	mirabilos <m@mirbsd.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -61,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.17 2019/07/21 00:25:07 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.18 2019/07/21 01:00:11 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -104,6 +106,7 @@ cal(void)
 		"%1$d: this year",
 		"%1$d: in %2$d year(s)"
 	};
+	char anniv = 0;
 
 	events = NULL;
 	cur_evt = NULL;
@@ -182,6 +185,40 @@ cal(void)
 				calendar = GREGORIAN;
 			else if (!strcasecmp(buf + 9, "lunar"))
 				calendar = LUNAR;
+		} else if (strncmp(buf, "ANNIV=", 6) == 0) {
+			anniv = 1;
+			if (buf[6] == '1' && !buf[7])
+				continue;
+			p = buf + 6;
+			for (i = 0; i < 3; ++i) {
+				if (!*p)
+					break;
+				hfyear[i] = p;
+				while (*p && *p != 0x1C) {
+					if (*p++ != '%')
+						continue;
+					if (*p == '%') {
+						++p;
+						continue;
+					}
+					if ((*p == '1' || *p == '2') &&
+					    p[1] == '$' && p[2] == 'd') {
+						p += 3;
+						continue;
+					}
+					/* double the % */
+					memmove(p, p - 1,
+					    sizeof(buf) - ((p - 1) - buf));
+					++p;
+				}
+				l = *p;
+				*p++ = '\0';
+				if ((hfyear[i] = strdup(hfyear[i])) == NULL)
+					err(1, NULL);
+				if (!l)
+					break;
+			}
+			continue;
 		} else if (bodun_maybe && strncmp(buf, "BODUN=", 6) == 0) {
 			bodun++;
 			free(prefix);
@@ -269,7 +306,7 @@ cal(void)
 #endif
 	tmp = events;
 	while (tmp) {
-		if (0) {
+		if (!anniv) {
  noanniv:
 			fprintf(fp, "%s%s\n", tmp->print_date, *(tmp->desc));
 		} else {
