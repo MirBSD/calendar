@@ -61,7 +61,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.16 2019/07/20 23:46:14 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.17 2019/07/21 00:25:07 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -99,6 +99,11 @@ cal(void)
 	struct event *events, *cur_evt, *ev1 = NULL, *tmp;
 	struct match *m;
 	size_t nlen;
+	const char *hfyear[3] = {
+		"%1$d: %2$d year(s) ago",
+		"%1$d: this year",
+		"%1$d: in %2$d year(s)"
+	};
 
 	events = NULL;
 	cur_evt = NULL;
@@ -223,6 +228,7 @@ cal(void)
 						err(1, NULL);
 
 					cur_evt->when = m->when;
+					cur_evt->year = m->year;
 					snprintf(cur_evt->print_date,
 					    sizeof(cur_evt->print_date), "%s%c",
 					    m->print_date, (var + m->var) ? '*' : ' ');
@@ -263,7 +269,35 @@ cal(void)
 #endif
 	tmp = events;
 	while (tmp) {
-		(void)fprintf(fp, "%s%s\n", tmp->print_date, *(tmp->desc));
+		if (0) {
+ noanniv:
+			fprintf(fp, "%s%s\n", tmp->print_date, *(tmp->desc));
+		} else {
+			p = *(tmp->desc);
+			if (*p++ != '\t')
+				goto noanniv;
+			if (isdigit(p[0]) && isdigit(p[1]) && isdigit(p[2]) &&
+			    isdigit(p[3]) && p[4] == ',' && isspace(p[5])) {
+				p[4] = '\0';
+				i = atoi(p);
+				p += 6;
+				while (isspace(*p))
+					++p;
+			} else if ((nlen = strlen(p)) < 7) {
+				goto noanniv;
+			} else if (isdigit(p[nlen - 1]) &&
+			    isdigit(p[nlen - 2]) && isdigit(p[nlen - 3]) &&
+			    isdigit(p[nlen - 4]) && isspace(p[nlen - 5]) &&
+			    p[nlen - 6] == ',') {
+				p[nlen - 6] = '\0';
+				i = atoi(p + (nlen - 4));
+			} else
+				goto noanniv;
+			l = tmp->year - i;
+			snprintf(buf, sizeof(buf), hfyear[1 - sgn(l)],
+			    i, abs(l));
+			fprintf(fp, "%s\t%s, %s\n", tmp->print_date, p, buf);
+		}
 		tmp = tmp->next;
 	}
 	tmp = events;

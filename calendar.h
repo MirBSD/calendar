@@ -1,4 +1,4 @@
-/**	$MirOS: src/usr.bin/calendar/calendar.h,v 1.2 2019/07/20 23:07:32 tg Exp $ */
+/**	$MirOS: src/usr.bin/calendar/calendar.h,v 1.3 2019/07/21 00:25:06 tg Exp $ */
 /*	$OpenBSD: calendar.h,v 1.11 2004/12/10 20:47:30 mickey Exp $	*/
 
 /*
@@ -50,11 +50,13 @@ struct event {
 	char	**desc;
 	char	*ldesc;
 	struct event	*next;
+	short	year;
 };
 
 struct match {
 	time_t	when;
 	char	print_date[30];
+	short	year;
 	int	bodun;
 	int	var;
 	struct match	*next;
@@ -119,3 +121,5 @@ extern struct specialev spev[NUMEV];
  * (e.g. by using named pipes)
  */
 #define USERTIMEOUT 20
+
+#define sgn(x) (((x) > 0) - ((x) < 0))

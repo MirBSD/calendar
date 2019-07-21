@@ -33,7 +33,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.5 2019/07/20 23:31:29 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.6 2019/07/21 00:25:06 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -468,7 +468,7 @@ isnow(char *endp, int bodun)
 			/*    "%a %b %d", &tm);  Skip weekdays */
 			    "%b %d", &tmtmp) == 0)
 				tmp->print_date[sizeof(tmp->print_date) - 1] = '\0';
-
+			tmp->year  = tmtmp.tm_year + TM_YEAR_BASE;
 			tmp->var   = varp;
 			tmp->next  = NULL;
 			return(tmp);
@@ -562,6 +562,7 @@ isnow(char *endp, int bodun)
 					/*    "%a %b %d", &tm);  Skip weekdays */
 					    "%b %d", &tmtmp) == 0)
 						tmp->print_date[sizeof(tmp->print_date) - 1] = '\0';
+					tmp->year  = tmtmp.tm_year + TM_YEAR_BASE;
 					tmp->bodun = bodun && tdiff == -1;
 					tmp->var   = varp;
 					tmp->next  = NULL;
