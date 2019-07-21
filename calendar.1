@@ -1,4 +1,4 @@
-.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.7 2019/07/21 01:02:37 tg Exp $
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.8 2019/07/21 01:50:23 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.29 2005/03/22 10:57:27 xsa Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
@@ -133,6 +133,8 @@ which enacts the default value of
 .Dq "%1$d: %2$d year(s) ago",
 .Dq "%1$d: this year" ,
 .Dq "%1$d: in %2$d year(s)" .
+Some crazy Russian formats from the shipped calendars are also parsed,
+although conflating "\-e" ('s) and "G" (year), ignoring "do n.e." (BCE).
 .Pp
 Other lines should begin with a month and day.
 They may be entered in almost any format, either numeric or as character

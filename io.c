@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.18 2019/07/21 01:00:11 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.19 2019/07/21 01:50:23 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -320,14 +320,26 @@ cal(void)
 				p += 6;
 				while (isspace(*p))
 					++p;
-			} else if ((nlen = strlen(p)) < 7) {
+			} else if ((nlen = strlen(p)) < 7 ||
+			    (nlen -= (l = ((uint8_t)p[nlen - 1] == 0xB5U &&
+			    (uint8_t)p[nlen - 2] == 0xD0U &&
+			    p[nlen - 3] == '-' ? 3 :
+			    (uint8_t)p[nlen - 1] == 0xB3U &&
+			    (uint8_t)p[nlen - 2] == 0xD0U ? 2 : 0))) < 7) {
 				goto noanniv;
 			} else if (isdigit(p[nlen - 1]) &&
-			    isdigit(p[nlen - 2]) && isdigit(p[nlen - 3]) &&
-			    isdigit(p[nlen - 4]) && isspace(p[nlen - 5]) &&
-			    p[nlen - 6] == ',') {
-				p[nlen - 6] = '\0';
-				i = atoi(p + (nlen - 4));
+			    isdigit(p[nlen - 2]) &&
+			    (i = (isdigit(p[nlen - 3]) &&
+			    isdigit(p[nlen - 4]) &&
+			    isspace(p[nlen - 5]) && p[nlen - 6] == ',' ? 6 :
+			    l && isdigit(p[nlen - 3]) &&
+			    isspace(p[nlen - 4]) && p[nlen - 5] == ',' ? 5 :
+			    l &&
+			    isspace(p[nlen - 3]) && p[nlen - 4] == ',' ? 4 :
+			    0))) {
+				p[nlen - i] = '\0';
+				p[nlen] = '\0';
+				i = atoi(p + (nlen - (i - 2)));
 			} else
 				goto noanniv;
 			l = tmp->year - i;
