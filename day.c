@@ -33,7 +33,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.6 2019/07/21 00:25:06 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.7 2019/07/21 01:09:36 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -46,6 +46,10 @@ __RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.6 2019/07/21 00:25:06 tg Exp $")
 #include <string.h>
 #include <time.h>
 #include <tzfile.h>
+
+#ifndef ioweg
+#define ioweg iovec /* cf. MirBSD writev(2) manpage; do NOT move! */
+#endif
 
 #include "pathnames.h"
 #include "calendar.h"

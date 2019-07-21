@@ -1,4 +1,3 @@
-/**	$MirOS: src/usr.bin/calendar/calendar.c,v 1.5 2019/07/20 23:07:32 tg Exp $ */
 /*	$OpenBSD: calendar.c,v 1.23 2004/12/10 15:31:01 mickey Exp $	*/
 
 /*
@@ -50,15 +49,11 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 #include <tzfile.h>
 #include <unistd.h>
 
-#ifndef ioweg
-#define ioweg iovec /* cf. MirBSD writev(2) manpage; do NOT move! */
-#endif
-
 #include "pathnames.h"
 #include "calendar.h"
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.5 2019/07/20 23:07:32 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.6 2019/07/21 01:09:36 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
