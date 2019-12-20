@@ -33,7 +33,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.7 2019/07/21 01:09:36 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.8 2019/12/20 14:52:30 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -556,8 +556,11 @@ isnow(char *endp, int bodun)
 				tdiff = difftime(ttmp, f_time)/ SECSPERDAY;
 				if (tdiff <= offset1 + f_dayAfter ||
 				    (bodun && tdiff == -1)) {
-					if (tdiff >=  0 ||
-					    (bodun && tdiff == -1)) {
+					if (((tmtmp.tm_mon == month) ||
+					     (flags & F_SPECIAL) ||
+					     (interval == WEEKLY)) &&
+					    (tdiff >=  0 ||
+					    (bodun && tdiff == -1))) {
 					if ((tmp = malloc(sizeof(struct match))) == NULL)
 						err(1, NULL);
 					tmp->when = ttmp;
