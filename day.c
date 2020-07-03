@@ -33,7 +33,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.8 2019/12/20 14:52:30 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.9 2020/07/03 21:01:08 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -676,7 +676,7 @@ foy(int year)
 {
 	/* 0-6; what weekday Jan 1 is */
 	year--;
-	return ((1 - year/100 + year/400 + (int)(365.25 * year)) % 7);
+	return ((1 - year/100 + year/400 + (int)(365.25 * year)) % 7); /* 365.2425 days per year */
 }
 
 
