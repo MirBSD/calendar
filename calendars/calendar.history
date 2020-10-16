@@ -1,7 +1,7 @@
 /*
  * History
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.history,v 1.6 2019/03/25 23:26:23 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.history,v 1.7 2020/10/16 02:28:20 tg Exp $
  * $OpenBSD: calendar.history,v 1.39 2005/05/13 18:44:37 mickey Exp $
  */
 
@@ -178,9 +178,9 @@
 06/05	US leaves the Gold Standard, 1933
 06/06	First drive-in movie, 1933
 06/06	Normandy landing, 1944
-06/10	Death of Alexander the Great, 323 B.C.
+06/10	Death of Alexander the Great, 323 BCE
 06/10	Denver police tear gas Jethro Tull and 2000 fans at Red Rocks, 1971
-06/11	Greeks seize Troy, 1184BC
+06/11	Greeks seize Troy, 1184 BCE
 06/13	Pioneer 10 flies past Neptune's orbit, and becomes the first human
 	artifact to travel beyond the orbits of all known planets, 1983
 06/14	Sandpaper invented by I. Fischer, Jr., 1834
@@ -258,7 +258,7 @@
 08/08	Richard Nixon resigns the US presidency, 1974
 08/08	The Great Train Robbery -- $7,368,000, 1963
 08/09	Helter Skelter... the Charles Manson murders take place, 1969
-08/09	Persia defeats Spartan King Leonidas at Thermopylae, 480 BC
+08/09	Persia defeats Spartan King Leonidas at Thermopylae, 480 BCE
 08/09	US/Canada border defined in the Webster-Ashburton Treaty, 1842
 08/10	Chicago incorporated as a village of 300 people, 1833
 08/10	US and Panama agree to transfer the canal in the year 2000, 1977
@@ -349,7 +349,7 @@
 09/27	The first passenger was hauled in a locomotive in England, 1825
 09/28	"Pilgrim's Progress" published, 1678
 09/28	A Greek soldier runs 26+ miles after the Persian defeat at Marathon,
-	490BC
+	490 BCE
 09/30	Red Jack kills 2, Elizabeth Stride (#3) and Catherine Eddowes (#4),
 	1888
 09/30	The first tooth is extracted under anesthesia in Charleston, Mass, 1846

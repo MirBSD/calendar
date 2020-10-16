@@ -1,6 +1,7 @@
 /*
  * Holiday
  *
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.holiday,v 1.2 2020/10/16 02:28:20 tg Exp $
  * $OpenBSD: calendar.holiday,v 1.14 2004/10/31 19:40:51 mickey Exp $
  */
 
@@ -48,7 +49,7 @@
 02/06	New Zealand Day
 02/07	Independence Day in Grenada
 02/09	St. Maron's Day in Lebanon
-02/10	Feast of St. Paul's Shipwreck, AD 60
+02/10	Feast of St. Paul's Shipwreck, 60 CE
 02/11	National Foundation Day in Japan
 02/12	Pyidaungsa Day in Burma
 02/16	Makha Bucha Day in Thailand
@@ -363,7 +364,7 @@
 10/08	Fiji Day in Fiji
 10/09	Independence Day in Uganda
 10/09	Korean Alphabet Day in South Korea
-10/09	Leif Erikson Day commemorates the discovery of North America in AD 1000
+10/09	Leif Erikson Day commemorates the discovery of North America in 1000 CE
 10/09	Republic Day in Khmer Republic
 10/10	Fiji Day in Fiji
 10/MonSecond	Health-Sports Day in Japan
