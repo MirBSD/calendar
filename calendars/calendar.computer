@@ -1,7 +1,7 @@
 /*
  * Computer
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.7 2016/05/03 20:48:42 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.8 2020/10/31 01:57:56 tg Exp $
  * $OpenBSD: calendar.computer,v 1.8 2003/12/09 02:39:58 mickey Exp $
  */
 
@@ -33,7 +33,7 @@
 03/21	NetBSD project born, 1993
 03/28	DEC announces PDP-11, 1970
 03/31	Eckert-Mauchly Computer Corp. founded, Phila, 1946
-04/01	Yourdon, Inc. founded, 1974  (It figures.)
+04/01	Yourdon, Inc. founded, 1974 (It figures.)
 04/01	Apple Computer founded, 1976
 04/03	IBM 701 introduced, 1953
 04/04	Tandy Corp. acquires Radio Shack, 1963 (9 stores)

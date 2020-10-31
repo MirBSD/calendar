@@ -17,14 +17,14 @@ LANG=fr_FR.ISO8859-1
 11/11	Armistice 1918
 
 /* Jours fériés religieux */
-Easter		Pâques
-Easter+1 	Lundi de Pâques
+Easter	Pâques
+Easter+1	Lundi de Pâques
 Easter+39	Ascension
 Easter+49	Pentecôte
 Easter+50	Lundi de Pentecôte
-08/15		Assomption
-11/01		Toussaint
-12/25		Noël
+08/15	Assomption
+11/01	Toussaint
+12/25	Noël
 
 /* Les dates suivantes ne sont malheureusement pas fériées... */
 
@@ -39,7 +39,7 @@ Easter+50	Lundi de Pentecôte
 10/SundayLast	Passage à l'heure d'hiver
 
 /* Divers */
-May Sun+2 	Fêtes des mères
+May Sun+2	Fêtes des mères
 June Sun+2	Fêtes des pères
 
 #endif /*! _fr_FR_ISO8859_1_jferies_ */

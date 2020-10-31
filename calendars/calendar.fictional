@@ -1,14 +1,14 @@
 /*
  * Fictional events
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.fictional,v 1.2 2020/10/16 02:28:20 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.fictional,v 1.3 2020/10/31 01:57:57 tg Exp $
  * $OpenBSD: calendar.fictional,v 1.2 2005/05/18 21:23:42 jmc Exp $
  */
 
 #ifndef _calendar_fictional_
 #define _calendar_fictional_
 
-01/05	Fellowship enters Moria  (LOTR)
+01/05	Fellowship enters Moria (LOTR)
 01/09	Fellowship reaches Lorien (LOTR)
 01/17	Passing of Gandalf (LOTR)
 02/07	Fellowship leaves Lorien (LOTR)

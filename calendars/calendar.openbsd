@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.20 2018/10/07 01:11:00 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.21 2020/10/31 01:57:57 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -208,7 +208,7 @@ Dec 02	ProPolice stack smash protector incorporated, 2002
 Dec 04	MirOS gets rid of a.out, iBCS2 and SVR4 compatibility, 2003
 Dec 05	MirOS leaves the 80486 series of CPUs behind, 2003
 Dec 05	OpenCVS moves development into the tree, 2004
-Dec 07	KAME IPv6 merger TODOs.  you may want to see them earlier..., 1999
+Dec 07	KAME IPv6 merger TODOs. You may want to see them earlier..., 1999
 Dec 10	MirOS first build with propolice gcc 3.x, 2003
 Dec 10	MirOS starts "ncvs" repository using GNU cvs 1.12, 2004
 Dec 17	Welkomen OpenBGPD, 2003

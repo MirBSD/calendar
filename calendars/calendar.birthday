@@ -1,7 +1,7 @@
 /*
  * Birthday
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.birthday,v 1.2 2020/10/16 02:28:19 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.birthday,v 1.3 2020/10/31 01:57:56 tg Exp $
  * $OpenBSD: calendar.birthday,v 1.29 2005/06/23 21:29:47 mickey Exp $
  */
 
@@ -50,7 +50,7 @@
 02/03	Gertrude Stein born, 1874
 02/03	Paul Auster born in Newark, N.J., 1947
 02/05	Alex Harvey (SAHB) is born in Glasgow, Scotland, 1935
-02/06	King George VI of UK dies;  his daughter becomes Elizabeth II, 1952
+02/06	King George VI of UK dies; his daughter becomes Elizabeth II, 1952
 02/07	Sinclair Lewis born, 1885
 02/08	Friedleib F. Runge born, 1795, father of paper chromatography
 02/08	Jules Verne born in Nantes, France, 1828
@@ -267,7 +267,7 @@
 10/27	Gerald M. Weinberg born, 1933
 10/27	James Cook is born, 1728
 10/31	Chiang Kai-Shek born, 1887
-10/31	Dale Evans born, 1912 
+10/31	Dale Evans born, 1912
 11/01	Joseph Stalin's burial, 1961
 11/02	Daniel Boone born near Reading, PA, 1734
 11/04	King William III of Orange born, 1650
