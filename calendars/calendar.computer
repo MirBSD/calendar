@@ -1,7 +1,7 @@
 /*
  * Computer
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.8 2020/10/31 01:57:56 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.9 2021/06/15 01:47:52 tg Exp $
  * $OpenBSD: calendar.computer,v 1.8 2003/12/09 02:39:58 mickey Exp $
  */
 
@@ -84,5 +84,6 @@
 12/08	First Ph.D. awarded by Computer Science Dept, Univ. of Penna, 1965
 
 Sep 22	First official "Marry a DD" day, 2012
+Jun 15	OpenProjects PDPC (linpeople) IRC died after over two decades, 2021
 
 #endif /* !_calendar_computer_ */
