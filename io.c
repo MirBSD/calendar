@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.20 2021/10/20 04:39:43 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.21 2021/10/20 04:43:07 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -86,8 +86,7 @@ struct ioweg header[] = {
 iconv_t s_conv;
 #endif
 
-static void cvtmatch(struct match *, int);
-static void cvtfirstline(struct match *, const char *, int);
+static void cvtmatch(struct match *, const char *, int);
 
 void
 cal(void)
@@ -250,6 +249,7 @@ cal(void)
 			printing = (m = isnow(buf, bodun)) ? 1 : 0;
 			if ((p = strchr(buf, '\t')) == NULL) {
 				printing = 0;
+				free(m);
 				continue;
 			}
 			/* Need the following to catch hardwired "variable"
@@ -263,9 +263,8 @@ cal(void)
 
 				ev1 = NULL;
 				while (m) {
-					if (ev1 && parsecvt)
-						/*XXX shouldn’t happen */
-						cvtmatch(m, var);
+					if (parsecvt && ev1)
+						errx(1, "more than one match?");
 					cur_evt = (struct event *) malloc(sizeof(struct event));
 					if (cur_evt == NULL)
 						err(1, NULL);
@@ -280,7 +279,7 @@ cal(void)
 						cur_evt->ldesc = NULL;
 					} else {
 						if (parsecvt)
-							cvtfirstline(m, p, var);
+							cvtmatch(m, p, var);
 						if (m->bodun && prefix) {
 							int l1 = strlen(prefix);
 							int l2 = strlen(p);
@@ -617,7 +616,7 @@ insert(struct event **head, struct event *cur_evt)
 }
 
 static void
-cvtmatch(struct match *m, int var_manual)
+cvtmatch(struct match *m, const char *s, int var_manual)
 {
 	struct tm tm;
 	int ofs, d;
@@ -672,12 +671,7 @@ cvtmatch(struct match *m, int var_manual)
 	    intervals[m->interval], m->year,
 	    (m->var || var_manual) ? '*' : ' ', m->print_date,
 	    m->next ? "+" : "");
-}
 
-static void
-cvtfirstline(struct match *m, const char *s, int var_manual)
-{
 	/* for now */
-	cvtmatch(m, var_manual);
 	puts(s);
 }
