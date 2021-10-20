@@ -1,9 +1,10 @@
-/**	$MirOS: src/usr.bin/calendar/calendar.h,v 1.3 2019/07/21 00:25:06 tg Exp $ */
 /*	$OpenBSD: calendar.h,v 1.11 2004/12/10 20:47:30 mickey Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
+ * Copyright (c) 2021
+ *	mirabilos <m@mirbsd.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -30,9 +31,13 @@
  * SUCH DAMAGE.
  */
 
+#ifndef CALENDAR_H
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.4 2021/10/20 04:39:43 tg Exp $"
+
 extern struct passwd *pw;
-extern int doall;
-extern int bodun_always;
+extern unsigned char doall;
+extern unsigned char bodun_always;
+extern unsigned char parsecvt;
 extern time_t f_time;
 extern struct ioweg header[];
 extern struct tm *tp;
@@ -55,11 +60,14 @@ struct event {
 
 struct match {
 	time_t	when;
-	char	print_date[30];
-	short	year;
-	int	bodun;
-	int	var;
 	struct match	*next;
+	int	vwd;
+	short	year;
+	unsigned char bodun;
+	unsigned char interval;
+	unsigned char isspecial;
+	unsigned char var;
+	char	print_date[31];
 };
 
 struct specialev {
@@ -97,6 +105,11 @@ void	 setnnames(void);
 			      * calendar time--e.g.  Easter or easter depending
 			      * days */
 
+/* intervals */
+#define WEEKLY		1
+#define MONTHLY		2
+#define YEARLY		3
+
 extern int f_dayAfter;	/* days after current date */
 extern int f_dayBefore;	/* days before current date */
 
@@ -123,3 +136,5 @@ extern struct specialev spev[NUMEV];
 #define USERTIMEOUT 20
 
 #define sgn(x) (((x) > 0) - ((x) < 0))
+
+#endif

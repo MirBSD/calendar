@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
- * Copyright (c) 2019
+ * Copyright (c) 2019, 2021
  *	mirabilos <m@mirbsd.org>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.19 2019/07/21 01:50:23 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.20 2021/10/20 04:39:43 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -85,6 +85,9 @@ struct ioweg header[] = {
 #ifdef UNICODE
 iconv_t s_conv;
 #endif
+
+static void cvtmatch(struct match *, int);
+static void cvtfirstline(struct match *, const char *, int);
 
 void
 cal(void)
@@ -260,6 +263,9 @@ cal(void)
 
 				ev1 = NULL;
 				while (m) {
+					if (ev1 && parsecvt)
+						/*XXX shouldn’t happen */
+						cvtmatch(m, var);
 					cur_evt = (struct event *) malloc(sizeof(struct event));
 					if (cur_evt == NULL)
 						err(1, NULL);
@@ -273,6 +279,8 @@ cal(void)
 						cur_evt->desc = ev1->desc;
 						cur_evt->ldesc = NULL;
 					} else {
+						if (parsecvt)
+							cvtfirstline(m, p, var);
 						if (m->bodun && prefix) {
 							int l1 = strlen(prefix);
 							int l2 = strlen(p);
@@ -295,6 +303,8 @@ cal(void)
 				}
 			}
 		} else if (printing) {
+			if (parsecvt)
+				puts(buf);
 			nlen = strlen(ev1->ldesc) + strlen(buf) + 2;
 			if ((ev1->ldesc = realloc(ev1->ldesc, nlen)) == NULL)
 				err(1, NULL);
@@ -304,7 +314,7 @@ cal(void)
 #ifdef UNICODE
 #undef buf
 #endif
-	tmp = events;
+	tmp = parsecvt ? NULL : events;
 	while (tmp) {
 		if (!anniv) {
  noanniv:
@@ -436,7 +446,7 @@ getfield(char *p, char **endp, int *flags)
 			    * number of special events. */
 			   break;
 			}
-		*flags |= F_SPECIAL;
+			*flags |= F_SPECIAL;
 		}
 		if (!(*flags & F_SPECIAL)) {
 		/* undefined rest */
@@ -604,4 +614,70 @@ insert(struct event **head, struct event *cur_evt)
 		*head = cur_evt;
 		cur_evt->next = NULL;
 	}
+}
+
+static void
+cvtmatch(struct match *m, int var_manual)
+{
+	struct tm tm;
+	int ofs, d;
+	static const char *wdays[] = {
+		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+		"7un", "<8>", "<9>"
+	};
+	static const char *intervals[] = {
+		"once", "weekly", "monthly", "yearly"
+	};
+
+	errno = EBADRPC;
+	if (gmtime_r(&m->when, &tm) != &tm)
+		err(1, "gmtime");
+	printf("{m:%04lld-%02d-%02dT%02d:%02d:%02dZ (%s) ",
+	    (long long)tm.tm_year + 1900LL, tm.tm_mon + 1, tm.tm_mday,
+	    tm.tm_hour, tm.tm_min, tm.tm_sec, wdays[tm.tm_wday]);
+	switch (m->isspecial) {
+	case 1:
+		fputs("Pesach", stdout);
+		if (0)
+			/* FALLTHROUGH */
+	case 2:
+		  fputs("Easter", stdout);
+		if (0)
+			/* FALLTHROUGH */
+	case 3:
+		  fputs("Paskha", stdout);
+		if (0)
+			/* FALLTHROUGH */
+	default:
+		  printf("bad-special(%u)", (unsigned int)m->isspecial);
+		printf("%+d", m->vwd);
+		break;
+	case 0:
+		if (!m->vwd) {
+			fputs("otd", stdout);
+			break;
+		}
+		/* cf. day.c:variable_weekday() */
+		if (m->vwd < 0) {
+			ofs = m->vwd / 10 - 1;
+			d = 10 + (m->vwd % 10);
+		} else {
+			ofs = m->vwd / 10;
+			d = m->vwd % 10;
+		}
+		printf("%s%+d", wdays[d - 1], ofs);
+		break;
+	}
+	printf(" %s (year %04d) %c\"%s\" %s}\n",
+	    intervals[m->interval], m->year,
+	    (m->var || var_manual) ? '*' : ' ', m->print_date,
+	    m->next ? "+" : "");
+}
+
+static void
+cvtfirstline(struct match *m, const char *s, int var_manual)
+{
+	/* for now */
+	cvtmatch(m, var_manual);
+	puts(s);
 }

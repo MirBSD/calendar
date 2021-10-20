@@ -31,9 +31,14 @@
  *	@(#)pathnames.h	8.1 (Berkeley) 6/6/93
  */
 
+#ifndef PATHNAMES_H
+#define PATHNAMES_H "$MirOS: src/usr.bin/calendar/pathnames.h,v 1.3 2021/10/20 04:39:43 tg Exp $"
+
 #include <paths.h>
 
 #define	_PATH_CPP	"/usr/libexec/cpp"
 
 			/* XXX -- fix when cpp parses arguments rationally */
 #define	_PATH_INCLUDE	"-I/usr/share/calendar"
+
+#endif

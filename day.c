@@ -3,6 +3,8 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
+ * Copyright (c) 2021
+ *	mirabilos <m@mirbsd.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,7 +35,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.9 2020/07/03 21:01:08 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.10 2021/10/20 04:39:43 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -53,10 +55,6 @@ __RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.9 2020/07/03 21:01:08 tg Exp $")
 
 #include "pathnames.h"
 #include "calendar.h"
-
-#define WEEKLY 1
-#define MONTHLY 2
-#define YEARLY 3
 
 struct tm *tp;
 static const int *cumdays1;
@@ -298,7 +296,9 @@ isnow(char *endp, int bodun)
 	/* adjust bodun rate */
 	if (bodun && !bodun_always)
 		bodun = !arc4random_uniform(3);
-		
+	if (parsecvt)
+		bodun = 0;
+
 	/* Easter or Easter depending days */
 	if (flags & F_SPECIAL)
 		vwd = v1;
@@ -428,7 +428,8 @@ isnow(char *endp, int bodun)
 	 * leap years).  Only one event can match, and it's easy to find.
 	 * Note we can't check special events, because they can wander widely.
 	 */
-		if (((v1 = offset1 + f_dayAfter) < 50) && (interval == YEARLY)) {
+		if (!parsecvt && ((v1 = offset1 + f_dayAfter) < 50) &&
+		    (interval == YEARLY)) {
 			memcpy(&tmtmp, tp, sizeof(struct tm));
 			tmtmp.tm_mday = dayp;
 			tmtmp.tm_mon = monthp - 1;
@@ -454,7 +455,7 @@ isnow(char *endp, int bodun)
 				else if(!bodun || (day - tp->tm_yday) != -1)
 					return(NULL);
 			}
-			if ((tmp = malloc(sizeof(struct match))) == NULL)
+			if ((tmp = calloc(1, sizeof(struct match))) == NULL)
 				err(1, NULL);
 
 			if (bodun && (day - tp->tm_yday) == -1) {
@@ -498,7 +499,8 @@ isnow(char *endp, int bodun)
 	 * and "yearly" events which could happen twice in one year but not in
 	 * the next */
 	tmp2 = matches;
-	for (i = -1; i < 2; i++) {
+	i = -1;
+	while (parsecvt || i < 2) {
 		memcpy(&tmtmp, tp, sizeof(struct tm));
 		tmtmp.tm_mday = dayp;
 		tmtmp.tm_mon = month = monthp - 1;
@@ -554,14 +556,21 @@ isnow(char *endp, int bodun)
 				warnx("time out of range: %s", endp);
 			else {
 				tdiff = difftime(ttmp, f_time)/ SECSPERDAY;
+				if (parsecvt) {
+					if (tdiff >= 0)
+						goto doit;
+					/* out of the v2 loop into the i one */
+					break;
+				}
 				if (tdiff <= offset1 + f_dayAfter ||
 				    (bodun && tdiff == -1)) {
 					if (((tmtmp.tm_mon == month) ||
 					     (flags & F_SPECIAL) ||
 					     (interval == WEEKLY)) &&
-					    (tdiff >=  0 ||
+					    (tdiff >= 0 ||
 					    (bodun && tdiff == -1))) {
-					if ((tmp = malloc(sizeof(struct match))) == NULL)
+ doit:
+					if ((tmp = calloc(1, sizeof(struct match))) == NULL)
 						err(1, NULL);
 					tmp->when = ttmp;
 					if (strftime(tmp->print_date,
@@ -572,11 +581,17 @@ isnow(char *endp, int bodun)
 					tmp->year  = tmtmp.tm_year + TM_YEAR_BASE;
 					tmp->bodun = bodun && tdiff == -1;
 					tmp->var   = varp;
+					tmp->vwd   = vwd;
 					tmp->next  = NULL;
+					if (flags & F_SPECIAL)
+						tmp->isspecial = v1 + 1;
+					tmp->interval = interval;
 					if (tmp2)
 						tmp2->next = tmp;
 					else
 						matches = tmp;
+					if (parsecvt)
+						return (matches);
 					tmp2 = tmp;
 					v2 = (i == 1) ? 1 : 0;
 					}
@@ -584,6 +599,7 @@ isnow(char *endp, int bodun)
 					i = 2; /* No point checking in the future */
 			}
 		} while (v2 != 0);
+		++i;
 	}
 	return (matches);
 }

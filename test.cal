@@ -1,0 +1,49 @@
+LANG=C
+Easter=Ostern
+
+6/15	June 15 (if ambiguous, will default to month/day).
+Jun. 15	June 15.
+15 June	June 15.
+Thursday	Every Thursday.
+June	Every June 1st.
+15 *	15th of every month.
+
+May Sun+2	second Sunday in May (Muttertag)
+04/SunLast	last Sunday in April,
+	summer time in Europe
+Easter	Easter
+Ostern-2	Good Friday (2 days before Easter)
+Paskha	Orthodox Easter
+Pesach+1	Day after /* Jewish? */ Pesach
+
+WedThird	19:00–21:00 OSAMC (außer Dezember meist)
+Oct 21	2020, 15:00–15:30 Meeting
+Jan 18	2022, OpenJDK 8u322 GA
+Wed	10:30[America/Denver] (18:30) MuseScore Café
+Dec 21*	2022, 21:48[UTC] Yul (Wintersonnenwende, Mittwinter)
+/*	$MirOS: src/usr.bin/calendar/test.cal,v 1.1 2021/10/20 04:39:43 tg Exp $ */
+
+#ifdef debug_parsecvt
+Mon-4	on=Mon-4
+Mon-3	on=Mon-3
+Mon-2	on=Mon-2
+Mon-1	on=Mon-1
+Mon-0	on=Mon-0
+Mon+0	on=Mon+0
+Mon+1	on=Mon+1
+Mon+2	on=Mon+2
+Mon+3	on=Mon+3
+Mon+4	on=Mon+4
+Mon+5	on=Mon+5
+MonLast	on=MonLast	/* Mon-1 */
+MonFirst	on=MonFirst	/* Mon+1 */
+MonSecond	on=MonSecond	/* Mon+2 */
+MonThird	on=MonThird	/* Mon+3 */
+MonFourth	on=MonFourth	/* Mon+4 */
+Tue+1	on=Tue+1
+Wed+1	on=Wed+1
+Thu+1	on=Thu+1
+Fri+1	on=Fri+1
+Sat+1	on=Sat+1
+Sun+1	on=Sun+1
+#endif

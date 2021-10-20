@@ -3,6 +3,8 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
+ * Copyright (c) 2021
+ *	mirabilos <m@mirbsd.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -52,17 +54,21 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 #include "pathnames.h"
 #include "calendar.h"
 
+__IDSTRING(pathnames_h, PATHNAMES_H);
+__IDSTRING(calendar_h, CALENDAR_H);
+
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.6 2019/07/21 01:09:36 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.7 2021/10/20 04:39:42 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
 static const char *calendarNoMail = "nomail";  /* don't sent mail if this file exists */
 
 struct passwd *pw;
-int doall = 0;
+unsigned char doall = 0;
+unsigned char bodun_always = 0;
+unsigned char parsecvt = 0;
 time_t f_time = 0;
-int bodun_always = 0;
 
 int f_dayAfter = 0; /* days after current date */
 int f_dayBefore = 0; /* days before current date */
@@ -79,7 +85,7 @@ main(int argc, char *argv[])
 
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "abf:t:A:B:-")) != -1)
+	while ((ch = getopt(argc, argv, "A:aB:bf:Pt:-")) != -1)
 		switch (ch) {
 		case '-':		/* backward contemptible */
 		case 'a':
@@ -89,11 +95,15 @@ main(int argc, char *argv[])
 			break;
 
 		case 'b':
-			bodun_always++;
+			bodun_always = 1;
 			break;
 
 		case 'f': /* other calendar file */
 		        calendarFile = optarg;
+			break;
+
+		case 'P': /* parse/convert mode */
+			parsecvt = 1;
 			break;
 
 		case 't': /* other date, undocumented, for tests */
@@ -250,7 +260,7 @@ void
 usage(void)
 {
 	(void)fprintf(stderr,
-	    "usage: calendar [-ab] [-A num] [-B num] [-f calendarfile] "
+	    "usage: calendar [-abP] [-A num] [-B num] [-f calendarfile] "
 	    "[-t [[[cc]yy][mm]]dd]\n");
 	exit(1);
 }
