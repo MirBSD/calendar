@@ -32,7 +32,7 @@
  */
 
 #ifndef CALENDAR_H
-#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.4 2021/10/20 04:39:43 tg Exp $"
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.5 2021/10/26 18:00:16 tg Exp $"
 
 extern struct passwd *pw;
 extern unsigned char doall;
@@ -40,7 +40,6 @@ extern unsigned char bodun_always;
 extern unsigned char parsecvt;
 extern time_t f_time;
 extern struct ioweg header[];
-extern struct tm *tp;
 extern const char *calendarFile;
 extern const char *calendarHome;
 

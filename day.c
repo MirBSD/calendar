@@ -35,7 +35,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.10 2021/10/20 04:39:43 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.11 2021/10/26 18:00:16 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -56,7 +56,7 @@ __RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.10 2021/10/20 04:39:43 tg Exp $"
 #include "pathnames.h"
 #include "calendar.h"
 
-struct tm *tp;
+static struct tm tb;
 static const int *cumdays1;
 int offset1;
 char dayname[10];
@@ -157,25 +157,26 @@ void setnnames(void)
 void
 settime(time_t *now)
 {
-	tp = localtime(now);
-	tp->tm_sec = 0;
-	tp->tm_min = 0;
+	if (localtime_r(now, &tb) != &tb)
+		err(1, "localtime_r");
+	tb.tm_sec = 0;
+	tb.tm_min = 0;
 	/* Avoid getting caught by a timezone shift; set time to noon */
-	tp->tm_isdst = 0;
-	tp->tm_hour = 12;
-	*now = mktime(tp);
-	if (isleap(tp->tm_year + TM_YEAR_BASE))
+	tb.tm_isdst = 0;
+	tb.tm_hour = 12;
+	*now = mktime(&tb);
+	if (isleap(tb.tm_year + TM_YEAR_BASE))
 		cumdays1 = daytab[1];
 	else
 		cumdays1 = daytab[0];
 	/* Friday displays Monday's events */
-	offset1 = tp->tm_wday == 5 ? 3 : 1;
+	offset1 = tb.tm_wday == 5 ? 3 : 1;
 	if (f_dayAfter)
 		offset1 = 0;	/* Except not when range is set explicitly */
 	header[5].iov_base = dayname;
 
 	(void) setlocale(LC_TIME, "C");
-	header[5].iov_len = strftime(dayname, sizeof(dayname), "%A", tp);
+	header[5].iov_len = strftime(dayname, sizeof(dayname), "%A", &tb);
 	(void) setlocale(LC_TIME, "");
 
 	setnnames();
@@ -192,7 +193,8 @@ Mktime(char *date)
     struct tm tm;
 
     (void)time(&t);
-    tp = localtime(&t);
+    if (localtime_r(&t, &tb) != &tb)
+	err(1, "localtime_r");
 
     len = strlen(date);
     if (len < 2)
@@ -203,9 +205,9 @@ Mktime(char *date)
     tm.tm_isdst = 0;
     tm.tm_hour = 12;
     tm.tm_wday = 0;
-    tm.tm_mday = tp->tm_mday;
-    tm.tm_mon = tp->tm_mon;
-    tm.tm_year = tp->tm_year;
+    tm.tm_mday = tb.tm_mday;
+    tm.tm_mon = tb.tm_mon;
+    tm.tm_year = tb.tm_year;
 
     /* Day */
     tm.tm_mday = atoi(date + len - 2);
@@ -318,7 +320,7 @@ isnow(char *endp, int bodun)
 		 * very unlikely and can only happen after the first 12 days.
 		 * --find month or use current month */
 		if (!(month = getfield(endp, &endp, &flags))) {
-			month = tp->tm_mon + 1;
+			month = tb.tm_mon + 1;
 			/* F_ISDAY is set only if a weekday was spelled out */
 			/* F_ISDAY must be set if 0 < day < 8 */
 			if ((day <= 7) && (day >= 1))
@@ -329,7 +331,7 @@ isnow(char *endp, int bodun)
 			day += 10;
 			/* it's a weekday; make it the first one of the month */
 		if (month == -1) {
-			month = tp->tm_mon + 1;
+			month = tb.tm_mon + 1;
 			interval = MONTHLY;
 		} else if (calendar)
 			adjust_calendar(&day, &month);
@@ -341,7 +343,7 @@ isnow(char *endp, int bodun)
 	else if (flags & F_ISMONTH) {
 		month = v1;
 		if (month == -1) {
-			month = tp->tm_mon + 1;
+			month = tb.tm_mon + 1;
 			interval = MONTHLY;
 		}
 		/* Monthname {day,weekday} */
@@ -369,7 +371,7 @@ isnow(char *endp, int bodun)
 			day = v1;
 			month = v2;
 			if (month == -1) {
-				month = tp->tm_mon + 1;
+				month = tb.tm_mon + 1;
 				interval = MONTHLY;
 			} else if (calendar)
 				adjust_calendar(&day, &month);
@@ -403,7 +405,7 @@ isnow(char *endp, int bodun)
 		if (day < 0 || day >= 10)
 			vwd = day;
 		else {
-			day = tp->tm_mday + (((day - 1) - tp->tm_wday + 7) % 7);
+			day = tb.tm_mday + (((day - 1) - tb.tm_wday + 7) % 7);
 			interval = WEEKLY;
 		}
 	} else
@@ -420,7 +422,7 @@ isnow(char *endp, int bodun)
 		dayp = day;
 		day = cumdays1[month] + day;
 #ifdef DEBUG
-		fprintf(stderr, "day2: day %d(%d) yday %d\n", dayp, day, tp->tm_yday);
+		fprintf(stderr, "day2: day %d(%d) yday %d\n", dayp, day, tb.tm_yday);
 #endif
 	/* Speed up processing for the most common situation:  yearly events
 	 * when the interval being checked is less than a month or so (this
@@ -430,7 +432,7 @@ isnow(char *endp, int bodun)
 	 */
 		if (!parsecvt && ((v1 = offset1 + f_dayAfter) < 50) &&
 		    (interval == YEARLY)) {
-			memcpy(&tmtmp, tp, sizeof(struct tm));
+			memcpy(&tmtmp, &tb, sizeof(struct tm));
 			tmtmp.tm_mday = dayp;
 			tmtmp.tm_mon = monthp - 1;
 			if (vwd) {
@@ -438,7 +440,7 @@ isnow(char *endp, int bodun)
 			 * this year.  The 50-day limit means we don't have to
 			 * worry if next year is or isn't a leap year.
 			 */
-				if (tp->tm_yday > 300 && tmtmp.tm_mon <= 1)
+				if (tb.tm_yday > 300 && tmtmp.tm_mon <= 1)
 					variable_weekday(&vwd, tmtmp.tm_mon + 1,
 					    tmtmp.tm_year + TM_YEAR_BASE + 1);
 				else
@@ -447,18 +449,18 @@ isnow(char *endp, int bodun)
 				day = cumdays1[tmtmp.tm_mon + 1] + vwd;
 				tmtmp.tm_mday = vwd;
 			}
-			v2 = day - tp->tm_yday;
+			v2 = day - tb.tm_yday;
 			if ((v2 > v1) || (v2 < 0)) {
-				if ((v2 += isleap(tp->tm_year + TM_YEAR_BASE) ? 366 : 365)
+				if ((v2 += isleap(tb.tm_year + TM_YEAR_BASE) ? 366 : 365)
 				    <= v1)
 					tmtmp.tm_year++;
-				else if(!bodun || (day - tp->tm_yday) != -1)
+				else if(!bodun || (day - tb.tm_yday) != -1)
 					return(NULL);
 			}
 			if ((tmp = calloc(1, sizeof(struct match))) == NULL)
 				err(1, NULL);
 
-			if (bodun && (day - tp->tm_yday) == -1) {
+			if (bodun && (day - tb.tm_yday) == -1) {
 				tmp->when = f_time - 1 * SECSPERDAY;
 				tmtmp.tm_mday++;
 				tmp->bodun = 1;
@@ -501,7 +503,7 @@ isnow(char *endp, int bodun)
 	tmp2 = matches;
 	i = -1;
 	while (parsecvt || i < 2) {
-		memcpy(&tmtmp, tp, sizeof(struct tm));
+		memcpy(&tmtmp, &tb, sizeof(struct tm));
 		tmtmp.tm_mday = dayp;
 		tmtmp.tm_mon = month = monthp - 1;
 		do {
