@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.21 2021/10/20 04:43:07 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.22 2021/10/26 17:44:42 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -620,42 +620,37 @@ cvtmatch(struct match *m, const char *s, int var_manual)
 {
 	struct tm tm;
 	int ofs, d;
-	static const char *wdays[] = {
-		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
-		"7un", "<8>", "<9>"
-	};
-	static const char *intervals[] = {
-		"once", "weekly", "monthly", "yearly"
+	const char *ccp;
+#define WDAYS(x) wdays[((x) + 7) % 7]
+	static const char *wdays[7] = {
+		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
 	};
 
 	errno = EBADRPC;
 	if (gmtime_r(&m->when, &tm) != &tm)
 		err(1, "gmtime");
-	printf("{m:%04lld-%02d-%02dT%02d:%02d:%02dZ (%s) ",
-	    (long long)tm.tm_year + 1900LL, tm.tm_mon + 1, tm.tm_mday,
-	    tm.tm_hour, tm.tm_min, tm.tm_sec, wdays[tm.tm_wday]);
+	/* fix or variable; first occurrence (day) */
+	printf("%c%04lld-%02d-%02d ", (m->var || var_manual) ? '*' : '=',
+	    (long long)tm.tm_year + 1900LL, tm.tm_mon + 1, tm.tm_mday);
+	/* recurrence type; recurs on */
 	switch (m->isspecial) {
 	case 1:
-		fputs("Pesach", stdout);
+		ccp = "Pesach";
 		if (0)
 			/* FALLTHROUGH */
 	case 2:
-		  fputs("Easter", stdout);
+		  ccp = "Easter";
 		if (0)
 			/* FALLTHROUGH */
 	case 3:
-		  fputs("Paskha", stdout);
+		  ccp = "Paskha";
 		if (0)
 			/* FALLTHROUGH */
 	default:
-		  printf("bad-special(%u)", (unsigned int)m->isspecial);
-		printf("%+d", m->vwd);
+		  ccp = "BAD";
+		printf("yearly %s%+d", ccp, m->vwd);
 		break;
 	case 0:
-		if (!m->vwd) {
-			fputs("otd", stdout);
-			break;
-		}
 		/* cf. day.c:variable_weekday() */
 		if (m->vwd < 0) {
 			ofs = m->vwd / 10 - 1;
@@ -664,13 +659,33 @@ cvtmatch(struct match *m, const char *s, int var_manual)
 			ofs = m->vwd / 10;
 			d = m->vwd % 10;
 		}
-		printf("%s%+d", wdays[d - 1], ofs);
+		switch (m->interval) {
+		case YEARLY:
+			printf("yearly -%02d%c", tm.tm_mon + 1,
+			    m->vwd ? ',' : '-');
+			if (0)
+				/* FALLTHROUGH */
+		case MONTHLY:
+			  fputs("monthly ", stdout);
+			if (m->vwd)
+				printf("%s%+d", WDAYS(d - 1), ofs);
+			else
+				printf("%02d", tm.tm_mday);
+			break;
+		case WEEKLY:
+			fputs("weekly ", stdout);
+			if (m->vwd)
+				putchar('?');
+			else
+				fputs(WDAYS(tm.tm_wday), stdout);
+			break;
+		default:
+			fputs("? ?", stdout);
+			break;
+		}
 		break;
 	}
-	printf(" %s (year %04d) %c\"%s\" %s}\n",
-	    intervals[m->interval], m->year,
-	    (m->var || var_manual) ? '*' : ' ', m->print_date,
-	    m->next ? "+" : "");
+	putchar('\n');
 
 	/* for now */
 	puts(s);
