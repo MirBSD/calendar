@@ -7,12 +7,14 @@ Jun. 15	June 15.
 Thursday	Every Thursday.
 June	Every June 1st.
 15 *	15th of every month.
+15 *	2020, 15th of every month in 2020.
 
 May Sun+2	second Sunday in May (Muttertag)
 04/SunLast	last Sunday in April,
 	summer time in Europe
+Feb Sat-2	2023, Feb Sat-2 2023
 Easter	Easter
-Ostern-2	Good Friday (2 days before Easter)
+Ostern-2	1970, Good Friday (2 days before Easter)
 Paskha	Orthodox Easter
 Pesach+1	Day after /* Jewish? */ Pesach
 
@@ -21,7 +23,7 @@ Oct 21	2020, 15:00–15:30 Meeting
 Jan 18	2022, OpenJDK 8u322 GA
 Wed	10:30[America/Denver] (18:30) MuseScore Café
 Dec 21*	2022, 21:48[UTC] Yul (Wintersonnenwende, Mittwinter)
-/*	$MirOS: src/usr.bin/calendar/test.cal,v 1.1 2021/10/20 04:39:43 tg Exp $ */
+/*	$MirOS: src/usr.bin/calendar/test.cal,v 1.2 2021/10/26 21:54:34 tg Exp $ */
 
 #ifdef debug_parsecvt
 Mon-4	on=Mon-4

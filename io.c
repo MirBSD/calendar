@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.22 2021/10/26 17:44:42 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.23 2021/10/26 21:54:34 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -86,7 +86,19 @@ struct ioweg header[] = {
 iconv_t s_conv;
 #endif
 
-static void cvtmatch(struct match *, const char *, int);
+#define EXTRAINFO_ZONELEN (64U - 5U * sizeof(int) - 1U)
+struct extrainfo {
+	unsigned int year;
+	int begh;
+	int begm;
+	int endh;
+	int endm;
+	char zone[EXTRAINFO_ZONELEN];
+	unsigned char var;
+};
+
+static void cvtextra(struct extrainfo *, char **);
+static void cvtmatch(struct extrainfo *, struct match *, const char *);
 
 void
 cal(void)
@@ -95,13 +107,11 @@ cal(void)
 	char *p;
 	FILE *fp;
 	int ch, l, i, bodun = 0, bodun_maybe = 0;
-	int var;
 	char buf[2048 + 1], *prefix = NULL;
 #ifdef UNICODE
 	char buf2[2048 * 4 + 1];
 #endif
 	struct event *events, *cur_evt, *ev1 = NULL, *tmp;
-	struct match *m;
 	size_t nlen;
 	const char *hfyear[3] = {
 		"%1$d: %2$d year(s) ago",
@@ -114,6 +124,10 @@ cal(void)
 	cur_evt = NULL;
 	if ((fp = opencal()) == NULL)
 		return;
+	/* SHOULD be safe here */
+	if (parsecvt)
+		if (chdir("/usr/share/zoneinfo"))
+			warn("cannot verify timezones");
 	s_conv = (iconv_t)-1;
 	for (printing = 0; fgets(buf, sizeof(buf), stdin) != NULL;) {
 		if ((p = strchr(buf, '\n')) != NULL)
@@ -246,18 +260,18 @@ cal(void)
 				continue;
 		}
 		if (buf[0] != '\t') {
-			printing = (m = isnow(buf, bodun)) ? 1 : 0;
+			struct match *m;
+			struct extrainfo ei;
+
 			if ((p = strchr(buf, '\t')) == NULL) {
 				printing = 0;
-				free(m);
 				continue;
 			}
-			/* Need the following to catch hardwired "variable"
-			 * dates */
-			if (p > buf && p[-1] == '*')
-				var = 1;
-			else
-				var = 0;
+			/* catch hardwired "variable" dates */
+			ei.var = !!(p > buf && p[-1] == '*');
+			if (parsecvt)
+				cvtextra(&ei, &p);
+			printing = (m = isnow(buf, bodun)) ? 1 : 0;
 			if (printing) {
 				struct match *foo;
 
@@ -273,13 +287,14 @@ cal(void)
 					cur_evt->year = m->year;
 					snprintf(cur_evt->print_date,
 					    sizeof(cur_evt->print_date), "%s%c",
-					    m->print_date, (var + m->var) ? '*' : ' ');
+					    m->print_date,
+					    (ei.var || m->var) ? '*' : ' ');
 					if (ev1) {
 						cur_evt->desc = ev1->desc;
 						cur_evt->ldesc = NULL;
 					} else {
 						if (parsecvt)
-							cvtmatch(m, p, var);
+							cvtmatch(&ei, m, p);
 						if (m->bodun && prefix) {
 							int l1 = strlen(prefix);
 							int l2 = strlen(p);
@@ -616,7 +631,120 @@ insert(struct event **head, struct event *cur_evt)
 }
 
 static void
-cvtmatch(struct match *m, const char *s, int var_manual)
+cvtextra(struct extrainfo *ei, char **p)
+{
+	unsigned char *cp = (unsigned char *)*p;
+
+#define U(c)		((unsigned int)(unsigned char)(c))
+#define fromdigit(o)	(U(cp[(o)]) - U('0'))
+#define fromdigits(o)	(fromdigit(o) * 10U + fromdigit((o) + 1))
+#define is(o,c)		(U(cp[(o)]) == U(c))
+
+	/* tab */
+	++cp;
+	/* year */
+	if ((is(0, '1') || is(0, '2')) && isdigit(cp[1]) &&
+	    isdigit(cp[2]) && isdigit(cp[3]) && is(4, ',') &&
+	    is(5, ' ') && cp[6] != '\0') {
+		ei->year = fromdigits(0) * 100U + fromdigits(2);
+		cp += 6;
+	} else
+		ei->year = 0;
+	/* hours */
+	if (is(2, ':') && isdigit(cp[0]) && isdigit(cp[1]) &&
+	    isdigit(cp[3]) && isdigit(cp[4])) {
+		size_t n;
+
+		switch (U(cp[5])) {
+		case U(0xE2):
+			if (!is(6, 0x80) || !is(7, 0x93))
+				goto nohours;
+			n = 5 + 3;
+			break;
+		case U('-'):
+			n = 5 + 1;
+			break;
+		case U(' '):
+			/* ensure remaining Subject is not empty */
+			if (!cp[6])
+				goto nohours;
+			/* FALLTHROUGH */
+		case U('['):
+			n = 5 + 0;
+			break;
+		default:
+			goto nohours;
+		}
+		ei->begh = fromdigits(0);
+		ei->begm = fromdigits(3);
+		if (ei->begh == 24 && ei->begm == 0) {
+			ei->begh = 23;
+			ei->begm = 59;
+		} else if (ei->begh > 23 || ei->begm > 59)
+			goto nohours;
+		if (is(n + 2, ':') && isdigit(cp[n]) && isdigit(cp[n + 1]) &&
+		    isdigit(cp[n + 3]) && isdigit(cp[n + 4]) &&
+		    (is(n + 5, ' ') || is(n + 5, '['))) {
+			ei->endh = fromdigits(n);
+			ei->endm = fromdigits(n + 3);
+			if (ei->endh == 24 && ei->endm == 0) {
+				ei->endh = 23;
+				ei->endm = 59;
+			} else if (ei->endh > 23 || ei->endm > 59)
+				goto nohours;
+			n += 5;
+		} else if (n != 5) {
+			/* dash, no valid hourd */
+			goto nohours;
+		} else {
+			ei->endh = -1;
+			ei->endm = -1;
+		}
+		if (is(n, '[')) {
+			unsigned char *bp;
+			unsigned char *ep;
+			struct stat sb;
+
+			bp = cp + n + 1;
+			ep = (unsigned char *)strchr((char *)bp, ']');
+			if (!ep || U(ep[1]) != U(' ') || !ep[2])
+				goto nohours;
+			n = ep - bp;
+			if (n >= EXTRAINFO_ZONELEN) {
+				warnx("timezone too long: %s", *p);
+				goto nohours;
+			}
+			memcpy(ei->zone, bp, n);
+			ei->zone[n] = '\0';
+			if (stat(ei->zone, &sb))
+				warn("unknown timezone: %s", *p);
+			else
+				cp = ep + 2;
+		} else if (!cp[n + 1]) {
+			/* no Subject after this */
+			goto nohours;
+		} else {
+			ei->zone[0] = '\0';
+			cp += n + 1;
+		}
+	} else {
+ nohours:
+		ei->begh = -1;
+		ei->begm = -1;
+		ei->endh = -1;
+		ei->endm = -1;
+		ei->zone[0] = '\0';
+	}
+	/* and give back the tab from the beginning */
+	*--cp = '\t';
+	/* return current input position */
+	*p = (char *)cp;
+	/* initialise DTSTART year */
+	setyear(ei->year);
+}
+
+static void
+cvtmatch(struct extrainfo *ei, struct match *m, const char *s)
 {
 	struct tm tm;
 	int ofs, d;
@@ -630,7 +758,7 @@ cvtmatch(struct match *m, const char *s, int var_manual)
 	if (gmtime_r(&m->when, &tm) != &tm)
 		err(1, "gmtime");
 	/* fix or variable; first occurrence (day) */
-	printf("%c%04lld-%02d-%02d ", (m->var || var_manual) ? '*' : '=',
+	printf("%c%04lld-%02d-%02d ", (ei->var || m->var) ? '*' : '=',
 	    (long long)tm.tm_year + 1900LL, tm.tm_mon + 1, tm.tm_mday);
 	/* recurrence type; recurs on */
 	switch (m->isspecial) {
@@ -648,7 +776,7 @@ cvtmatch(struct match *m, const char *s, int var_manual)
 			/* FALLTHROUGH */
 	default:
 		  ccp = "BAD";
-		printf("yearly %s%+d", ccp, m->vwd);
+		printf("special %s%+d", ccp, m->vwd);
 		break;
 	case 0:
 		/* cf. day.c:variable_weekday() */
@@ -661,8 +789,8 @@ cvtmatch(struct match *m, const char *s, int var_manual)
 		}
 		switch (m->interval) {
 		case YEARLY:
-			printf("yearly -%02d%c", tm.tm_mon + 1,
-			    m->vwd ? ',' : '-');
+			printf("%s -%02d%c", ei->year ? "once" : "yearly",
+			    tm.tm_mon + 1, m->vwd ? ',' : '-');
 			if (0)
 				/* FALLTHROUGH */
 		case MONTHLY:
@@ -685,6 +813,27 @@ cvtmatch(struct match *m, const char *s, int var_manual)
 		}
 		break;
 	}
+	putchar(' ');
+	/* year */
+	if (ei->year)
+		printf("%04u", ei->year);
+	else
+		putchar('*');
+	putchar(' ');
+	/* start and end times */
+	if (ei->begh != -1) {
+		printf("%02d:%02d", ei->begh, ei->begm);
+		putchar(' ');
+		if (ei->endh != -1)
+			printf("%02d:%02d", ei->endh, ei->endm);
+		else
+			putchar('@');
+		if (ei->zone[0]) {
+			putchar(' ');
+			fputs(ei->zone, stdout);
+		}
+	} else
+		fputs("whole-day", stdout);
 	putchar('\n');
 
 	/* for now */

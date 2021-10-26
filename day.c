@@ -35,7 +35,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.11 2021/10/26 18:00:16 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.12 2021/10/26 21:54:34 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -57,6 +57,7 @@ __RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.11 2021/10/26 18:00:16 tg Exp $"
 #include "calendar.h"
 
 static struct tm tb;
+static time_t d_time;
 static const int *cumdays1;
 int offset1;
 char dayname[10];
@@ -155,16 +156,20 @@ void setnnames(void)
 }
 
 void
-settime(time_t *now)
+setyear(unsigned int y)
 {
-	if (localtime_r(now, &tb) != &tb)
+	if (y) {
+		tb.tm_year = y - 1900U;
+		tb.tm_mon = 0;
+		tb.tm_mday = 1;
+	} else if (localtime_r(&f_time, &tb) != &tb)
 		err(1, "localtime_r");
 	tb.tm_sec = 0;
 	tb.tm_min = 0;
 	/* Avoid getting caught by a timezone shift; set time to noon */
 	tb.tm_isdst = 0;
 	tb.tm_hour = 12;
-	*now = mktime(&tb);
+	d_time = mktime(&tb);
 	if (isleap(tb.tm_year + TM_YEAR_BASE))
 		cumdays1 = daytab[1];
 	else
@@ -173,8 +178,15 @@ settime(time_t *now)
 	offset1 = tb.tm_wday == 5 ? 3 : 1;
 	if (f_dayAfter)
 		offset1 = 0;	/* Except not when range is set explicitly */
-	header[5].iov_base = dayname;
+}
 
+void
+settime(void)
+{
+	setyear(0);
+	f_time = d_time;
+
+	header[5].iov_base = dayname;
 	(void) setlocale(LC_TIME, "C");
 	header[5].iov_len = strftime(dayname, sizeof(dayname), "%A", &tb);
 	(void) setlocale(LC_TIME, "");
@@ -461,11 +473,11 @@ isnow(char *endp, int bodun)
 				err(1, NULL);
 
 			if (bodun && (day - tb.tm_yday) == -1) {
-				tmp->when = f_time - 1 * SECSPERDAY;
+				tmp->when = d_time - 1 * SECSPERDAY;
 				tmtmp.tm_mday++;
 				tmp->bodun = 1;
 			} else {
-				tmp->when = f_time + v2 * SECSPERDAY;
+				tmp->when = d_time + v2 * SECSPERDAY;
 				tmp->bodun = 0;
 			}
 
@@ -557,7 +569,7 @@ isnow(char *endp, int bodun)
 			if ((ttmp = mktime(&tmtmp)) == -1)
 				warnx("time out of range: %s", endp);
 			else {
-				tdiff = difftime(ttmp, f_time)/ SECSPERDAY;
+				tdiff = difftime(ttmp, d_time)/ SECSPERDAY;
 				if (parsecvt) {
 					if (tdiff >= 0)
 						goto doit;
