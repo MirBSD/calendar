@@ -28,17 +28,13 @@
  * 	$Id: ostern.c,v 1.5 2004/12/10 15:31:01 mickey Exp $
  */
 
-#ifndef lint
-static const char rcsid[] = "$OpenBSD: ostern.c,v 1.5 2004/12/10 15:31:01 mickey Exp $";
-#endif /* not lint */
-
 #include <stdio.h>
 #include <time.h>
 #include <tzfile.h>
 
 #include "calendar.h"
 
-__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.2 2019/07/20 23:31:29 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.3 2021/10/27 17:53:01 tg Exp $");
 
 /* return year day for Easter */
 

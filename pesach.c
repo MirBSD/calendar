@@ -17,14 +17,12 @@
  * OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef lint
-static const char rcsid[] = "$OpenBSD: pesach.c,v 1.2 2004/12/10 20:50:45 mickey Exp $";
-#endif /* not lint */
-
 #include <stdio.h>
 #include <tzfile.h>
 
 #include "calendar.h"
+
+__RCSID("$MirOS: src/usr.bin/calendar/pesach.c,v 1.2 2021/10/27 17:53:01 tg Exp $");
 
 /* Calculate the Julian date of Pesach using the Gauss formula */
 

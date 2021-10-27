@@ -26,16 +26,12 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static const char rcsid[] = "$OpenBSD: paskha.c,v 1.4 2004/12/10 15:31:01 mickey Exp $";
-#endif /* not lint */
-
 #include <stdio.h>
 #include <tzfile.h>
 
 #include "calendar.h"
 
-__RCSID("$MirOS: src/usr.bin/calendar/paskha.c,v 1.2 2019/07/20 23:31:30 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/paskha.c,v 1.3 2021/10/27 17:53:01 tg Exp $");
 
 /* return year day for Orthodox Easter using Gauss formula */
 /* (new style result); subtract 13 for old style */
