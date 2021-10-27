@@ -1,4 +1,4 @@
-.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.8 2019/07/21 01:50:23 tg Exp $
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.9 2021/10/27 18:00:57 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.29 2005/03/22 10:57:27 xsa Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
@@ -32,7 +32,7 @@
 .\"
 .\"     @(#)calendar.1  8.1 (Berkeley) 6/29/93
 .\"
-.Dd $Mdocdate: July 21 2019 $
+.Dd $Mdocdate: October 27 2021 $
 .Dt CALENDAR 1
 .Os
 .Sh NAME
@@ -116,10 +116,10 @@ To enable specific anniversary handling, applied to all complete
 event texts that either start with a four-digit year plus comma
 and space, or end with comma and space and a four-digit year,
 appending a formatted text instead, set
-.Dq ANNIV=<ago_text><fs><cur_text><fs><future_text>
+.Dq ANNIV=<ago_text><us><cur_text><us><future_text>
 (where
-.Ic fs
-is the ASCII field separator (Ctrl-\e, 0x1C) and the texts are used
+.Ic us
+is the ASCII unit separator (Ctrl-_, 0x1F) and the texts are used
 if the event happened in the past, present or future, respectively;
 .Dq "%1$d"
 and
