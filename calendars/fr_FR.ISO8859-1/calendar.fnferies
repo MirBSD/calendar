@@ -1,0 +1,26 @@
+/* $MirOS: src/usr.bin/calendar/calendars/fr_FR.ISO8859-1/calendar.fnferies,v 1.1 2021/10/27 17:32:53 tg Exp $ */
+
+/*
+ * Fêtes (jours non-fériés)
+ */
+
+#ifndef _fr_FR_ISO8859_1_fnferies_
+#define _fr_FR_ISO8859_1_fnferies_
+
+LANG=fr_FR.ISO8859-1
+
+/* Saisons */
+03/21*	Printemps
+06/21*	été
+09/21*	Automne
+12/21*	Hiver
+
+/* Changements d'heure */
+03/SundayLast	Passage à l'heure d'été
+10/SundayLast	Passage à l'heure d'hiver
+
+/* Divers */
+May Sun+2	Fête des mères
+June Sun+2	Fête des pères
+
+#endif /*! _fr_FR_ISO8859_1_fnferies */

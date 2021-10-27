@@ -1,4 +1,5 @@
-/*	$OpenBSD: calendar.jferies,v 1.2 2004/01/16 18:43:28 mickey Exp $	*/
+/* $MirOS: src/usr.bin/calendar/calendars/fr_FR.ISO8859-1/calendar.jferies,v 1.3 2021/10/27 17:32:53 tg Exp $ */
+/* $OpenBSD: calendar.jferies,v 1.2 2004/01/16 18:43:28 mickey Exp $ */
 
 /*
  * Jours fériés
@@ -9,37 +10,45 @@
 
 LANG=fr_FR.ISO8859-1
 
+/*
+ * Jours fériés Français nationaux
+ * Article L3133-1 <https://www.legifrance.gouv.fr/codes/id/LEGISCTA000033008129/>
+ * https://fr.wikipedia.org/wiki/F%C3%AAtes_et_jours_f%C3%A9ri%C3%A9s_en_France#F%C3%AAtes_f%C3%A9ri%C3%A9es
+ */
+
 /* Jours chômés */
-01/01	Nouvel an
-05/01	Fête du travail
-05/08	Armistice 1945
-07/14	Fête nationale française
-11/11	Armistice 1918
+01/01	Nouvel an (férié)
+05/01	Fête des Travailleur-euse-s (férié)
+05/08	Fête de la victoire de 1945 (férié)
+07/14	Fête nationale française (férié)
+11/11	Armistice 1918 (férié)
 
 /* Jours fériés religieux */
 Easter	Pâques
-Easter+1	Lundi de Pâques
-Easter+39	Ascension
+Easter+1	Lundi de Pâques (férié)
+Easter+39	Ascension (férié)
 Easter+49	Pentecôte
-Easter+50	Lundi de Pentecôte
-08/15	Assomption
-11/01	Toussaint
-12/25	Noël
+Easter+50	Lundi de Pentecôte (férié)
+08/15	Assomption (férié)
+11/01	Toussaint (férié)
+12/25	Noël (férié)
 
-/* Les dates suivantes ne sont malheureusement pas fériées... */
-
-/* Saisons */
-03/21*	Printemps
-06/21*	Été
-09/21*	Automne
-12/21*	Hiver
-
-/* Changements d'heure */
-03/SundayLast	Passage à l'heure d'été
-10/SundayLast	Passage à l'heure d'hiver
-
-/* Divers */
-May Sun+2	Fêtes des mères
-June Sun+2	Fêtes des pères
+/*
+ * Jours fériés Français régionaux
+ * https://fr.wikipedia.org/wiki/F%C3%AAtes_et_jours_f%C3%A9ri%C3%A9s_en_France#F%C3%AAtes_f%C3%A9ri%C3%A9es_au_niveau_local
+ */
+03/05	Arrivée de l'Évangile (férié en Polynésie Française)
+04/28	Saint Pierre Chanel (férié à Wallis et Futuna)
+05/22	Abolition de l'Esclavage (férié en Martinique)
+05/27	Abolition de l'Esclavage (férié en Guadeloupe)
+05/28	Abolition de l'Esclavage (férié à Saint-Martin)
+06/10	Abolition de l'Esclavage (férié en Guyane)
+06/29	Fête de l'autonomie (férié en Polynésie Française)
+07/24	Fête de la citoyenneté (férié en Nouvelle-Calédonie)
+07/29	Fête du territoire (férié à Wallis et Futuna)
+10/09	Abolition de l'Esclavage (férié à Saint-Bathélemy)
+12/20	Fête réunionnaise de la liberté (férié à La Réunion)
+12/26	Saint Étienne (férié en Alsace et Moselle)
+Easter-2	Vendredi Saint (férié en Alsace et Moselle)
 
 #endif /*! _fr_FR_ISO8859_1_jferies_ */
