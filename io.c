@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.24 2021/10/27 18:00:57 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.25 2021/10/28 23:08:19 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -97,7 +97,7 @@ struct extrainfo {
 	unsigned char var;
 };
 
-static void cvtextra(struct extrainfo *, char **);
+static void cvtextra(struct extrainfo *, char *, char **);
 static void cvtmatch(struct extrainfo *, struct match *, const char *);
 
 void
@@ -267,10 +267,7 @@ cal(void)
 				printing = 0;
 				continue;
 			}
-			/* catch hardwired "variable" dates */
-			ei.var = !!(p > buf && p[-1] == '*');
-			if (parsecvt)
-				cvtextra(&ei, &p);
+			cvtextra(&ei, buf, &p);
 			printing = (m = isnow(buf, bodun)) ? 1 : 0;
 			if (printing) {
 				struct match *foo;
@@ -631,7 +628,7 @@ insert(struct event **head, struct event *cur_evt)
 }
 
 static void
-cvtextra(struct extrainfo *ei, char **p)
+cvtextra(struct extrainfo *ei, char *lp, char **p)
 {
 	unsigned char *cp = (unsigned char *)*p;
 
@@ -639,6 +636,19 @@ cvtextra(struct extrainfo *ei, char **p)
 #define fromdigit(o)	(U(cp[(o)]) - U('0'))
 #define fromdigits(o)	(fromdigit(o) * 10U + fromdigit((o) + 1))
 #define is(o,c)		(U(cp[(o)]) == U(c))
+
+	/* catch hardwired "variable" dates */
+	ei->var = !!(*p > lp && is(-1, '*'));
+
+	/* all the other extra stuff is for -P mode only */
+	if (!parsecvt)
+		return;
+
+	/* -PP mode quotes first line verbatim, too */
+	if (parsecvt > 1) {
+		putchar('>');
+		puts(lp);
+	}
 
 	/* tab */
 	++cp;

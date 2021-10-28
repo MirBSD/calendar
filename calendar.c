@@ -58,7 +58,7 @@ __IDSTRING(pathnames_h, PATHNAMES_H);
 __IDSTRING(calendar_h, CALENDAR_H);
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.8 2021/10/26 21:54:34 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.9 2021/10/28 23:08:18 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
@@ -103,7 +103,7 @@ main(int argc, char *argv[])
 			break;
 
 		case 'P': /* parse/convert mode */
-			parsecvt = 1;
+			++parsecvt;
 			break;
 
 		case 't': /* other date, undocumented, for tests */
