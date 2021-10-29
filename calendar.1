@@ -1,9 +1,9 @@
-.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.9 2021/10/27 18:00:57 tg Exp $
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.10 2021/10/29 02:23:49 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.29 2005/03/22 10:57:27 xsa Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
 .\"     The Regents of the University of California.  All rights reserved.
-.\" Copyright (c) 2019
+.\" Copyright (c) 2019, 2021
 .\"	mirabilos <m@mirbsd.org>
 .\"
 .\" Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
 .\"
 .\"     @(#)calendar.1  8.1 (Berkeley) 6/29/93
 .\"
-.Dd $Mdocdate: October 27 2021 $
+.Dd $Mdocdate: October 29 2021 $
 .Dt CALENDAR 1
 .Os
 .Sh NAME
@@ -51,7 +51,7 @@ The
 utility checks the current directory or the directory specified by the
 .Ev CALENDAR_DIR
 environment variable for a file named
-.Pa calendar
+.Pa Li calendar
 and displays lines that begin with either today's date
 or tomorrow's.
 On Fridays, events on Friday through Monday are displayed.
@@ -64,7 +64,7 @@ Print lines from today and next
 days (forward, future).
 .It Fl a
 Process the
-.Dq calendar
+.Dq Li calendar
 files of all users and mail the results
 to them.
 This requires superuser privileges.
@@ -73,10 +73,11 @@ Print lines from today and previous
 .Ar num
 days (backward, past).
 .It Fl b
-Enforce special date calculation mode for KOI8 calendars.
+Enforce special date calculation mode for Cyrillic calendars.
 .It Fl f Pa calendarfile
 Use
 .Pa calendarfile
+.Pq So Li \-\& Sc for stdin
 as the default calendar file.
 .It Fl t Ar [[[cc]yy][mm]]dd
 Act like the specified value is
@@ -84,14 +85,30 @@ Act like the specified value is
 instead of using the current date.
 .El
 .Pp
-To handle calendars in your national code table you can specify
+To handle calendars in different encodings, specify
 .Dq LANG=<locale_name>
 in the calendar file as early as possible.
-To handle national Easter names in the calendars,
+That being said, there are no locales on
+.Mx
+so
+.Nm
+handles
+.Ar locale_name
+as
+.Ar country Ns Li . Ns Ar encoding ;
+.Ar country
+is used to make some special handling available, and
+.Ar encoding
+is used to convert the entries to UTF-8.
+.Pp
+National names for special days can be handled by adding lines such as
 .Dq Easter=<national_name>
-(for Catholic Easter) or
+(for Catholic Easter),
 .Dq Paskha=<national_name>
-(for Orthodox Easter) can be used.
+(for Orthodox Easter) or
+.Dq Pesach=<national_name>
+(for Jewish Passover),
+setting the corresponding variables.
 .Pp
 The
 .Dq CALENDAR
@@ -106,15 +123,21 @@ Use
 to return to the default (Gregorian).
 .Pp
 To enforce special date calculation mode for Cyrillic calendars
-you should specify
-.Dq LANG=<local_name>
+specify
+.Dq LANG=<locale_name>
 and
 .Dq BODUN=<bodun_prefix>
-where <local_name> can be ru_RU.KOI8\-R, uk_UA.KOI8\-U or by_BY.KOI8\-B.
+where <locale_name> can be
+.Li ru_RU.KOI8\-R ,
+.Li uk_UA.KOI8\-U ,
+.Li by_BY.KOI8\-B
+or their
+.Li .UTF\-8
+counterparts.
 .Pp
 To enable specific anniversary handling, applied to all complete
-event texts that either start with a four-digit year plus comma
-and space, or end with comma and space and a four-digit year,
+event texts that start with a four-digit year plus comma and space,
+or that end with comma and space and a four-digit year,
 appending a formatted text instead, set
 .Dq ANNIV=<ago_text><us><cur_text><us><future_text>
 (where
@@ -129,35 +152,39 @@ respectively),
 .Em or
 use
 .Dq ANNIV=1
-which enacts the default value of
+which enables this mode using the default
 .Dq "%1$d: %2$d year(s) ago",
 .Dq "%1$d: this year" ,
-.Dq "%1$d: in %2$d year(s)" .
-Some crazy Russian formats from the shipped calendars are also parsed,
-although conflating "\-e" ('s) and "G" (year), ignoring "do n.e." (BCE).
+.Dq "%1$d: in %2$d year(s)"
+if none are specified otherwise.
+Some crazy Russian formats are also parsed,
+conflating "\-e" ('s) and "G" (year), ignoring "do n.e." (BCE).
 .Pp
 Other lines should begin with a month and day.
 They may be entered in almost any format, either numeric or as character
 strings.
 If proper locale is set, national months and weekdays
-names can be used.
-On
-.Ox
-and
-.Mx ,
-support for locales is non-existent.
-A single asterisk (`*') matches every month.
+names can be used (not on
+.Mx
+which does not support locales).
+A single asterisk
+.Pq Sq *\&
+matches every month.
 A day without a month matches that day of every week.
 A month without a day matches the first of that month.
 Two numbers default to the month followed by the day.
 Lines with leading tabs default to the last entered date, allowing
 multiple line specifications for a single date.
-.Dq Easter
-(may be followed by a positive or negative integer) is Easter for this year.
-.Dq Paskha
-(may be followed by a positive or negative integer) is
-Orthodox Easter for this year.
-Weekdays may be followed by
+.Ic Easter ,
+.Ic Paskha
+and
+.Ic Pesach ,
+both these standard English and the user-defined national (see above) names,
+correspond to the respective special day for this year; they may be followed
+by a positive (with an explicit
+.Ql +\& )
+or negative integer to offset the day.
+Weekday names may be followed by
 .Dq \-4
 .Li ...
 .Dq +5
@@ -165,9 +192,8 @@ Weekdays may be followed by
 .Dq the last Monday in April .
 .Pp
 By convention, dates followed by an asterisk
-.Pq Sq *
-are not fixed, i.e., change
-from year to year.
+.Pq Sq *\&
+are not fixed, i.e.\& change from year to year.
 .Pp
 Day descriptions start after the first <tab> character in the line;
 if the line does not contain a <tab> character, it isn't printed out.
@@ -183,7 +209,7 @@ If the shared file is not referenced by a full pathname,
 searches in the current (or home) directory first, and then in the
 directory
 .Pa /usr/share/calendar .
-Empty lines and lines protected by the C commenting syntax
+Empty lines and C comments
 .Pq Li /* ... */
 are ignored.
 .Pp
@@ -219,10 +245,12 @@ Directory in the user's home directory (which
 .Nm
 changes into, if it exists).
 .It Pa ~/.etc/calendar/calendar
-File to use if no calendar file exists in the current directory.
+File to use if no
+.Pa calendar
+file exists in the current directory.
 .It Pa ~/.etc/calendar/nomail
 .Nm
-will not send mail if this file exists.
+will not mail if this file exists.
 .It Pa calendar.all
 International and national calendar files.
 .It Pa calendar.birthday
@@ -231,7 +259,7 @@ Births and deaths of famous (and not-so-famous) people.
 Christian holidays (should be updated yearly by the local system administrator
 so that roving holidays are set correctly for the current year).
 .It Pa calendar.computer
-Days of special significance to computer people.
+Computer people's days of special significance.
 .It Pa calendar.croatian
 Croatian calendar.
 .It Pa calendar.fictional
@@ -250,7 +278,7 @@ obscure).
 Jewish holidays (should be updated yearly by the local system administrator
 so that roving holidays are set correctly for the current year).
 .It Pa calendar.music
-Musical events, births, and deaths (strongly oriented toward rock n' roll).
+Musical events, births, and deaths (strongly oriented toward rock'n'roll).
 .It Pa calendar.openbsd
 .Ox
 and
@@ -290,14 +318,15 @@ if the
 .Dv UNICODE
 variable is set during compilation,
 .Xr iconv 3
-is used to convert any input to OPTU-8 output.
+is used to convert any input to UTF-8 output.
 .Pp
-The
 .Dv ANNIV
 handling appeared in
 .Mx 11 .
 Other implementations silently ignore the field assignment,
-so this is backwards-compatible.
+so
+.Dv ANNIV
+is backwards-compatible.
 .Sh BUGS
 .Nm
 doesn't handle all Jewish holidays or moon phases.
