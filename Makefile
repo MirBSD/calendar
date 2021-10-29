@@ -1,4 +1,4 @@
-# $MirOS: src/usr.bin/calendar/Makefile,v 1.3 2007/01/12 03:03:50 tg Exp $
+# $MirOS: src/usr.bin/calendar/Makefile,v 1.4 2021/10/29 02:35:32 tg Exp $
 # $OpenBSD: Makefile,v 1.9 2004/12/10 20:47:30 mickey Exp $
 
 .include <bsd.own.mk>
@@ -20,7 +20,7 @@ beforeinstall:
 	@test -d ${DESTDIR}/usr/share/calendar/${lang} || \
 	    mkdir ${DESTDIR}/usr/share/calendar/${lang}
 	${INSTALL} ${INSTALL_COPY} -o ${BINOWN} -g ${BINGRP} -m 444 \
-    	    ${.CURDIR}/calendars/${lang}/calendar.* \
+	    ${.CURDIR}/calendars/${lang}/calendar.* \
 	    ${DESTDIR}/usr/share/calendar/${lang}/
 .endfor
 

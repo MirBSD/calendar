@@ -24,8 +24,6 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- *
- * 	$Id: ostern.c,v 1.5 2004/12/10 15:31:01 mickey Exp $
  */
 
 #include <stdio.h>
@@ -33,7 +31,7 @@
 
 #include "calendar.h"
 
-__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.4 2021/10/29 02:32:41 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.5 2021/10/29 02:35:33 tg Exp $");
 
 /* return year day for Easter */
 
