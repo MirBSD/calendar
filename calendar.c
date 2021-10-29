@@ -48,7 +48,6 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <tzfile.h>
 #include <unistd.h>
 
 #include "pathnames.h"
@@ -58,7 +57,7 @@ __IDSTRING(pathnames_h, PATHNAMES_H);
 __IDSTRING(calendar_h, CALENDAR_H);
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.9 2021/10/28 23:08:18 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.10 2021/10/29 02:32:40 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
@@ -135,7 +134,7 @@ main(int argc, char *argv[])
 	if (f_dayBefore) {
 		/* Move back in time and only look forwards */
 		f_dayAfter += f_dayBefore;
-		f_time -= SECSPERDAY * f_dayBefore;
+		f_time -= 86400 * f_dayBefore;
 		f_dayBefore = 0;
 	}
 	settime();
@@ -232,7 +231,7 @@ main(int argc, char *argv[])
 				(void)kill(kid, SIGTERM);
 				warnx("uid %u did not finish in time", pw->pw_uid);
 			}
-			if (time(NULL) - t >= SECSPERDAY)
+			if (time(NULL) - t >= 86400)
 				errx(2, "'calendar -a' took more than a day; stopped at uid %u",
 				    pw->pw_uid);
 		}

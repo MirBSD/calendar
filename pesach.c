@@ -18,11 +18,10 @@
  */
 
 #include <stdio.h>
-#include <tzfile.h>
 
 #include "calendar.h"
 
-__RCSID("$MirOS: src/usr.bin/calendar/pesach.c,v 1.2 2021/10/27 17:53:01 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/pesach.c,v 1.3 2021/10/29 02:32:41 tg Exp $");
 
 /* Calculate the Julian date of Pesach using the Gauss formula */
 

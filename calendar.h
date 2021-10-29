@@ -32,7 +32,7 @@
  */
 
 #ifndef CALENDAR_H
-#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.7 2021/10/29 02:24:22 tg Exp $"
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.8 2021/10/29 02:32:41 tg Exp $"
 
 extern struct passwd *pw;
 extern unsigned char doall;
@@ -140,5 +140,6 @@ extern u_long julian;
 #define USERTIMEOUT 20
 
 #define sgn(x) (((x) > 0) - ((x) < 0))
+#define isleap(y) ((((y) % 4) == 0 && ((y) % 100) != 0) || ((y) % 400) == 0)
 
 #endif

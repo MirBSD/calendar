@@ -35,7 +35,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.14 2021/10/29 02:26:46 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.15 2021/10/29 02:32:41 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -48,7 +48,6 @@ __RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.14 2021/10/29 02:26:46 tg Exp $"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <tzfile.h>
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage; do NOT move! */
@@ -477,11 +476,11 @@ isnow(char *endp, int bodun)
 				err(1, NULL);
 
 			if (bodun && (day - tb.tm_yday) == -1) {
-				tmp->when = d_time - 1 * SECSPERDAY;
+				tmp->when = d_time - 1 * 86400;
 				tmtmp.tm_mday++;
 				tmp->bodun = 1;
 			} else {
-				tmp->when = d_time + v2 * SECSPERDAY;
+				tmp->when = d_time + v2 * 86400;
 				tmp->bodun = 0;
 			}
 
@@ -573,7 +572,7 @@ isnow(char *endp, int bodun)
 			if ((ttmp = mktime(&tmtmp)) == -1)
 				warnx("time out of range: %s", endp);
 			else {
-				tdiff = difftime(ttmp, d_time)/ SECSPERDAY;
+				tdiff = difftime(ttmp, d_time) / 86400;
 				if (parsecvt) {
 					if (tdiff >= 0)
 						goto doit;

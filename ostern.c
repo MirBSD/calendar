@@ -30,11 +30,10 @@
 
 #include <stdio.h>
 #include <time.h>
-#include <tzfile.h>
 
 #include "calendar.h"
 
-__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.3 2021/10/27 17:53:01 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.4 2021/10/29 02:32:41 tg Exp $");
 
 /* return year day for Easter */
 
