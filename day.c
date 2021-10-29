@@ -35,7 +35,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.13 2021/10/29 02:24:22 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.14 2021/10/29 02:26:46 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -174,7 +174,7 @@ setyear(unsigned int y)
 	tb.tm_isdst = 0;
 	tb.tm_hour = 12;
 	d_time = mktime(&tb);
-	if (isleap(tb.tm_year + TM_YEAR_BASE))
+	if (isleap(tb.tm_year + 1900))
 		cumdays1 = daytab[1];
 	else
 		cumdays1 = daytab[0];
@@ -241,11 +241,11 @@ Mktime(char *date)
 
 	/* tm_year up TM_YEAR_BASE ... */
 	if (tm.tm_year < 69)		/* Y2K */
-		tm.tm_year += 2000 - TM_YEAR_BASE;
+		tm.tm_year += 2000 - 1900;
 	else if (tm.tm_year < 100)
-		tm.tm_year += 1900 - TM_YEAR_BASE;
-	else if (tm.tm_year > TM_YEAR_BASE)
-		tm.tm_year -= TM_YEAR_BASE;
+		tm.tm_year += 1900 - 1900;
+	else if (tm.tm_year > 1900)
+		tm.tm_year -= 1900;
     }
 
 #ifdef DEBUG
@@ -458,20 +458,20 @@ isnow(char *endp, int bodun)
 			 */
 				if (tb.tm_yday > 300 && tmtmp.tm_mon <= 1)
 					variable_weekday(&vwd, tmtmp.tm_mon + 1,
-					    tmtmp.tm_year + TM_YEAR_BASE + 1);
+					    tmtmp.tm_year + 1900 + 1);
 				else
 					variable_weekday(&vwd, tmtmp.tm_mon + 1,
-					    tmtmp.tm_year + TM_YEAR_BASE);
+					    tmtmp.tm_year + 1900);
 				day = cumdays1[tmtmp.tm_mon + 1] + vwd;
 				tmtmp.tm_mday = vwd;
 			}
 			v2 = day - tb.tm_yday;
 			if ((v2 > v1) || (v2 < 0)) {
-				if ((v2 += isleap(tb.tm_year + TM_YEAR_BASE) ? 366 : 365)
-				    <= v1)
+				v2 += isleap(tb.tm_year + 1900) ? 366 : 365;
+				if (v2 <= v1)
 					tmtmp.tm_year++;
 				else if(!bodun || (day - tb.tm_yday) != -1)
-					return(NULL);
+					return (NULL);
 			}
 			if ((tmp = calloc(1, sizeof(struct match))) == NULL)
 				err(1, NULL);
@@ -491,7 +491,7 @@ isnow(char *endp, int bodun)
 			/*    "%a %b %d", &tm);  Skip weekdays */
 			    "%b %d", &tmtmp) == 0)
 				tmp->print_date[sizeof(tmp->print_date) - 1] = '\0';
-			tmp->year  = tmtmp.tm_year + TM_YEAR_BASE;
+			tmp->year  = tmtmp.tm_year + 1900;
 			tmp->var   = varp;
 			tmp->next  = NULL;
 			return(tmp);
@@ -544,7 +544,7 @@ isnow(char *endp, int bodun)
 				if (vwd) {
 					v1 = vwd;
 					variable_weekday(&v1, tmtmp.tm_mon + 1,
-					    tmtmp.tm_year + TM_YEAR_BASE);
+					    tmtmp.tm_year + 1900);
 					tmtmp.tm_mday = v1;
 				} else
 					tmtmp.tm_mday = dayp;
@@ -555,11 +555,11 @@ isnow(char *endp, int bodun)
 				if (flags & F_SPECIAL) {
 					tmtmp.tm_mon = 0;	/* Gee, mktime() is nice */
 					tmtmp.tm_mday = spev[v1].getev(tmtmp.tm_year +
-					    TM_YEAR_BASE) + vwd;
+					    1900) + vwd;
 				} else if (vwd) {
 					v1 = vwd;
 					variable_weekday(&v1, tmtmp.tm_mon + 1,
-					    tmtmp.tm_year + TM_YEAR_BASE);
+					    tmtmp.tm_year + 1900);
 					tmtmp.tm_mday = v1;
 				} else {
 				/* Need the following to keep Feb 29 from
@@ -596,7 +596,7 @@ isnow(char *endp, int bodun)
 					/*    "%a %b %d", &tm);  Skip weekdays */
 					    "%b %d", &tmtmp) == 0)
 						tmp->print_date[sizeof(tmp->print_date) - 1] = '\0';
-					tmp->year  = tmtmp.tm_year + TM_YEAR_BASE;
+					tmp->year  = tmtmp.tm_year + 1900;
 					tmp->bodun = bodun && tdiff == -1;
 					tmp->var   = varp;
 					tmp->vwd   = vwd;
