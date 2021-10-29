@@ -1,7 +1,8 @@
-/*	$OpenBSD: calendar.proverbes,v 1.2 2004/01/16 18:43:28 mickey Exp $	*/
-
 /*
  * Proverbes liés au calendrier
+ *
+ * $MirOS: src/usr.bin/calendar/calendars/fr_FR.ISO8859-1/calendar.proverbes,v 1.2 2021/10/29 03:18:21 tg Exp $
+ * $OpenBSD: calendar.proverbes,v 1.2 2004/01/16 18:43:28 mickey Exp $
  */
 
 #ifndef _fr_FR_ISO8859_1_proverbes_

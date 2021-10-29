@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.21 2020/10/31 01:57:57 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.22 2021/10/29 03:18:19 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -26,7 +26,7 @@ Jan 20	Bind 9 goes into the tree, 2003
 Jan 26	Anoncvs service inaugurated, 1996
 Jan 27	OpenBSD/amd64 port is added, from NetBSD, 2004
 Jan 28	MirOS #2 released (statically built a.out with exec-ELF support), 2003
-Jan 29	``second anoncvs server is 100 miles from the first'', 1996
+Jan 29	second anoncvs server is 100 miles from the first, 1996
 Jan 31	MirOS feature-rich release-quality snapshot, 2004
 Jan 31	MirPorts work for ekkoBSD and OpenBSD support, 2004
 Jan 31	OpenBSD/cats port is added, from NetBSD, 2004
@@ -82,7 +82,7 @@ May 10	c2k3 hackathon, Calgary, Canada, 51 developers, 2003
 May 12	MirOS is C++-free (nroff), 2003
 May 15	MirOS gets rid of GNU "Free" Documentation License, 2003
 May 15	MirOS lists at gmane.org, 2004
-May 19	OpenBSD 2.3 released, including ``ports'' system, 1998
+May 19	OpenBSD 2.3 released, including ports system, 1998
 May 21	c2k5 hackathon, 60 developers and Sitting Idol, 2005
 May 21	chemistry section added to MirPorts, 2004
 May 25	MirOS boot code, NTFS mount, NTFS install refinements, 2003
@@ -195,7 +195,7 @@ Nov 11	want.html added to OpenBSD/www, 1998
 Nov 13	MirOS fixes timezone data, breaks POSIX brokenness, 2002
 Nov 18	altq merged into pf, 2002
 Nov 22	MirOS #7ter released (sparc, errata), 2003
-Nov 26	MirOS starts a series of political fixes (british, no `, KiB), 2002
+Nov 26	MirOS starts a series of political fixes (british, no U+0060, KiB), 2002
 Nov 26	MirOS starts to move from patch kit to own CVS, 2002
 Nov 27	MirOS and ekkoBSD exchange code and ideas, 2003
 Nov 27	Unified buffer & VM cache enters OpenBSD, 2001
@@ -216,7 +216,6 @@ Dec 21	MirOS gains fully working CD-ROM "no emulation" boot loader, 2003
 Dec 21	OpenBSD/powerpc port is added, 1996
 Dec 22	MirOS BSD #8 ("MirOS XP") is completed, 2005
 Dec 23	MirPorts has frozen-bubble 2.1, FreeBSD 2.0, pkgsrc 1.0, OpenBSD none, 2006
-Dec 25	MirOS changes uname from OpenBSD to MirBSD, 2003
 Dec 27	MirOS #7-stable branch initiated, 2003
 Dec 27	MirOS attends 20C3, 2003
 Dec 27	MirOS attends 21C3, 2004

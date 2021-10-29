@@ -26,7 +26,9 @@ Oct 21	2020, 15:00–15:30 Meeting
 Jan 18	2022, OpenJDK 8u322 GA
 Wed	10:30[America/Denver] (18:30) MuseScore Café
 Dec 21*	2022, 21:48[UTC] Yul (Wintersonnenwende, Mittwinter)
-/*	$MirOS: src/usr.bin/calendar/test.cal,v 1.4 2021/10/29 02:24:22 tg Exp $ */
+/* anniversaries recur yearly not once like appointments (above) */
+Aug 29	MirOS Project started, 2002
+/*	$MirOS: src/usr.bin/calendar/test.cal,v 1.5 2021/10/29 03:18:18 tg Exp $ */
 
 #ifdef debug_parsecvt
 Mon-4	on=Mon-4

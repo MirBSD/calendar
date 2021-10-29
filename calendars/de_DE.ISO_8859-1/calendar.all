@@ -1,8 +1,8 @@
 /*
  * deutscher Kalender
  *
+ * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.all,v 1.3 2021/10/29 03:18:19 tg Exp $
  * $OpenBSD: calendar.all,v 1.1 1996/12/05 06:04:52 millert Exp $
- * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.all,v 1.2 2006/11/17 02:48:09 tg Exp $
  */
 
 #ifndef _de_DE_ISO_8859_1_all_

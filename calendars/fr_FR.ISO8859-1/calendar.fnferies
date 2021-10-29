@@ -1,7 +1,7 @@
-/* $MirOS: src/usr.bin/calendar/calendars/fr_FR.ISO8859-1/calendar.fnferies,v 1.1 2021/10/27 17:32:53 tg Exp $ */
-
 /*
  * Fêtes (jours non-fériés)
+ *
+ * $MirOS: src/usr.bin/calendar/calendars/fr_FR.ISO8859-1/calendar.fnferies,v 1.2 2021/10/29 03:18:20 tg Exp $
  */
 
 #ifndef _fr_FR_ISO8859_1_fnferies_

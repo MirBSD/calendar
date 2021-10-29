@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.29 2021/10/29 02:58:20 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.30 2021/10/29 03:18:18 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -118,7 +118,7 @@ cal(void)
 		"%1$d: this year",
 		"%1$d: in %2$d year(s)"
 	};
-	char anniv = 0;
+	unsigned char anniv = 0;
 
 	events = NULL;
 	cur_evt = NULL;

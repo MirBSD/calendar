@@ -35,7 +35,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.16 2021/10/29 02:58:19 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.17 2021/10/29 03:18:18 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -319,7 +319,7 @@ isnow(char *endp, int bodun)
 		bodun = 0;
 
 	if (flags & F_SPECIAL)
-		/* Easter or Easter depending days */
+		/* Advent/Easter/etc. or days depending on these */
 		vwd = v1;
 	else if (flags & F_ISDAY || v1 > 12) {
 		/*
