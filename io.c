@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.25 2021/10/28 23:08:19 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.26 2021/10/29 01:33:16 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -480,7 +480,9 @@ opencal(void)
 	struct stat st;
 
 	/* open up calendar file as stdin */
-	if ((fdin = open(calendarFile, O_RDONLY)) == -1 ||
+	if (calendarFile[0] == '-' && calendarFile[1] == '\0')
+		fdin = STDIN_FILENO;
+	else if ((fdin = open(calendarFile, O_RDONLY)) == -1 ||
 	    fstat(fdin, &st) == -1 || !S_ISREG(st.st_mode)) {
 		if (!doall) {
 			char *home = getenv("HOME");
@@ -495,17 +497,20 @@ opencal(void)
 	}
 
 	if (pipe(pdes) == -1) {
-		close(fdin);
+		if (fdin != STDIN_FILENO)
+			close(fdin);
 		return (NULL);
 	}
 	switch (vfork()) {
 	case -1:			/* error */
 		(void)close(pdes[0]);
 		(void)close(pdes[1]);
-		close(fdin);
+		if (fdin != STDIN_FILENO)
+			close(fdin);
 		return (NULL);
 	case 0:
-		dup2(fdin, STDIN_FILENO);
+		if (fdin != STDIN_FILENO)
+			dup2(fdin, STDIN_FILENO);
 		/* child -- set stdout to pipe input */
 		if (pdes[1] != STDOUT_FILENO) {
 			(void)dup2(pdes[1], STDOUT_FILENO);
