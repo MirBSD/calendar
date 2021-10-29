@@ -1,4 +1,5 @@
 LANG=C
+ANNIV=%1$d: %2$d year(s) ago%1$d: this year%1$d: in %2$d year(s)
 Easter=Ostern
 
 6/15	June 15 (if ambiguous, will default to month/day).
@@ -28,7 +29,7 @@ Wed	10:30[America/Denver] (18:30) MuseScore Café
 Dec 21*	2022, 21:48[UTC] Yul (Wintersonnenwende, Mittwinter)
 /* anniversaries recur yearly not once like appointments (above) */
 Aug 29	MirOS Project started, 2002
-/*	$MirOS: src/usr.bin/calendar/test.cal,v 1.5 2021/10/29 03:18:18 tg Exp $ */
+/*	$MirOS: src/usr.bin/calendar/test.cal,v 1.6 2021/10/29 03:23:32 tg Exp $ */
 
 #ifdef debug_parsecvt
 Mon-4	on=Mon-4
