@@ -35,13 +35,14 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.12 2021/10/26 21:54:34 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.13 2021/10/29 02:24:22 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
 
 #include <ctype.h>
 #include <err.h>
+#include <errno.h>
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -148,6 +149,9 @@ void setnnames(void)
 	spev[2].name = strdup(PASKHA);
 	spev[2].nlen = PASKHALEN;
 	spev[2].getev = paskha;
+	spev[3].name = strdup(ADVENT);
+	spev[3].nlen = ADVENTLEN;
+	spev[3].getev = advent;
 	for (i = 0; i < NUMEV; i++) {
 		if (spev[i].name == NULL)
 			err(1, NULL);
@@ -753,4 +757,24 @@ variable_weekday(int *day, int month, int year)
 		fprintf(stderr, "\nMonth %d starts on weekday %d\n", month, v2);
 #endif
 	}
+}
+
+
+int
+advent(int /* NOT 1900-biased */ year)
+{
+	struct tm tmtmp;
+
+	memcpy(&tmtmp, &tb, sizeof(struct tm));
+	tmtmp.tm_mday = 25;
+	tmtmp.tm_mon = 11;
+	tmtmp.tm_year = year - 1900;
+	errno = EDOM;
+	if (mktime(&tmtmp) == -1)
+		err(1, "cannot calculate Advent for %d", year);
+	tmtmp.tm_mday -= tmtmp.tm_wday ? tmtmp.tm_wday : /* Sunday */ 7;
+	errno = EINVAL;
+	if (mktime(&tmtmp) == -1)
+		err(1, "cannot calculate Advent for %d", year);
+	return (tmtmp.tm_yday + 1 - /* three weeks */ 21);
 }

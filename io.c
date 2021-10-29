@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.26 2021/10/29 01:33:16 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.27 2021/10/29 02:24:22 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -787,6 +787,10 @@ cvtmatch(struct extrainfo *ei, struct match *m, const char *s)
 			/* FALLTHROUGH */
 	case 3:
 		  ccp = "Paskha";
+		if (0)
+			/* FALLTHROUGH */
+	case 4:
+		  ccp = "Advent";
 		if (0)
 			/* FALLTHROUGH */
 	default:

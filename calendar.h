@@ -32,7 +32,7 @@
  */
 
 #ifndef CALENDAR_H
-#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.6 2021/10/26 21:54:34 tg Exp $"
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.7 2021/10/29 02:24:22 tg Exp $"
 
 extern struct passwd *pw;
 extern unsigned char doall;
@@ -83,6 +83,7 @@ int	 getday(char *);
 int	 getdayvar(char *);
 int	 getfield(char *, char **, int *);
 int	 getmonth(char *);
+int	 advent(int);
 int	 pesach(int);
 int	 easter(int);
 int	 paskha(int);
@@ -121,13 +122,16 @@ extern int f_dayBefore;	/* days before current date */
 #define EASTERNAMELEN (sizeof(EASTER) - 1)
 #define PASKHA "paskha"
 #define PASKHALEN (sizeof(PASKHA) - 1)
+#define ADVENT "advent"
+#define ADVENTLEN (sizeof(ADVENT) - 1)
+
+/* total number of such special events */
+#define NUMEV 4
+extern struct specialev spev[NUMEV];
 
 /* calendars */
 extern enum calendars { GREGORIAN = 0, JULIAN, LUNAR } calendar;
 extern u_long julian;
-
-#define NUMEV 3	/* Total number of such special events */
-extern struct specialev spev[NUMEV];
 
 /* For calendar -a, specify a maximum time (in seconds) to spend parsing
  * each user's calendar files.  This prevents them from hanging calendar

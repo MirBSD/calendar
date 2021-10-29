@@ -18,17 +18,15 @@ Easter	Easter
 Ostern-2	1970, Good Friday (2 days before Easter)
 Paskha	Orthodox Easter
 Pesach+1	Second Day of Passover /* Jewish Pesach */
-#ifdef notyet
 Advent-1	Beginn der Adventszeit, erste Vesper
 Advent+21	Vierter Adventssontag
-#endif
 
 WedThird	19:00–21:00 OSAMC (außer Dezember meist)
 Oct 21	2020, 15:00–15:30 Meeting
 Jan 18	2022, OpenJDK 8u322 GA
 Wed	10:30[America/Denver] (18:30) MuseScore Café
 Dec 21*	2022, 21:48[UTC] Yul (Wintersonnenwende, Mittwinter)
-/*	$MirOS: src/usr.bin/calendar/test.cal,v 1.3 2021/10/27 17:40:04 tg Exp $ */
+/*	$MirOS: src/usr.bin/calendar/test.cal,v 1.4 2021/10/29 02:24:22 tg Exp $ */
 
 #ifdef debug_parsecvt
 Mon-4	on=Mon-4
@@ -53,4 +51,14 @@ Thu+1	on=Thu+1
 Fri+1	on=Fri+1
 Sat+1	on=Sat+1
 Sun+1	on=Sun+1
+#endif
+
+#ifdef debug_advent
+Advent+21	2021, 4. Advent (should be 19)
+Advent+21	2022, 4. Advent (should be 18)
+Advent+21	2023, 4. Advent (should be 24)
+Advent+21	2024, 4. Advent (should be 22)
+Advent+21	2025, 4. Advent (should be 21)
+Advent+21	2026, 4. Advent (should be 20)
+Advent+21	2029, 4. Advent (should be 23)
 #endif
