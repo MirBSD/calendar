@@ -35,7 +35,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.15 2021/10/29 02:32:41 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.16 2021/10/29 02:58:19 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -87,7 +87,8 @@ static struct fixs fnmonths[13];      /* full national months names */
 static struct fixs nmonths[13];       /* short national month names */
 
 
-void setnnames(void)
+void
+setnnames(void)
 {
 	char buf[80];
 	int i, l;
@@ -203,55 +204,54 @@ settime(void)
 time_t
 Mktime(char *date)
 {
-    time_t t;
-    int len;
-    struct tm tm;
+	time_t t;
+	int len;
+	struct tm tm;
 
-    (void)time(&t);
-    if (localtime_r(&t, &tb) != &tb)
-	err(1, "localtime_r");
+	(void)time(&t);
+	if (localtime_r(&t, &tb) != &tb)
+		err(1, "localtime_r");
 
-    len = strlen(date);
-    if (len < 2)
-	return((time_t)-1);
-    tm.tm_sec = 0;
-    tm.tm_min = 0;
-    /* Avoid getting caught by a timezone shift; set time to noon */
-    tm.tm_isdst = 0;
-    tm.tm_hour = 12;
-    tm.tm_wday = 0;
-    tm.tm_mday = tb.tm_mday;
-    tm.tm_mon = tb.tm_mon;
-    tm.tm_year = tb.tm_year;
+	len = strlen(date);
+	if (len < 2)
+		return ((time_t)-1);
+	tm.tm_sec = 0;
+	tm.tm_min = 0;
+	/* avoid getting caught by a timezone shift; set time to noon */
+	tm.tm_isdst = 0;
+	tm.tm_hour = 12;
+	tm.tm_wday = 0;
+	tm.tm_mday = tb.tm_mday;
+	tm.tm_mon = tb.tm_mon;
+	tm.tm_year = tb.tm_year;
 
-    /* Day */
-    tm.tm_mday = atoi(date + len - 2);
+	/* Day */
+	tm.tm_mday = atoi(date + len - 2);
 
-    /* Month */
-    if (len >= 4) {
-	*(date + len - 2) = '\0';
-	tm.tm_mon = atoi(date + len - 4) - 1;
-    }
+	/* Month */
+	if (len >= 4) {
+		*(date + len - 2) = '\0';
+		tm.tm_mon = atoi(date + len - 4) - 1;
+	}
 
-    /* Year */
-    if (len >= 6) {
+	/* Year */
+	if (len >= 6) {
 		*(date + len - 4) = '\0';
 		tm.tm_year = atoi(date);
 
-	/* tm_year up TM_YEAR_BASE ... */
-	if (tm.tm_year < 69)		/* Y2K */
-		tm.tm_year += 2000 - 1900;
-	else if (tm.tm_year < 100)
-		tm.tm_year += 1900 - 1900;
-	else if (tm.tm_year > 1900)
-		tm.tm_year -= 1900;
-    }
+		/* tm_year up TM_YEAR_BASE ... */
+		if (tm.tm_year < 69)
+			/* Y2K */
+			tm.tm_year += 2000 - 1900;
+		else if (tm.tm_year > 1900)
+			tm.tm_year -= 1900;
+	}
 
 #ifdef DEBUG
-    printf("Mktime: %d %d %d %s\n", (int)mktime(&tm), (int)t, len,
-	   asctime(&tm));
+	printf("Mktime: %d %d %d %s\n", (int)mktime(&tm), (int)t, len,
+	    asctime(&tm));
 #endif
-    return(mktime(&tm));
+	return (mktime(&tm));
 }
 
 static void
@@ -269,7 +269,9 @@ adjust_calendar(int *day, int *month)
 				*month = 1;
 		}
 		break;
+
 	case LUNAR:
+		/* not yet implemented */
 		break;
 	}
 }
@@ -316,16 +318,15 @@ isnow(char *endp, int bodun)
 	if (parsecvt)
 		bodun = 0;
 
-	/* Easter or Easter depending days */
 	if (flags & F_SPECIAL)
+		/* Easter or Easter depending days */
 		vwd = v1;
-
-	 /*
-	  * 1. {Weekday,Day} XYZ ...
-	  *
-	  *    where Day is > 12
-	  */
 	else if (flags & F_ISDAY || v1 > 12) {
+		/*
+		 * 1. {Weekday,Day} XYZ ...
+		 *
+		 *    where Day is > 12
+		 */
 
 		/* found a day; day: 13-31 or weekday: 1-7 */
 		day = v1;
@@ -352,10 +353,8 @@ isnow(char *endp, int bodun)
 			adjust_calendar(&day, &month);
 		if ((month > 12) || (month < 1))
 			return (NULL);
-	}
-
-	/* 2. {Monthname} XYZ ... */
-	else if (flags & F_ISMONTH) {
+	} else if (flags & F_ISMONTH) {
+		/* 2. {Monthname} XYZ ... */
 		month = v1;
 		if (month == -1) {
 			month = tb.tm_mon + 1;
@@ -372,17 +371,15 @@ isnow(char *endp, int bodun)
 				day += 10;
 		} else if (calendar)
 			adjust_calendar(&day, &month);
-	}
-
-	/* Hm ... */
-	else {
+	} else {
+		/* Hm ... */
 		v2 = getfield(endp, &endp, &flags);
 
-		/*
-		 * {Day} {Monthname} ...
-		 * where Day <= 12
-		 */
 		if (flags & F_ISMONTH) {
+			/*
+			 * {Day} {Monthname} ...
+			 * where Day <= 12
+			 */
 			day = v1;
 			month = v2;
 			if (month == -1) {
@@ -390,10 +387,9 @@ isnow(char *endp, int bodun)
 				interval = MONTHLY;
 			} else if (calendar)
 				adjust_calendar(&day, &month);
-		}
+		} else {
+			/* {Month} {Weekday,Day} ...  */
 
-		/* {Month} {Weekday,Day} ...  */
-		else {
 			/* F_ISDAY set, v2 > 12, or no way to tell */
 			month = v1;
 			/* if no recognizable day, assume the first */
@@ -406,7 +402,7 @@ isnow(char *endp, int bodun)
 		}
 	}
 
-	/* convert Weekday into *next*  Day,
+	/* convert Weekday into *next* Day,
 	 * e.g.: 'Sunday' -> 22
 	 *       'SundayLast' -> ??
 	 */
@@ -423,14 +419,13 @@ isnow(char *endp, int bodun)
 			day = tb.tm_mday + (((day - 1) - tb.tm_wday + 7) % 7);
 			interval = WEEKLY;
 		}
-	} else
-	/* Check for silliness.  Note we still catch Feb 29 */
-		if (!(flags & F_SPECIAL) &&
-		    (day > (cumdays1[month + 1] - cumdays1[month]) || day < 1)) {
-			if (!((month == 2 && day == 29) ||
-			    (interval == MONTHLY && day <= 31)))
-				return (NULL);
-		}
+	} else if (!(flags & F_SPECIAL) &&
+	    (day > (cumdays1[month + 1] - cumdays1[month]) || day < 1)) {
+		/* Check for silliness.  Note we still catch Feb 29 */
+		if (!((month == 2 && day == 29) ||
+		    (interval == MONTHLY && day <= 31)))
+			return (NULL);
+	}
 
 	if (!(flags & F_SPECIAL)) {
 		monthp = month;
@@ -487,15 +482,17 @@ isnow(char *endp, int bodun)
 			(void)mktime(&tmtmp);
 			if (strftime(tmp->print_date,
 			    sizeof(tmp->print_date),
-			/*    "%a %b %d", &tm);  Skip weekdays */
+			/*  "%a %b %d", &tm);  Skip weekdays */
 			    "%b %d", &tmtmp) == 0)
 				tmp->print_date[sizeof(tmp->print_date) - 1] = '\0';
 			tmp->year  = tmtmp.tm_year + 1900;
 			tmp->var   = varp;
 			tmp->next  = NULL;
-			return(tmp);
+			return (tmp);
 		}
 	} else {
+		/* flags has F_SPECIAL set */
+
 		varp = 1;
 		/* Set up v1 to the event number and ... */
 		v1 = vwd % (NUMEV + 1) - 1;
@@ -530,7 +527,7 @@ isnow(char *endp, int bodun)
 			case MONTHLY:
 				month += i;
 				tmtmp.tm_mon = month;
-				switch(tmtmp.tm_mon) {
+				switch (tmtmp.tm_mon) {
 				case -1:
 					tmtmp.tm_mon = month = 11;
 					tmtmp.tm_year--;
@@ -561,59 +558,61 @@ isnow(char *endp, int bodun)
 					    tmtmp.tm_year + 1900);
 					tmtmp.tm_mday = v1;
 				} else {
-				/* Need the following to keep Feb 29 from
-				 * becoming Mar 1 */
-				tmtmp.tm_mday = dayp;
-				tmtmp.tm_mon = monthp - 1;
+					/* Need the following to keep Feb 29 from
+					 * becoming Mar 1 */
+					tmtmp.tm_mday = dayp;
+					tmtmp.tm_mon = monthp - 1;
 				}
 				break;
 			}
 			/* How many days apart are we */
-			if ((ttmp = mktime(&tmtmp)) == -1)
+			if ((ttmp = mktime(&tmtmp)) == -1) {
 				warnx("time out of range: %s", endp);
-			else {
-				tdiff = difftime(ttmp, d_time) / 86400;
-				if (parsecvt) {
-					if (tdiff >= 0)
-						goto doit;
-					/* out of the v2 loop into the i one */
-					break;
-				}
-				if (tdiff <= offset1 + f_dayAfter ||
-				    (bodun && tdiff == -1)) {
-					if (((tmtmp.tm_mon == month) ||
-					     (flags & F_SPECIAL) ||
-					     (interval == WEEKLY)) &&
-					    (tdiff >= 0 ||
-					    (bodun && tdiff == -1))) {
+				continue;
+			}
+			tdiff = difftime(ttmp, d_time) / 86400;
+			if (parsecvt) {
+				if (tdiff >= 0)
+					goto doit;
+				/* out of the v2 loop into the i one */
+				break;
+			}
+			if (!(tdiff <= offset1 + f_dayAfter ||
+			    (bodun && tdiff == -1))) {
+				/* no point checking in the future */
+				i = 2;
+				continue;
+			}
+			if (((tmtmp.tm_mon == month) ||
+			     (flags & F_SPECIAL) ||
+			     (interval == WEEKLY)) &&
+			    (tdiff >= 0 ||
+			    (bodun && tdiff == -1))) {
  doit:
-					if ((tmp = calloc(1, sizeof(struct match))) == NULL)
-						err(1, NULL);
-					tmp->when = ttmp;
-					if (strftime(tmp->print_date,
-					    sizeof(tmp->print_date),
-					/*    "%a %b %d", &tm);  Skip weekdays */
-					    "%b %d", &tmtmp) == 0)
-						tmp->print_date[sizeof(tmp->print_date) - 1] = '\0';
-					tmp->year  = tmtmp.tm_year + 1900;
-					tmp->bodun = bodun && tdiff == -1;
-					tmp->var   = varp;
-					tmp->vwd   = vwd;
-					tmp->next  = NULL;
-					if (flags & F_SPECIAL)
-						tmp->isspecial = v1 + 1;
-					tmp->interval = interval;
-					if (tmp2)
-						tmp2->next = tmp;
-					else
-						matches = tmp;
-					if (parsecvt)
-						return (matches);
-					tmp2 = tmp;
-					v2 = (i == 1) ? 1 : 0;
-					}
-				} else
-					i = 2; /* No point checking in the future */
+				if ((tmp = calloc(1, sizeof(struct match))) == NULL)
+					err(1, NULL);
+				tmp->when = ttmp;
+				if (strftime(tmp->print_date,
+				    sizeof(tmp->print_date),
+				/*  "%a %b %d", &tm);  Skip weekdays */
+				    "%b %d", &tmtmp) == 0)
+					tmp->print_date[sizeof(tmp->print_date) - 1] = '\0';
+				tmp->year  = tmtmp.tm_year + 1900;
+				tmp->bodun = bodun && tdiff == -1;
+				tmp->var   = varp;
+				tmp->vwd   = vwd;
+				tmp->next  = NULL;
+				if (flags & F_SPECIAL)
+					tmp->isspecial = v1 + 1;
+				tmp->interval = interval;
+				if (tmp2)
+					tmp2->next = tmp;
+				else
+					matches = tmp;
+				if (parsecvt)
+					return (matches);
+				tmp2 = tmp;
+				v2 = (i == 1) ? 1 : 0;
 			}
 		} while (v2 != 0);
 		++i;
@@ -669,18 +668,17 @@ getdayvar(char *s)
 {
 	int offset2;
 
-
 	offset2 = strlen(s);
 
 	/* Sun+1 or Wednesday-2
 	 *    ^              ^   */
 
 	/* printf ("x: %s %s %d\n", s, s + offset2 - 2, offset2); */
-	switch(*(s + offset2 - 2)) {
+	switch (*(s + offset2 - 2)) {
 	case '-':
 	case '+':
-	    return(atoi(s + offset2 - 2));
-	    break;
+		return (atoi(s + offset2 - 2));
+		break;
 	}
 
 	/*
@@ -689,18 +687,18 @@ getdayvar(char *s)
 
 	/* last */
 	if      (offset2 > 4 && !strcasecmp(s + offset2 - 4, "last"))
-	    return(-1);
+		return (-1);
 	else if (offset2 > 5 && !strcasecmp(s + offset2 - 5, "first"))
-	    return(+1);
+		return (+1);
 	else if (offset2 > 6 && !strcasecmp(s + offset2 - 6, "second"))
-	    return(+2);
+		return (+2);
 	else if (offset2 > 5 && !strcasecmp(s + offset2 - 5, "third"))
-	    return(+3);
+		return (+3);
 	else if (offset2 > 6 && !strcasecmp(s + offset2 - 6, "fourth"))
-	    return(+4);
+		return (+4);
 
 	/* no offset detected */
-	return(0);
+	return (0);
 }
 
 
@@ -726,8 +724,9 @@ variable_weekday(int *day, int month, int year)
 	else
 		cumdays2 = daytab[0];
 	day1 = foy(year);
-	/* negative offset; last, -4 .. -1 */
 	if (*day < 0) {
+		/* negative offset; last, -4 .. -1 */
+
 		v1 = *day/10 - 1;          /* offset -4 ... -1 */
 		*day = 10 + (*day % 10);    /* day 1 ... 7 */
 
@@ -740,10 +739,9 @@ variable_weekday(int *day, int month, int year)
 #ifdef DEBUG
 		fprintf(stderr, "\nMonth %d ends on weekday %d\n", month, v2);
 #endif
-	}
+	} else {
+		/* first, second ... +1 ... +5 */
 
-	/* first, second ... +1 ... +5 */
-	else {
 		v1 = *day/10;        /* offset */
 		*day = *day % 10;
 

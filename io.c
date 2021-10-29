@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.28 2021/10/29 02:37:16 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.29 2021/10/29 02:58:20 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -403,37 +403,34 @@ getfield(char *p, char **endp, int *flags)
 		*endp = p;
 		return (val);
 	}
-	for (start = p; isalpha(*++p);)
+	for (start = p; isalpha(*++p); /* nothing */)
 		;
 
 	/* Sunday-1 */
 	if (*p == '+' || *p == '-')
-	    for(; isdigit(*++p);)
-		;
+		for (/* nothing */; isdigit(*++p); /* nothing */)
+			;
 
 	savech = *p;
 	*p = '\0';
 
-	/* Month */
 	if ((val = getmonth(start)) != 0)
+		/* Month */
 		*flags |= F_ISMONTH;
-
-	/* Day */
 	else if ((val = getday(start)) != 0) {
-	    *flags |= F_ISDAY;
+		/* Day */
+		*flags |= F_ISDAY;
 
-	    /* variable weekday */
-	    if ((var = getdayvar(start)) != 0) {
-		if (var <= 5 && var >= -4)
-		    val += var * 10;
+		/* variable weekday */
+		if ((var = getdayvar(start)) != 0) {
+			if (var <= 5 && var >= -4)
+				val += var * 10;
 #ifdef DEBUG
-		printf("var: %d\n", var);
+			printf("var: %d\n", var);
 #endif
-	    }
-	}
-
-	/* Try specials (Easter, Paskha, ...) */
-	else {
+		}
+	} else {
+		/* Try specials (Easter, Paskha, ...) */
 		for (i = 0; i < NUMEV; i++) {
 			if (strncasecmp(start, spev[i].name, spev[i].nlen) == 0) {
 				start += spev[i].nlen;
@@ -447,18 +444,22 @@ getfield(char *p, char **endp, int *flags)
 			}
 		}
 		if (i > NUMEV) {
-			switch(*start) {
+			switch (*start) {
 			case '-':
 			case '+':
-			   var = atoi(start);
-			   if (var > 365 || var < -365)
-				   return (0); /* Someone is just being silly */
-			   val += (NUMEV + 1) * var;
-			   /* We add one to the matching event and multiply by
-			    * (NUMEV + 1) so as not to return 0 if there's a match.
-			    * val will overflow if there is an obscenely large
-			    * number of special events. */
-			   break;
+				var = atoi(start);
+				if (var > 365 || var < -365)
+					/* someone is just being silly */
+					return (0);
+				val += (NUMEV + 1) * var;
+				/*
+				 * We add one to the matching event and
+				 * multiply by (NUMEV + 1) so as not to
+				 * return 0 if there's a match. val will
+				 * overflow if there is an obscenely
+				 * large number of special events.
+				 */
+				break;
 			}
 			*flags |= F_SPECIAL;
 		}
@@ -550,7 +551,7 @@ opencal(void)
 		return (stdout);
 
 	/* set output to a temporary file, so if no output don't send mail */
-	return(tmpfile());
+	return (tmpfile());
 }
 
 void
@@ -595,7 +596,8 @@ closecal(FILE *fp)
 	while ((nread = read(fileno(fp), buf, sizeof(buf))) > 0)
 		(void)write(pdes[1], buf, nread);
 	(void)close(pdes[1]);
-done:	(void)fclose(fp);
+ done:
+	(void)fclose(fp);
 	if (pid != -1) {
 		while (waitpid(pid, &status, 0) == -1) {
 			if (errno != EINTR)
@@ -614,8 +616,7 @@ insert(struct event **head, struct event *cur_evt)
 		/* Insert this one in order */
 		tmp = *head;
 		tmp2 = NULL;
-		while (tmp->next &&
-		    tmp->when <= cur_evt->when) {
+		while (tmp->next && tmp->when <= cur_evt->when) {
 			tmp2 = tmp;
 			tmp = tmp->next;
 		}
