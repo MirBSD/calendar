@@ -63,7 +63,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.27 2021/10/29 02:24:22 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.28 2021/10/29 02:37:16 tg Exp $");
 
 struct ioweg header[] = {
 	{ "From: ", 6 },
@@ -160,7 +160,10 @@ cal(void)
 			setnnames();
 			if (!strcmp(buf + 5, "ru_RU.KOI8-R") ||
 			    !strcmp(buf + 5, "uk_UA.KOI8-U") ||
-			    !strcmp(buf + 5, "by_BY.KOI8-B")) {
+			    !strcmp(buf + 5, "by_BY.KOI8-B") ||
+			    !strcmp(buf + 5, "ru_RU.UTF-8") ||
+			    !strcmp(buf + 5, "uk_UA.UTF-8") ||
+			    !strcmp(buf + 5, "by_BY.UTF-8")) {
 				bodun_maybe++;
 				bodun = 0;
 				free(prefix);
