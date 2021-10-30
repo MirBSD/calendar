@@ -1,4 +1,4 @@
-.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.12 2021/10/29 03:18:17 tg Exp $
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.14 2021/10/30 02:38:28 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.29 2005/03/22 10:57:27 xsa Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
@@ -32,7 +32,7 @@
 .\"
 .\"     @(#)calendar.1  8.1 (Berkeley) 6/29/93
 .\"
-.Dd $Mdocdate: October 29 2021 $
+.Dd $Mdocdate: October 30 2021 $
 .Dt CALENDAR 1
 .Os
 .Sh NAME
@@ -40,7 +40,7 @@
 .Nd reminder service
 .Sh SYNOPSIS
 .Nm calendar
-.Op Fl ab
+.Op Fl abP
 .Op Fl A Ar num
 .Op Fl B Ar num
 .Op Fl f Ar calendarfile
@@ -79,6 +79,13 @@ Use
 .Pa calendarfile
 .Pq So Li \-\& Sc for stdin
 as the default calendar file.
+.It Fl P
+Parse the entire calendar file and convert it to an output format
+intended to be consumed by calendar format conversion utilities,
+representing the information from the original entries including
+year and time-of-day extensions (see below).
+When given twice, the original first line is also quoted before
+each event heading.
 .It Fl t Ar [[[cc]yy][mm]]dd
 Act like the specified value is
 .Dq today
@@ -203,6 +210,132 @@ if the line does not contain a <tab> character, it isn't printed out.
 If the first character in the line is a <tab> character, it is treated as
 the continuation of the previous description.
 .Pp
+Day descriptions may begin with a four-digit year (between 1000 and 2999)
+followed by a comma and space, and/or a time-of-day descriptor followed
+by a space (in either case, at least one other character is required).
+This is mostly useful in
+.Fl P
+.Pq conversion
+mode, but the leading year is picked up by anniversary processing
+.Pq see above
+as well, and the user may appreciate this information anyway.
+A time-of-day specification shall be
+.Xo
+.Ar starttime Ns Oo Ic dash
+.Ar endtime Oc Ns Oo Ic open-bracket
+.Ar timezone Ic close-bracket Oc
+.Xc
+where
+.Ar starttime
+and
+.Ar endtime
+are 24-hour specifications (e.g. 01:23),
+.Ic dash
+is either ASCII
+.Ql \-\&
+hyphen-minus or U+2013 EN DASH),
+.Ic open-bracket No is Ql [\& ,
+.Ic close-bracket No is Ql ]\&
+and
+.Ar timezone
+is an Olson tzdata identifier.
+24-hour specifications go from 00:00 to 23:59; 24:00 is additionally
+recognised but mapped to 23:59 so events stay within one day.
+.Pp
+The parse-and-extract mode output format is as follows,
+suppressing the normal output:
+.Bl -tag -width Ds
+.It \(dg quoted original line
+If
+.Fl PP
+is used, the original first line of an event specification (the one
+that does not start with a tab), prefixed by
+.Ql \*(Gt ,
+is output first (unchanged but preprocessed).
+.It \(dg metadata line (event heading)
+This line is comprised of the following fields:
+.Bl -tag -width Ds
+.It variable-day marker
+Either an asterisk
+.Ql *\*
+(if
+.Nm
+would otherwise have printed one) or an equals sign
+.Ql =\& .
+This field, unlike all others, is not followed by a space.
+.It date
+YYYY-MM-DD formatted date of either the first occurrence within
+a given year, if a year is part of the extended day description
+.Pq see above ,
+or the next occurrence after or starting with
+.Dq today
+.Pq see above .
+.It recurrence mode
+This is normally one of
+.Ic yearly ,
+.Ic monthly
+or
+.Ic weekly .
+Yearly events with a given year in the extended day description change to
+.Ic once .
+Events whose days are based on a special calculation (Advent, Easter, etc.) are
+.Ic special
+instead, independent on whether they would occur once or yearly.
+.It recurrence frequency
+Special events show the English name (Advent, Easter, Paskha, Pesach),
+followed by either a plus or minus, and a number (offset in days).
+Yearly and once events show
+.Ic \-mm\-dd
+or
+.Ic \-mm,www+n
+where
+.Ar mm
+is the month number (01 to 12),
+.Ar dd
+is the day number (01 to 31),
+.Ar www
+is the weekday (Sun, Mon, Tue, Wed, Thu, Fri, Sat), and
+.Ar +n
+is either plus or minus and a number, showing the first (+1),
+second (+2), etc.\& or last (-1), penultimate (-2), etc.\&
+occurrence of the given weekday in a month.
+Monthly events show
+.Ic dd
+if they recur on the same day-of-month number, and
+.Ar www+n
+if they recur on one given weekday each month.
+Weekly events show
+.Ic www .
+.It year
+Either an asterisk
+.Pq Ql *\&
+or a four-digit year number.
+.It start and end times and timezone
+This is either one field, literally
+.Ic whole-day ,
+or two fields, optionally followed by a third.
+The first field is a time as
+.Ic hh:mm ;
+the second field either an
+.Dq at
+.Ql @\&
+.Pq denoting no end time was given
+or a time as
+.Ic hh:mm .
+The third field
+.Pq if present
+is a timezone name
+.Pq see above .
+.El
+.It \(dg description
+One or more lines prefixed by a tab character.
+Together, they comprise the day description with the extended part removed.
+Line breaks are the same as in the calendar file.
+.El
+.Pp
+.Pa https://github.com/mirabilos/ev\-useful/tree/master/cal2ics
+is a sample postprocessor converting this format to iCalendar (*.ics) format.
+.Pp
 The calendar file is preprocessed by
 .Xr cpp 1 ,
 allowing the inclusion of shared files such as company holidays or
@@ -303,6 +436,11 @@ World wide calendar.
 .Xr cpp 1 ,
 .Xr mail 1 ,
 .Xr cron 8
+.Pp
+The
+.Pa evolvis.org
+.Dq Li useful-scripts
+repository.
 .Sh STANDARDS
 The
 .Nm
