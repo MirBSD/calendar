@@ -60,7 +60,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.32 2021/10/30 03:05:28 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.33 2021/10/30 03:06:02 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -102,7 +102,7 @@ static void cvtextra(struct extrainfo *, char *, char **);
 static void cvtmatch(struct extrainfo *, struct match *, const char *);
 
 void
-settimefml(const char *dayname, size_t len)
+settimefml(char *dayname, size_t len)
 {
 	header[5].iov_base = dayname;
 	header[5].iov_len = len;
