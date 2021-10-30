@@ -32,14 +32,13 @@
  */
 
 #ifndef CALENDAR_H
-#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.8 2021/10/29 02:32:41 tg Exp $"
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.9 2021/10/30 02:49:39 tg Exp $"
 
 extern struct passwd *pw;
 extern unsigned char doall;
 extern unsigned char bodun_always;
 extern unsigned char parsecvt;
 extern time_t f_time;
-extern struct ioweg header[];
 extern const char *calendarFile;
 extern const char *calendarHome;
 
@@ -91,6 +90,7 @@ void	 insert(struct event **, struct event *);
 struct match	*isnow(char *, int);
 FILE	*opencal(void);
 void	 settime(void);
+void	 settimefml(const char *, size_t);
 void	 setyear(unsigned int);
 time_t	 Mktime(char *);
 void	 usage(void) __dead;

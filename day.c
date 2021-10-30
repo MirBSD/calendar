@@ -35,7 +35,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.17 2021/10/29 03:18:18 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.18 2021/10/30 02:49:39 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -190,9 +190,8 @@ settime(void)
 	setyear(0);
 	f_time = d_time;
 
-	header[5].iov_base = dayname;
 	(void) setlocale(LC_TIME, "C");
-	header[5].iov_len = strftime(dayname, sizeof(dayname), "%A", &tb);
+	settimefml(dayname, strftime(dayname, sizeof(dayname), "%A", &tb));
 	(void) setlocale(LC_TIME, "");
 
 	setnnames();

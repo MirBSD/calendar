@@ -53,19 +53,19 @@
 #include <unistd.h>
 #include <limits.h>
 
-#ifndef ioweg
-#define ioweg iovec /* cf. MirBSD writev(2) manpage; do NOT move! */
-#endif
-
 #include "pathnames.h"
 #include "calendar.h"
 
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.30 2021/10/29 03:18:18 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.31 2021/10/30 02:49:39 tg Exp $");
 
-struct ioweg header[] = {
+#ifndef ioweg
+#define ioweg iovec /* cf. MirBSD writev(2) manpage */
+#endif
+
+static struct ioweg header[] = {
 	{ "From: ", 6 },
 	{ NULL, 0 },
 	{ " (Reminder Service)\nTo: ", 24 },
@@ -99,6 +99,13 @@ struct extrainfo {
 
 static void cvtextra(struct extrainfo *, char *, char **);
 static void cvtmatch(struct extrainfo *, struct match *, const char *);
+
+void
+settimefml(const char *dayname, size_t len)
+{
+	header[5].iov_base = dayname;
+	header[5].iov_len = len;
+}
 
 void
 cal(void)
