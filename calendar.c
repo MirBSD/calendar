@@ -57,7 +57,7 @@ __IDSTRING(pathnames_h, PATHNAMES_H);
 __IDSTRING(calendar_h, CALENDAR_H);
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.10 2021/10/29 02:32:40 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.11 2021/10/31 23:05:33 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
@@ -81,6 +81,7 @@ main(int argc, char *argv[])
 {
 	int ch;
 	char *caldir;
+	int daysAB = 0;
 
 	(void)setlocale(LC_ALL, "");
 
@@ -112,10 +113,13 @@ main(int argc, char *argv[])
 
 		case 'A': /* days after current date */
 			f_dayAfter = atoi(optarg);
+			daysAB = 1;
 			break;
 
 		case 'B': /* days before current date */
 			f_dayBefore = atoi(optarg);
+			if (f_dayBefore)
+				daysAB = 1;
 			break;
 
 		default:
@@ -137,7 +141,7 @@ main(int argc, char *argv[])
 		f_time -= 86400 * f_dayBefore;
 		f_dayBefore = 0;
 	}
-	settime();
+	settime(daysAB);
 
 	if (doall) {
 		pid_t kid, deadkid;

@@ -35,7 +35,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.18 2021/10/30 02:49:39 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.19 2021/10/31 23:05:33 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -178,17 +178,17 @@ setyear(unsigned int y)
 		cumdays1 = daytab[1];
 	else
 		cumdays1 = daytab[0];
-	/* Friday displays Monday's events */
-	offset1 = tb.tm_wday == 5 ? 3 : 1;
-	if (f_dayAfter)
-		offset1 = 0;	/* Except not when range is set explicitly */
 }
 
 void
-settime(void)
+settime(int offset_specified)
 {
 	setyear(0);
 	f_time = d_time;
+	/* Friday displays Monday's events */
+	offset1 = tb.tm_wday == 5 ? 3 : 1;
+	if (offset_specified)
+		offset1 = 0;	/* Except not when range is set explicitly */
 
 	(void) setlocale(LC_TIME, "C");
 	settimefml(dayname, strftime(dayname, sizeof(dayname), "%A", &tb));
