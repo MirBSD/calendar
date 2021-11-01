@@ -44,6 +44,7 @@
 #ifdef UNICODE
 #define _ALL_SOURCE
 #include <iconv.h>
+#include <langinfo.h>
 #endif
 #include <locale.h>
 #include <pwd.h>
@@ -65,7 +66,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.41 2021/11/01 02:34:49 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.43 2021/11/01 05:22:25 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -89,7 +90,7 @@ static struct ioweg header[] = {
 };
 
 #ifdef UNICODE
-iconv_t s_conv;
+iconv_t s_conv = (iconv_t)-1;
 #endif
 
 #define EXTRAINFO_ZONELEN (64U - 5U * sizeof(int) - 1U)
@@ -113,6 +114,63 @@ settimefml(char *dayname, size_t len)
 	header[5].iov_len = len;
 }
 
+#ifdef UNICODE
+static void
+openconv(const char *cs)
+{
+	if (!cs || *cs == '\0' || !strcasecmp(cs, "utf8") ||
+	    !strcasecmp(cs, "UTF-8") || !strcasecmp(cs, "ASCII") ||
+	    !strcasecmp(cs, "ANSI_X3.4-1968")) {
+		s_conv = (iconv_t)-1;
+		return;
+	}
+#ifdef USE_GLIBC_ICONV
+	/* needed due to lack of __iconv() */
+	s_conv = iconv_open("UTF-8//TRANSLIT", cs);
+#else
+	s_conv = iconv_open("UTF-8", cs);
+#endif
+}
+
+char *
+touni(char *np)
+{
+	static char cvtdstbuf[2048 * 4 + 1];
+
+	return (toutf(np, cvtdstbuf, sizeof(cvtdstbuf)));
+}
+
+char *
+toutf(char *np, char *bp, size_t blen)
+{
+#ifdef USE_GLIBC_ICONV
+	char *src;
+#else
+	const char *src;
+#endif
+	char *dst;
+	size_t slen, dlen;
+
+	if (s_conv == (iconv_t)-1)
+		return (np);
+
+	src = np;
+	slen = strlen(np);
+	dst = bp;
+	dlen = blen;
+#ifdef USE_GLIBC_ICONV
+	/* using //IGNORE (or //TRANSLIT) in iconv_open DTRT */
+	iconv(s_conv, &src, &slen, &dst, &dlen);
+#else
+	__iconv(s_conv, &src, &slen, &dst, &dlen, 1, NULL);
+#endif
+	*dst = '\0';
+	if (slen)
+		strlcat(bp, src, blen);
+	return (bp);
+}
+#endif
+
 void
 cal(void)
 {
@@ -121,9 +179,6 @@ cal(void)
 	FILE *fp;
 	int ch, l, i, bodun = 0, bodun_maybe = 0;
 	char buf[2048 + 1], *prefix = NULL;
-#ifdef UNICODE
-	char buf2[2048 * 4 + 1];
-#endif
 	struct event *events, *cur_evt, *ev1 = NULL, *tmp;
 	size_t nlen;
 	const char *hfyear[3] = {
@@ -141,46 +196,49 @@ cal(void)
 	if (parsecvt)
 		if (chdir("/usr/share/zoneinfo"))
 			warn("cannot verify timezones");
+#ifdef UNICODE
 	s_conv = (iconv_t)-1;
+#endif
 	for (printing = 0; fgets(buf, sizeof(buf), stdin) != NULL;) {
-		if ((p = strchr(buf, '\n')) != NULL)
+		char *lp = buf;
+
+		if ((p = strchr(lp, '\n')) != NULL)
 			*p = '\0';
 		else
 			while ((ch = getchar()) != '\n' && ch != EOF);
-		for (l = strlen(buf); l > 0 && isspace(buf[l - 1]); l--)
+		for (l = strlen(lp); l > 0 && isspace(lp[l - 1]); l--)
 			;
-		buf[l] = '\0';
-		if (buf[0] == '\0')
+		lp[l] = '\0';
+		if (lp[0] == '\0')
 			continue;
-		if (strncmp(buf, "LANG=", 5) == 0) {
+		if (strncmp(lp, "LANG=", 5) == 0) {
 #ifdef UNICODE
 			{
 				const char *s_charset;
 
 				if (s_conv != (iconv_t)-1)
 					iconv_close(s_conv);
-				if ((s_charset = strchr(buf, '.')) == NULL)
-					s_charset = buf + 5;
+				if ((s_charset = strchr(lp, '.')) == NULL)
+					s_charset = lp + 5;
 				else
 					++s_charset;
 				if (s_charset[0] == 'C' && s_charset[1] == '\0')
 					++s_charset;
-				s_conv = (*s_charset == '\0') ? (iconv_t)-1 :
-#ifdef USE_GLIBC_ICONV
-				    iconv_open("UTF-8//TRANSLIT", s_charset);
-#else
-				    iconv_open("UTF-8", s_charset);
-#endif
+				openconv(s_charset);
 			}
 #endif
-			(void) setlocale(LC_ALL, buf + 5);
+			setlocale(LC_ALL, lp + 5);
+#ifdef UNICODE
+			if (s_conv == (iconv_t)-1)
+				openconv(nl_langinfo(CODESET));
+#endif
 			setnnames();
-			if (!strcmp(buf + 5, "ru_RU.KOI8-R") ||
-			    !strcmp(buf + 5, "uk_UA.KOI8-U") ||
-			    !strcmp(buf + 5, "by_BY.KOI8-B") ||
-			    !strcmp(buf + 5, "ru_RU.UTF-8") ||
-			    !strcmp(buf + 5, "uk_UA.UTF-8") ||
-			    !strcmp(buf + 5, "by_BY.UTF-8")) {
+			if (!strcmp(lp + 5, "ru_RU.KOI8-R") ||
+			    !strcmp(lp + 5, "uk_UA.KOI8-U") ||
+			    !strcmp(lp + 5, "by_BY.KOI8-B") ||
+			    !strcmp(lp + 5, "ru_RU.UTF-8") ||
+			    !strcmp(lp + 5, "uk_UA.UTF-8") ||
+			    !strcmp(lp + 5, "by_BY.UTF-8")) {
 				bodun_maybe++;
 				bodun = 0;
 				free(prefix);
@@ -190,51 +248,31 @@ cal(void)
 			continue;
 		}
 #ifdef UNICODE
-		if (s_conv != (iconv_t)-1) {
-#ifdef USE_GLIBC_ICONV
-			char *src = buf;
-#else
-			const char *src = buf;
+		lp = touni(lp);
 #endif
-			char *dst = buf2;
-			size_t slen = strlen(buf), dlen = sizeof (buf2);
-
-#ifdef USE_GLIBC_ICONV
-			/* using //IGNORE (or //TRANSLIT) in iconv_open DTRT */
-			iconv(s_conv, &src, &slen, &dst, &dlen);
-#else
-			__iconv(s_conv, &src, &slen, &dst, &dlen, 1, NULL);
-#endif
-			*dst = '\0';
-			if (slen)
-				strlcat(buf2, src, sizeof (buf2));
-		} else
-			memmove(buf2, buf, strlen(buf) + 1);
-#define buf buf2
-#endif
-		if (strncmp(buf, "CALENDAR=", 9) == 0) {
+		if (strncmp(lp, "CALENDAR=", 9) == 0) {
 			char *ep;
 
-			if (buf[9] == '\0')
+			if (lp[9] == '\0')
 				calendar = 0;
-			else if (!strcasecmp(buf + 9, "julian")) {
+			else if (!strcasecmp(lp + 9, "julian")) {
 				calendar = JULIAN;
 				errno = 0;
-				julian = strtoul(buf + 14, &ep, 10);
-				if (buf[0] == '\0' || *ep != '\0')
+				julian = strtoul(lp + 14, &ep, 10);
+				if (lp[0] == '\0' || *ep != '\0')
 					julian = 13;
 				if ((errno == ERANGE && julian == ULONG_MAX) ||
 				    julian > 14)
 					errx(1, "Julian calendar offset is too large");
-			} else if (!strcasecmp(buf + 9, "gregorian"))
+			} else if (!strcasecmp(lp + 9, "gregorian"))
 				calendar = GREGORIAN;
-			else if (!strcasecmp(buf + 9, "lunar"))
+			else if (!strcasecmp(lp + 9, "lunar"))
 				calendar = LUNAR;
-		} else if (strncmp(buf, "ANNIV=", 6) == 0) {
+		} else if (strncmp(lp, "ANNIV=", 6) == 0) {
 			anniv = 1;
-			if (buf[6] == '1' && !buf[7])
+			if (lp[6] == '1' && !lp[7])
 				continue;
-			p = buf + 6;
+			p = lp + 6;
 			for (i = 0; i < 3; ++i) {
 				if (!*p)
 					break;
@@ -253,7 +291,7 @@ cal(void)
 					}
 					/* double the % */
 					memmove(p, p - 1,
-					    sizeof(buf) - ((p - 1) - buf));
+					    sizeof(lp) - ((p - 1) - lp));
 					++p;
 				}
 				l = *p;
@@ -264,18 +302,19 @@ cal(void)
 					break;
 			}
 			continue;
-		} else if (bodun_maybe && strncmp(buf, "BODUN=", 6) == 0) {
+		} else if (bodun_maybe && strncmp(lp, "BODUN=", 6) == 0) {
 			bodun++;
 			free(prefix);
-			if ((prefix = strdup(buf + 6)) == NULL)
+			if ((prefix = strdup(lp + 6)) == NULL)
 				err(1, NULL);
 			continue;
 		}
 		/* User defined names for special events */
-		if ((p = strchr(buf, '='))) {
+		if ((p = strchr(lp, '='))) {
 			for (i = 0; i < NUMEV; i++) {
-				if (strncasecmp(buf, spev[i].name, spev[i].nlen) == 0 &&
-				    (p - buf == spev[i].nlen) && buf[spev[i].nlen + 1]) {
+				if (strncasecmp(lp, spev[i].name, spev[i].nlen) == 0 &&
+				    ((size_t)(p - lp) == spev[i].nlen) &&
+				    lp[spev[i].nlen + 1U]) {
 					p++;
 					if (spev[i].uname != NULL)
 						free(spev[i].uname);
@@ -288,16 +327,16 @@ cal(void)
 			if (i > NUMEV)
 				continue;
 		}
-		if (buf[0] != '\t') {
+		if (lp[0] != '\t') {
 			struct match *m;
 			struct extrainfo ei;
 
-			if ((p = strchr(buf, '\t')) == NULL) {
+			if ((p = strchr(lp, '\t')) == NULL) {
 				printing = 0;
 				continue;
 			}
-			cvtextra(&ei, buf, &p);
-			printing = (m = isnow(buf, bodun)) ? 1 : 0;
+			cvtextra(&ei, lp, &p);
+			printing = (m = isnow(lp, bodun)) ? 1 : 0;
 			if (printing) {
 				struct match *foo;
 
@@ -346,20 +385,17 @@ cal(void)
 			size_t olen;
 
 			if (parsecvt)
-				puts(buf);
+				puts(lp);
 			olen = strlen(ev1->ldesc);
-			nlen = strlen(buf);
+			nlen = strlen(lp);
 			if (!(ev1->ldesc = realloc(ev1->ldesc,
 			    olen + 1U + nlen + 1U)))
 				err(1, NULL);
 			ev1->ldesc[olen] = '\n';
-			memcpy(ev1->ldesc + (olen + 1U), buf, nlen);
+			memcpy(ev1->ldesc + (olen + 1U), lp, nlen);
 			ev1->ldesc[olen + 1U + nlen] = '\0';
 		}
 	}
-#ifdef UNICODE
-#undef buf
-#endif
 	tmp = parsecvt ? NULL : events;
 	while (tmp) {
 		if (!anniv) {
