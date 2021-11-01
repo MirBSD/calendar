@@ -57,7 +57,7 @@ __IDSTRING(pathnames_h, PATHNAMES_H);
 __IDSTRING(calendar_h, CALENDAR_H);
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.11 2021/10/31 23:05:33 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.12 2021/11/01 00:46:39 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
@@ -74,7 +74,7 @@ int f_dayBefore = 0; /* days before current date */
 
 struct specialev spev[NUMEV];
 
-void childsig(int);
+static void childsig(int);
 
 int
 main(int argc, char *argv[])
@@ -99,7 +99,7 @@ main(int argc, char *argv[])
 			break;
 
 		case 'f': /* other calendar file */
-		        calendarFile = optarg;
+			calendarFile = optarg;
 			break;
 
 		case 'P': /* parse/convert mode */
@@ -133,7 +133,7 @@ main(int argc, char *argv[])
 
 	/* use current time */
 	if (f_time <= 0)
-	    (void)time(&f_time);
+		(void)time(&f_time);
 
 	if (f_dayBefore) {
 		/* Move back in time and only look forwards */
@@ -246,14 +246,14 @@ main(int argc, char *argv[])
 			runningkids--;
 		}
 		if (runningkids)
-			warnx(
-"%d child processes still running when 'calendar -a' finished", runningkids);
-	}
-	else if ((caldir = getenv("CALENDAR_DIR")) != NULL) {
-		if(!chdir(caldir))
-			cal();
-	} else
+			warnx("%d child processes still running when 'calendar -a' finished",
+			    runningkids);
+	} else {
+		if ((caldir = getenv("CALENDAR_DIR")) != NULL &&
+		    chdir(caldir))
+			err(1, "chdir");
 		cal();
+	}
 
 	exit(0);
 }
