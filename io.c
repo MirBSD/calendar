@@ -65,7 +65,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.38 2021/11/01 01:46:37 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.39 2021/11/01 01:56:04 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -191,6 +191,11 @@ cal(void)
 		}
 #ifdef UNICODE
 		if (s_conv != (iconv_t)-1) {
+#ifdef USE_GLIBC_ICONV
+			char *src = buf;
+#else
+			const char *src = buf;
+#endif
 			const char *src = buf;
 			char *dst = buf2;
 			size_t slen = strlen(buf), dlen = sizeof (buf2);
