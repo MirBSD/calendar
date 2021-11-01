@@ -68,7 +68,7 @@ __IDSTRING(pathnames_h, PATHNAMES_H);
 __IDSTRING(calendar_h, CALENDAR_H);
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.16 2021/11/01 01:23:17 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.17 2021/11/01 20:51:04 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
@@ -202,15 +202,18 @@ main(int argc, char *argv[])
 				if (userswitch(pw))
 					err(1, "unable to set user context (uid %u)",
 					    pw->pw_uid);
+				caldir = NULL; /* for bitching compilers */
+				if (acstat && !(caldir = strdup(pw->pw_dir)))
+					err(1, NULL);
+				endpwent();
 				if (acstat) {
-					if (chdir(pw->pw_dir) ||
+					if (chdir(caldir) ||
 					    stat(calendarFile, &sbuf) != 0 ||
 					    chdir(calendarHome) ||
 					    stat(calendarNoMail, &sbuf) == 0 ||
 					    stat(calendarFile, &sbuf) != 0)
 						exit(0);
 				}
-				endpwent();
 				cal();
 				exit(0);
 			}
