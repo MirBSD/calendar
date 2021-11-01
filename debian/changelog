@@ -1,3 +1,10 @@
+calendar-mirbsd (20211101) UNRELEASED; urgency=medium
+
+  * Merge from MirBSD CVS HEAD:
+    • another fix to endpwent(3) calling
+
+ -- Thorsten Glaser <tg@mirbsd.de>  Mon, 01 Nov 2021 22:09:18 +0100
+
 calendar-mirbsd (20211031) wtf; urgency=low
 
   * Initial package.
