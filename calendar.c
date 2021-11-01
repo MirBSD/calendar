@@ -58,9 +58,8 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 
 #include "pathnames.h"
 #include "calendar.h"
-#ifdef USE_CUSTOM_USERSWITCH
-#include "userswitch.h"
-#else
+
+#ifndef USE_CUSTOM_USERSWITCH
 #define userswitch(pw)	setusercontext(NULL, (pw), (pw)->pw_uid, \
 			    LOGIN_SETALL ^ LOGIN_SETLOGIN)
 #endif
@@ -69,7 +68,7 @@ __IDSTRING(pathnames_h, PATHNAMES_H);
 __IDSTRING(calendar_h, CALENDAR_H);
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.15 2021/11/01 01:22:17 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.16 2021/11/01 01:23:17 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
