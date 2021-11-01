@@ -1,7 +1,7 @@
 /*
  * Birthday
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.birthday,v 1.3 2020/10/31 01:57:56 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.birthday,v 1.4 2021/11/01 00:35:53 tg Exp $
  * $OpenBSD: calendar.birthday,v 1.29 2005/06/23 21:29:47 mickey Exp $
  */
 
@@ -141,6 +141,7 @@
 04/22	Kant born, 1724
 04/22	Lenin born, the best friend of all the children, 1870
 04/23	Shakespeare born, 1564
+04/27	Samuel Morse born, the inventor of the single wire telegraph, 1791
 04/28	James Monroe born, 1758
 04/28	Mussolini executed, 1945
 04/29	Jules Henri Poincare born, 1854, founder of topology
@@ -270,6 +271,7 @@
 10/31	Dale Evans born, 1912
 11/01	Joseph Stalin's burial, 1961
 11/02	Daniel Boone born near Reading, PA, 1734
+11/03	John Montague, 4th Earl of Sandwich, born, 1718
 11/04	King William III of Orange born, 1650
 11/05	Roy Rogers born, 1912
 11/09	Carl Sagan born, 1934
