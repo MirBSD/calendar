@@ -57,7 +57,7 @@ __IDSTRING(pathnames_h, PATHNAMES_H);
 __IDSTRING(calendar_h, CALENDAR_H);
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.12 2021/11/01 00:46:39 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.13 2021/11/01 00:50:49 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
@@ -200,6 +200,7 @@ main(int argc, char *argv[])
 					    stat(calendarFile, &sbuf) != 0)
 						exit(0);
 				}
+				endpwent();
 				cal();
 				exit(0);
 			}
@@ -239,6 +240,7 @@ main(int argc, char *argv[])
 				errx(2, "'calendar -a' took more than a day; stopped at uid %u",
 				    pw->pw_uid);
 		}
+		endpwent();
 		for (;;) {
 			deadkid = waitpid(-1, &kidstat, WNOHANG);
 			if (deadkid <= 0)
