@@ -32,7 +32,7 @@
  */
 
 #ifndef CALENDAR_H
-#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.13 2021/11/01 05:19:36 tg Exp $"
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.14 2021/11/01 05:22:25 tg Exp $"
 
 extern struct passwd *pw;
 extern unsigned char doall;
@@ -44,7 +44,7 @@ extern const char *calendarHome;
 
 struct fixs {
 	char *name;
-	int len;
+	size_t len;
 };
 
 struct event {
@@ -70,9 +70,9 @@ struct match {
 
 struct specialev {
 	char *name;
-	int nlen;
+	size_t nlen;
 	char *uname;
-	int ulen;
+	size_t ulen;
 	int (*getev)(int);
 };
 

@@ -66,7 +66,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.42 2021/11/01 05:19:36 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.43 2021/11/01 05:22:25 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -313,7 +313,8 @@ cal(void)
 		if ((p = strchr(lp, '='))) {
 			for (i = 0; i < NUMEV; i++) {
 				if (strncasecmp(lp, spev[i].name, spev[i].nlen) == 0 &&
-				    (p - lp == spev[i].nlen) && lp[spev[i].nlen + 1]) {
+				    ((size_t)(p - lp) == spev[i].nlen) &&
+				    lp[spev[i].nlen + 1U]) {
 					p++;
 					if (spev[i].uname != NULL)
 						free(spev[i].uname);
