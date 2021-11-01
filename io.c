@@ -57,10 +57,14 @@
 #include "pathnames.h"
 #include "calendar.h"
 
+#ifdef MBSDPORT_H
+#include MBSDPORT_H
+#endif
+
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.34 2021/11/01 00:22:18 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.35 2021/11/01 01:22:18 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */

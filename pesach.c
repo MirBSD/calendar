@@ -21,7 +21,11 @@
 
 #include "calendar.h"
 
-__RCSID("$MirOS: src/usr.bin/calendar/pesach.c,v 1.3 2021/10/29 02:32:41 tg Exp $");
+#ifdef MBSDPORT_H
+#include MBSDPORT_H
+#endif
+
+__RCSID("$MirOS: src/usr.bin/calendar/pesach.c,v 1.4 2021/11/01 01:22:18 tg Exp $");
 
 /* Calculate the Julian date of Pesach using the Gauss formula */
 

@@ -31,11 +31,15 @@
  * SUCH DAMAGE.
  */
 
+#ifdef MBSDPORT_H
+#include MBSDPORT_H
+#endif
+
 #include <sys/cdefs.h>
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.19 2021/10/31 23:05:33 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.20 2021/11/01 01:22:17 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>

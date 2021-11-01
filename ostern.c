@@ -31,7 +31,11 @@
 
 #include "calendar.h"
 
-__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.5 2021/10/29 02:35:33 tg Exp $");
+#ifdef MBSDPORT_H
+#include MBSDPORT_H
+#endif
+
+__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.6 2021/11/01 01:22:18 tg Exp $");
 
 /* return year day for Easter */
 

@@ -31,6 +31,10 @@
  * SUCH DAMAGE.
  */
 
+#ifdef MBSDPORT_H
+#include MBSDPORT_H
+#endif
+
 #include <sys/cdefs.h>
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
@@ -65,7 +69,7 @@ __IDSTRING(pathnames_h, PATHNAMES_H);
 __IDSTRING(calendar_h, CALENDAR_H);
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.14 2021/11/01 00:54:48 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.15 2021/11/01 01:22:17 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
