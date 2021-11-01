@@ -39,7 +39,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.21 2021/11/01 01:52:39 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.22 2021/11/01 02:23:30 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -98,6 +98,8 @@ setnnames(void)
 	char buf[80];
 	int i, l;
 	struct tm tm;
+
+	memcpy(&tm, &tb, sizeof(struct tm));
 
 	for (i = 0; i < 7; i++) {
 		tm.tm_wday = i;
