@@ -41,7 +41,9 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 #include <err.h>
 #include <errno.h>
 #include <locale.h>
+#ifndef USE_CUSTOM_USERSWITCH
 #include <login_cap.h>
+#endif
 #include <pwd.h>
 #include <signal.h>
 #include <stdio.h>
@@ -52,12 +54,18 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 
 #include "pathnames.h"
 #include "calendar.h"
+#ifdef USE_CUSTOM_USERSWITCH
+#include "userswitch.h"
+#else
+#define userswitch(pw)	setusercontext(NULL, (pw), (pw)->pw_uid, \
+			    LOGIN_SETALL ^ LOGIN_SETLOGIN)
+#endif
 
 __IDSTRING(pathnames_h, PATHNAMES_H);
 __IDSTRING(calendar_h, CALENDAR_H);
 
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.13 2021/11/01 00:50:49 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.14 2021/11/01 00:54:48 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */
@@ -188,8 +196,7 @@ main(int argc, char *argv[])
 				continue;
 			case 0:	/* child */
 				(void)setlocale(LC_ALL, "");
-				if (setusercontext(NULL, pw, pw->pw_uid,
-				    LOGIN_SETALL ^ LOGIN_SETLOGIN))
+				if (userswitch(pw))
 					err(1, "unable to set user context (uid %u)",
 					    pw->pw_uid);
 				if (acstat) {
