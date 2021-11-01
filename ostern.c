@@ -29,13 +29,13 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "calendar.h"
-
 #ifdef MBSDPORT_H
 #include MBSDPORT_H
 #endif
 
-__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.6 2021/11/01 01:22:18 tg Exp $");
+#include "calendar.h"
+
+__RCSID("$MirOS: src/usr.bin/calendar/ostern.c,v 1.7 2021/11/01 01:34:01 tg Exp $");
 
 /* return year day for Easter */
 

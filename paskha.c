@@ -28,13 +28,13 @@
 
 #include <stdio.h>
 
-#include "calendar.h"
-
 #ifdef MBSDPORT_H
 #include MBSDPORT_H
 #endif
 
-__RCSID("$MirOS: src/usr.bin/calendar/paskha.c,v 1.5 2021/11/01 01:22:18 tg Exp $");
+#include "calendar.h"
+
+__RCSID("$MirOS: src/usr.bin/calendar/paskha.c,v 1.6 2021/11/01 01:34:01 tg Exp $");
 
 /* return year day for Orthodox Easter using Gauss formula */
 /* (new style result); subtract 13 for old style */
