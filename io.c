@@ -65,7 +65,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.40 2021/11/01 02:03:37 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.41 2021/11/01 02:34:49 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -343,12 +343,18 @@ cal(void)
 				}
 			}
 		} else if (printing) {
+			size_t olen;
+
 			if (parsecvt)
 				puts(buf);
-			nlen = strlen(ev1->ldesc) + strlen(buf) + 2;
-			if ((ev1->ldesc = realloc(ev1->ldesc, nlen)) == NULL)
+			olen = strlen(ev1->ldesc);
+			nlen = strlen(buf);
+			if (!(ev1->ldesc = realloc(ev1->ldesc,
+			    olen + 1U + nlen + 1U)))
 				err(1, NULL);
-			snprintf(ev1->ldesc, nlen, "%s\n%s", ev1->ldesc, buf);
+			ev1->ldesc[olen] = '\n';
+			memcpy(ev1->ldesc + (olen + 1U), buf, nlen);
+			ev1->ldesc[olen + 1U + nlen] = '\0';
 		}
 	}
 #ifdef UNICODE
