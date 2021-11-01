@@ -1,0 +1,6 @@
+calendar-mirbsd (20211031) wtf; urgency=low
+
+  * Initial package.
+  * Note that it suffers from #998206 like the Debian calendar package
+
+ -- Thorsten Glaser <tg@mirbsd.de>  Sun, 31 Oct 2021 23:48:32 +0100

@@ -1,0 +1,9 @@
+/* put as ~/.etc/calendar/calendar */
+/* From MirOS: src/etc/skel/calendar,v 1.4 2009/08/28 22:53:20 tg Exp $ */
+
+#ifdef UNICODE
+#undef _calendar_noallcharsets
+#else
+#define _calendar_noallcharsets
+#endif
+#include <calendar.all>

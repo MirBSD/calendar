@@ -1,0 +1,10 @@
+# these are iconv(3)’d on the fly
+calendar-mirbsd: national-encoding usr/share/calendar/*.ISO_8859-*/*
+calendar-mirbsd: national-encoding usr/share/calendar/*.ISO8859-*/*
+calendar-mirbsd: national-encoding usr/share/calendar/*.KOI8-*/*
+
+# lintian bug #966316
+calendar-mirbsd: acute-accent-in-manual-page usr/share/man/man1/calendar.1.gz:38
+
+# I somehow doubt these are the target audience…
+calendar-mirbsd: missing-systemd-timer-for-cron-script

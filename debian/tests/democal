@@ -1,0 +1,58 @@
+#!/bin/sh
+
+rv=0
+calendar -f test.cal -t 20210301 -A 367 >"$AUTOPKGTEST_TMP/1" || {
+	echo Normal mode command failed
+	rv=1
+}
+calendar -f test.cal -P >"$AUTOPKGTEST_TMP/2" || {
+	echo Parse mode command failed
+	rv=1
+}
+calendar -f test.cal -PP >"$AUTOPKGTEST_TMP/3" || {
+	echo Conversion mode command failed
+	rv=1
+}
+echo Normal mode
+diff -u "$AUTOPKGTEST_TMP/1" debian/testcmp.1; c=$?
+case $c in
+(0)
+	;;
+(1)
+	echo '^^^ there were differences ^^^'
+	rv=1 ;;
+(*)
+	echo '*** ENCOUNTERED AN INTERNAL ERROR ***'
+	rv=1 ;;
+esac
+echo Parse mode
+diff -u "$AUTOPKGTEST_TMP/2" debian/testcmp.2; c=$?
+case $c in
+(0)
+	;;
+(1)
+	echo '^^^ there were differences ^^^'
+	rv=1 ;;
+(*)
+	echo '*** ENCOUNTERED AN INTERNAL ERROR ***'
+	rv=1 ;;
+esac
+echo Conversion mode
+diff -u "$AUTOPKGTEST_TMP/3" debian/testcmp.3; c=$?
+case $c in
+(0)
+	;;
+(1)
+	echo '^^^ there were differences ^^^'
+	rv=1 ;;
+(*)
+	echo '*** ENCOUNTERED AN INTERNAL ERROR ***'
+	rv=1 ;;
+esac
+if test x"$rv" = x"0"; then
+	echo All OK.
+	exit 0
+fi
+echo
+echo There were errors.
+exit 1

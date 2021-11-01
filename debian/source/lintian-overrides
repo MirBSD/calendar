@@ -1,0 +1,8 @@
+# deliberately added for reference
+calendar-mirbsd source: upstream-metadata-in-native-source
+
+# yeah…
+calendar-mirbsd source: cute-field
+
+# we prefer human-readable copyright
+calendar-mirbsd source: no-dep5-copyright

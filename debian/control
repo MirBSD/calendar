@@ -1,0 +1,37 @@
+Source: calendar-mirbsd
+Section: utils
+Priority: optional
+Maintainer: Thorsten Glaser <tg@mirbsd.de>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.5.1
+Rules-Requires-Root: no
+VCS-git: https://github.com/MirBSD/calendar -b debian
+VCS-Browser: https://github.com/MirBSD/calendar
+
+Package: calendar-mirbsd
+Architecture: any
+Multi-Arch: foreign
+Depends: ${shlibs:Depends}, ${misc:Depends}, cpp
+Recommends: anacron | cron, default-mta | mail-transport-agent
+Provides: calendar
+Conflicts: calendar
+Replaces: calendar, bsdmainutils (<< 12.1.1~)
+Breaks: bsdmainutils (<< 12.1.1~)
+Description: display upcoming events and provide reminders
+ This package provides the MirBSD implementation of calendar(1)
+ which displays dates of relevance from a per-user calendar file,
+ with optional nightly reminders emailed to the user, offering an
+ amount of pre-populated calendars to include. This implementation
+ additionally contains everything needed to export to other formats
+ such as iCalendar (*.ics) by means of an output script, such as:
+ https://github.com/mirabilos/ev-useful/tree/master/cal2ics
+ .
+ The set of shipped calendars differs from Debian's calendar package.
+ A lot of that is an unfortunate regression; you'd want to install
+ calendar-mirbsd over calendar mostly when desiring those new Advent
+ calculation, iconv and conversion features. Otherwise, feel free to
+ populate your local per-user calendar from anywhere.
+ .
+ Sending nightly reminder mails to users with a calendar is enabled
+ by default, although there is no default calendar like in the stock
+ Debian package; one is provided as example (not skeleton file) here.

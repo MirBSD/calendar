@@ -1,0 +1,64 @@
+#!/usr/bin/make -f
+
+ifeq (,$(filter terse,${DEB_BUILD_OPTIONS}))
+export DH_VERBOSE=1
+export V=1
+export VERBOSE=1
+endif
+
+LC_ALL:=C
+export LC_ALL
+
+shellescape='$(subst ','\'',$(1))'
+shellexport=$(1)=$(call shellescape,${$(1)})
+
+include /usr/share/dpkg/buildtools.mk
+
+OUR_CPPFLAGS:=
+OUR_CFLAGS:=
+OUR_LDFLAGS:=
+
+ifneq (,$(filter debug,${DEB_BUILD_OPTIONS}))
+OUR_CFLAGS+=	-Og -g3
+endif
+
+OUR_CFLAGS+=	-Wall -Wextra -Wformat
+OUR_CPPFLAGS+=	-DUNICODE
+OUR_CPPFLAGS+=	-I. -DMBSDPORT_H=\"debian/port/port.h\"
+OUR_CPPFLAGS+=	-DUSE_CUSTOM_USERSWITCH
+OUR_CPPFLAGS+=	-DUSE_GLIBC_ICONV
+
+dpkgbuildflagsmkescape=$(subst \,\\\,$(1))
+export DEB_BUILD_MAINT_OPTIONS:=hardening=+all
+export DEB_CPPFLAGS_MAINT_APPEND:=$(call dpkgbuildflagsmkescape,${OUR_CPPFLAGS})
+export DEB_CFLAGS_MAINT_APPEND:=$(call dpkgbuildflagsmkescape,${OUR_CFLAGS})
+export DEB_LDFLAGS_MAINT_APPEND:=$(call dpkgbuildflagsmkescape,${OUR_LDFLAGS})
+include /usr/share/dpkg/buildflags.mk
+
+%:
+	dh $@ -Snone
+
+execute_before_dh_auto_clean:
+	-rm -rf CVS */CVS */*/CVS
+	-rm -rf debian/testtmp
+	-rm -f *.o libcalendar.a calendar
+
+override_dh_auto_build:
+	dh_testdir
+	-rm -f *.o libcalendar.a calendar
+	${CC} ${CPPFLAGS} ${CFLAGS} -c -o calendar.o calendar.c
+	${CC} ${CPPFLAGS} ${CFLAGS} -c -o io.o io.c
+	${CC} ${CPPFLAGS} ${CFLAGS} -c -o day.o day.c
+	${CC} ${CPPFLAGS} ${CFLAGS} -c -o pesach.o pesach.c
+	${CC} ${CPPFLAGS} ${CFLAGS} -c -o ostern.o ostern.c
+	${CC} ${CPPFLAGS} ${CFLAGS} -c -o paskha.o paskha.c
+	${CC} ${CPPFLAGS} ${CFLAGS} -c -o strlcat.o debian/port/strlcat.c
+	${AR} rc libcalendar.a io.o day.o pesach.o ostern.o paskha.o strlcat.o
+	${RANLIB} libcalendar.a
+	${CC} ${CFLAGS} ${LDFLAGS} -o calendar calendar.o -L. -lcalendar ${LDADD}
+	test -x calendar
+
+override_dh_auto_test:
+	-rm -rf debian/testtmp
+	mkdir debian/testtmp
+	PATH=$$(pwd):$$PATH AUTOPKGTEST_TMP=debian/testtmp debian/tests/democal

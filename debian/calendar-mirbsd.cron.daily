@@ -1,0 +1,17 @@
+#!/bin/sh
+#-
+# chmod -x /etc/cron.daily/calendar-mirbsd  # to disable
+# chmod +x /etc/cron.daily/calendar-mirbsd  # to re-enable
+
+test -x /usr/sbin/sendmail || {
+	logger -t cron.daily/calendar-mirbsd no MTA found
+	exit 0
+}
+
+test -x /usr/bin/cpp || {
+	echo >&2 'cron.daily/calendar-mirbsd: cpp(1) needed'
+	exit 1
+}
+
+logger -t cron.daily/calendar-mirbsd running for everyone
+exec /usr/bin/calendar -a

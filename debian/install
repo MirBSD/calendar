@@ -1,0 +1,6 @@
+calendar usr/bin/
+calendars/calendar.* usr/share/calendar/
+calendars/de_DE.ISO_8859-1/calendar.* usr/share/calendar/de_DE.ISO_8859-1/
+calendars/fr_FR.ISO8859-1/calendar.* usr/share/calendar/fr_FR.ISO8859-1/
+calendars/hr_HR.ISO_8859-2/calendar.* usr/share/calendar/hr_HR.ISO_8859-2/
+calendars/ru_RU.KOI8-R/calendar.* usr/share/calendar/ru_RU.KOI8-R/
