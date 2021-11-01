@@ -32,7 +32,7 @@
  */
 
 #ifndef CALENDAR_H
-#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.12 2021/11/01 01:57:20 tg Exp $"
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.13 2021/11/01 05:19:36 tg Exp $"
 
 extern struct passwd *pw;
 extern unsigned char doall;
@@ -97,6 +97,13 @@ void	 usage(void) __dead;
 int	 foy(int);
 void	 variable_weekday(int *, int, int);
 void	 setnnames(void);
+#ifdef UNICODE
+char	*touni(char *);
+char	*toutf(char *, char *, size_t);
+#else
+#define touni(x)	(x)
+#define toutf(x,y,z)	(x)
+#endif
 
 /* some flags */
 #define	F_ISMONTH	0x01 /* month (Januar ...) */

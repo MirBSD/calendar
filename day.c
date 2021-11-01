@@ -39,7 +39,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.22 2021/11/01 02:23:30 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.23 2021/11/01 05:19:36 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -109,9 +109,9 @@ setnnames(void)
 		buf[l] = '\0';
 		if (ndays[i].name != NULL)
 			free(ndays[i].name);
-		if ((ndays[i].name = strdup(buf)) == NULL)
+		if ((ndays[i].name = strdup(touni(buf))) == NULL)
 			err(1, NULL);
-		ndays[i].len = strlen(buf);
+		ndays[i].len = strlen(ndays[i].name);
 
 		l = strftime(buf, sizeof(buf), "%A", &tm);
 		for (; l > 0 && isspace((int)buf[l - 1]); l--)
@@ -119,9 +119,9 @@ setnnames(void)
 		buf[l] = '\0';
 		if (fndays[i].name != NULL)
 			free(fndays[i].name);
-		if ((fndays[i].name = strdup(buf)) == NULL)
+		if ((fndays[i].name = strdup(touni(buf))) == NULL)
 			err(1, NULL);
-		fndays[i].len = strlen(buf);
+		fndays[i].len = strlen(fndays[i].name);
 	}
 
 	for (i = 0; i < 12; i++) {
@@ -132,9 +132,9 @@ setnnames(void)
 		buf[l] = '\0';
 		if (nmonths[i].name != NULL)
 			free(nmonths[i].name);
-		if ((nmonths[i].name = strdup(buf)) == NULL)
+		if ((nmonths[i].name = strdup(touni(buf))) == NULL)
 			err(1, NULL);
-		nmonths[i].len = strlen(buf);
+		nmonths[i].len = strlen(nmonths[i].name);
 
 		l = strftime(buf, sizeof(buf), "%B", &tm);
 		for (; l > 0 && isspace((int)buf[l - 1]); l--)
@@ -142,9 +142,9 @@ setnnames(void)
 		buf[l] = '\0';
 		if (fnmonths[i].name != NULL)
 			free(fnmonths[i].name);
-		if ((fnmonths[i].name = strdup(buf)) == NULL)
+		if ((fnmonths[i].name = strdup(touni(buf))) == NULL)
 			err(1, NULL);
-		fnmonths[i].len = strlen(buf);
+		fnmonths[i].len = strlen(fnmonths[i].name);
 	}
 	/* Hardwired special events */
 	spev[0].name = strdup(PESACH);
@@ -187,6 +187,7 @@ setyear(unsigned int y)
 		cumdays1 = daytab[0];
 }
 
+/* called only once, near beginning */
 void
 settime(int offset_specified)
 {
@@ -197,9 +198,9 @@ settime(int offset_specified)
 	if (offset_specified)
 		offset1 = 0;	/* Except not when range is set explicitly */
 
-	(void) setlocale(LC_TIME, "C");
+	setlocale(LC_ALL, "C");
 	settimefml(dayname, strftime(dayname, sizeof(dayname), "%A", &tb));
-	(void) setlocale(LC_TIME, "");
+	setlocale(LC_ALL, "");
 
 	setnnames();
 }
@@ -280,6 +281,24 @@ adjust_calendar(int *day, int *month)
 		/* not yet implemented */
 		break;
 	}
+}
+
+static void
+print_date(struct match *dst, struct tm *tp)
+{
+	char buf[32];
+#ifdef UNICODE
+	char conv[32];
+#endif
+
+	memset(buf, '\0', sizeof(buf));
+	strftime(buf, sizeof(buf),
+	/*  "%a %b %d" but skip weekdays */
+	    "%b %d", tp);
+	buf[sizeof(buf) - 1] = '\0';
+	memcpy(dst->print_date, toutf(buf, conv, sizeof(conv)),
+	    sizeof(dst->print_date));
+	dst->print_date[sizeof(dst->print_date) - 1] = '\0';
 }
 
 /*
@@ -486,11 +505,7 @@ isnow(char *endp, int bodun)
 			}
 
 			(void)mktime(&tmtmp);
-			if (strftime(tmp->print_date,
-			    sizeof(tmp->print_date),
-			/*  "%a %b %d", &tm);  Skip weekdays */
-			    "%b %d", &tmtmp) == 0)
-				tmp->print_date[sizeof(tmp->print_date) - 1] = '\0';
+			print_date(tmp, &tmtmp);
 			tmp->year  = tmtmp.tm_year + 1900;
 			tmp->var   = varp;
 			tmp->next  = NULL;
@@ -598,11 +613,7 @@ isnow(char *endp, int bodun)
 				if ((tmp = calloc(1, sizeof(struct match))) == NULL)
 					err(1, NULL);
 				tmp->when = ttmp;
-				if (strftime(tmp->print_date,
-				    sizeof(tmp->print_date),
-				/*  "%a %b %d", &tm);  Skip weekdays */
-				    "%b %d", &tmtmp) == 0)
-					tmp->print_date[sizeof(tmp->print_date) - 1] = '\0';
+				print_date(tmp, &tmtmp);
 				tmp->year  = tmtmp.tm_year + 1900;
 				tmp->bodun = bodun && tdiff == -1;
 				tmp->var   = varp;
