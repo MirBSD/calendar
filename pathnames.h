@@ -32,11 +32,15 @@
  */
 
 #ifndef PATHNAMES_H
-#define PATHNAMES_H "$MirOS: src/usr.bin/calendar/pathnames.h,v 1.3 2021/10/20 04:39:43 tg Exp $"
+#define PATHNAMES_H "$MirOS: src/usr.bin/calendar/pathnames.h,v 1.4 2021/11/01 00:22:18 tg Exp $"
 
 #include <paths.h>
 
+#ifdef __MirBSD__
 #define	_PATH_CPP	"/usr/libexec/cpp"
+#else
+#define _PATH_CPP	"/usr/bin/cpp"
+#endif
 
 			/* XXX -- fix when cpp parses arguments rationally */
 #define	_PATH_INCLUDE	"-I/usr/share/calendar"
