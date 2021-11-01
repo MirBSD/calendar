@@ -64,7 +64,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.36 2021/11/01 01:34:00 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.37 2021/11/01 01:43:20 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -165,7 +165,11 @@ cal(void)
 				if (s_charset[0] == 'C' && s_charset[1] == '\0')
 					++s_charset;
 				s_conv = (*s_charset == '\0') ? (iconv_t)-1 :
+#ifdef USE_GLIBC_ICONV
+				    iconv_open("UTF-8//TRANSLIT", s_charset);
+#else
 				    iconv_open("UTF-8", s_charset);
+#endif
 			}
 #endif
 			(void) setlocale(LC_ALL, buf + 5);
@@ -190,7 +194,12 @@ cal(void)
 			char *dst = buf2;
 			size_t slen = strlen(buf), dlen = sizeof (buf2);
 
+#ifdef USE_GLIBC_ICONV
+			/* using //IGNORE (or //TRANSLIT) in iconv_open DTRT */
+			iconv(s_conv, &src, &slen, &dst, &dlen);
+#else
 			__iconv(s_conv, &src, &slen, &dst, &dlen, 1, NULL);
+#endif
 			*dst = '\0';
 			if (slen)
 				strlcat(buf2, src, sizeof (buf2));
@@ -604,9 +613,11 @@ closecal(FILE *fp)
 
 	header[1].iov_base = header[3].iov_base = pw->pw_name;
 	header[1].iov_len = header[3].iov_len = strlen(pw->pw_name);
-	writev(pdes[1], header, 8);
+	if (writev(pdes[1], header, 8) == -1)
+		warn("writing eMail header");
 	while ((nread = read(fileno(fp), buf, sizeof(buf))) > 0)
-		(void)write(pdes[1], buf, nread);
+		if (write(pdes[1], buf, nread) == -1)
+			warn("writing eMail body");
 	(void)close(pdes[1]);
  done:
 	(void)fclose(fp);
