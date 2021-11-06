@@ -1,2 +1,2 @@
 Tests: democal
-Depends: @
+Depends: @, datefudge

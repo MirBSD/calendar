@@ -1,15 +1,17 @@
 #!/bin/sh
 
+d='datefudge 2021-11-01'
+
 rv=0
-calendar -f test.cal -t 20210301 -A 367 >"$AUTOPKGTEST_TMP/1" || {
+$d calendar -f test.cal -t 20210301 -A 367 >"$AUTOPKGTEST_TMP/1" || {
 	echo Normal mode command failed
 	rv=1
 }
-calendar -f test.cal -P >"$AUTOPKGTEST_TMP/2" || {
+$d calendar -f test.cal -P >"$AUTOPKGTEST_TMP/2" || {
 	echo Parse mode command failed
 	rv=1
 }
-calendar -f test.cal -PP >"$AUTOPKGTEST_TMP/3" || {
+$d calendar -f test.cal -PP >"$AUTOPKGTEST_TMP/3" || {
 	echo Conversion mode command failed
 	rv=1
 }
