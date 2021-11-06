@@ -92,7 +92,18 @@ __END_DECLS
 	(rndbyte % 3U);					\
 })
 
-/* causes #998206 but is same as the calendar package does */
-#define userswitch(pw)	0
+/* https://listman.redhat.com/archives/pam-list/2021-November/msg00000.html */
+
+/* better than nothing… */
+#define userswitch(pw) (						\
+	!!setresgid((pw)->pw_gid, (pw)->pw_gid, (pw)->pw_gid) ||	\
+	/*								\
+	 * not correct (should switch to user’s supplemental		\
+	 * group vector) but sufficient until someone sends		\
+	 * a workable alternative…					\
+	 */								\
+	!!setgroups(0, NULL) ||						\
+	!!setresuid((pw)->pw_uid, (pw)->pw_uid, (pw)->pw_uid)		\
+)
 
 #endif /* !DEBIAN_CALENDAR_MIRBSD_PORT_H */

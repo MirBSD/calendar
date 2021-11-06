@@ -44,6 +44,7 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 #include <sys/wait.h>
 #include <err.h>
 #include <errno.h>
+#include <grp.h>
 #include <locale.h>
 #ifndef USE_CUSTOM_USERSWITCH
 #include <login_cap.h>

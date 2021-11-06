@@ -1,9 +1,12 @@
-calendar-mirbsd (20211101) UNRELEASED; urgency=medium
+calendar-mirbsd (20211101) wtf; urgency=medium
 
-  * Merge from MirBSD CVS HEAD:
+  * Merge from CVS:
     • another fix to endpwent(3) calling
+  * Drop uid/gid/groups when switching users for “calendar -a”; at
+    least (Closes: #998206) even though no proper fix (it does not
+    load target users’ group vector, environment or whatever else)
 
- -- Thorsten Glaser <tg@mirbsd.de>  Mon, 01 Nov 2021 22:09:18 +0100
+ -- Thorsten Glaser <tg@mirbsd.de>  Sat, 06 Nov 2021 20:52:17 +0100
 
 calendar-mirbsd (20211031) wtf; urgency=low
 
