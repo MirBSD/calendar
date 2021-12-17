@@ -1,4 +1,4 @@
-.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.16 2021/11/01 00:22:17 tg Exp $
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.17 2021/12/17 15:08:04 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.29 2005/03/22 10:57:27 xsa Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
@@ -96,7 +96,7 @@
 .\" with -mandoc, it might implement .Mx itself, but we want to
 .\" use our own definition. And .Dd must come *first*, always.
 .\"
-.Dd $Mdocdate: November 1 2021 $
+.Dd $Mdocdate: December 17 2021 $
 .\"
 .\" Check which macro package we use, and do other -mdoc setup.
 .\"
@@ -390,8 +390,8 @@ mode, but the leading year is picked up by anniversary processing
 as well, and the user may appreciate this information anyway.
 A time-of-day specification shall be
 .Xo
-.Ar starttime Ns Oo Ic dash
-.Ar endtime Oc Ns Oo Ic open-bracket
+.Ar starttime Ns Oo Ic dash Ns Oo
+.Ar endtime Oc Oc Ns Oo Ic open-bracket
 .Ar timezone Ic close-bracket Oc
 .Xc
 where

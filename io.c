@@ -66,7 +66,7 @@
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.43 2021/11/01 05:22:25 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.44 2021/12/17 15:08:04 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -782,8 +782,8 @@ cvtextra(struct extrainfo *ei, char *lp, char **p)
 			} else if (ei->endh > 23 || ei->endm > 59)
 				goto nohours;
 			n += 5;
-		} else if (n != 5) {
-			/* dash, no valid hourd */
+		} else if (n != 5 && !is(n, ' ') && !is(n, '[')) {
+			/* dash, no valid hours */
 			goto nohours;
 		} else {
 			ei->endh = -1;
