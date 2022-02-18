@@ -63,10 +63,10 @@
 #include "pathnames.h"
 #include "calendar.h"
 
-__COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
-	The Regents of the University of California.  All rights reserved.\n");
+__COPYRIGHT("Copyright (c) 1989, 1993\n\
+	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.44 2021/12/17 15:08:04 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.45 2022/02/18 01:04:11 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */

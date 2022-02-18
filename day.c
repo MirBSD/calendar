@@ -36,10 +36,10 @@
 #endif
 
 #include <sys/cdefs.h>
-__COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
-	The Regents of the University of California.  All rights reserved.\n");
+__COPYRIGHT("Copyright (c) 1989, 1993\n\
+	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.23 2021/11/01 05:19:36 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.24 2022/02/18 01:04:10 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
