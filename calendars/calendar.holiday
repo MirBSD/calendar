@@ -1,7 +1,7 @@
 /*
  * Holiday
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.holiday,v 1.5 2021/11/01 00:35:53 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.holiday,v 1.6 2022/03/19 03:15:17 tg Exp $
  * $OpenBSD: calendar.holiday,v 1.14 2004/10/31 19:40:51 mickey Exp $
  */
 
@@ -94,7 +94,7 @@
 03/17	St. Patrick's Day
 03/19	St. Joseph's Day in Colombia, Costa Rica, Holy See, Liechtenstein,
 	San Marino, Spain, Venezuela
-03/19	Tree Planting Day in Lestho
+03/19	Tree Planting Day in Lesotho
 03/20	Independence Day in Tunsia
 03/20	Youth Day in Oklahoma
 03/21	Afghan New Year in Afghanistan
