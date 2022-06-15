@@ -1,7 +1,7 @@
 /*
  * Birthday
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.birthday,v 1.4 2021/11/01 00:35:53 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.birthday,v 1.5 2022/06/15 21:51:02 tg Exp $
  * $OpenBSD: calendar.birthday,v 1.29 2005/06/23 21:29:47 mickey Exp $
  */
 
@@ -174,7 +174,6 @@
 06/08	Frank Lloyd Wright born in Richland Center, Wisconsin, 1867
 06/13	Alexander the Great dies (323 BCE)
 06/14	Ernesto "Che" Guevara de la Serna born in Rosario, Argentina, 1928
-06/15	Edward (Edvard Hagerup) Grieg born in Bergen, Norway, 1843
 06/16	Hammurabi the Great dies, Babylon, 1686 BCE
 06/17	M.C. Escher born, 1898
 06/22	Carl Hubbell born, 1903

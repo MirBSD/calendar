@@ -1,7 +1,7 @@
 /*
  * Music
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.music,v 1.6 2021/11/01 00:35:53 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.music,v 1.7 2022/06/15 21:51:02 tg Exp $
  * $OpenBSD: calendar.music,v 1.17 2005/06/15 20:25:36 mickey Exp $
  */
 
@@ -154,7 +154,7 @@
 06/10	Judy Garland is born, 1922
 06/11	Richard Strauss is born in Munich, Germany, 1864
 06/15	Harry Nilsson is born in Brooklyn, 1941
-06/15	Edvard Grieg is born in Bergen, Norway, 1843
+06/15	Edward (Edvard Hagerup) Grieg is born in Bergen, Norway, 1843
 06/15	John Philip Sousa's march "The Washington Post" premiered, 1889
 06/16	The Monterey Pop festival opens, 1967
 06/17	Igor Stravinsky is born in Oranienbaum (now Lomonosov), Russia, 1882
