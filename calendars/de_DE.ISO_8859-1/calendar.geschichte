@@ -13,7 +13,7 @@
  *
  * ISBN 3-924521-59-X
  *
- * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.geschichte,v 1.4 2020/10/31 01:58:01 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.geschichte,v 1.5 2022/06/25 13:08:55 tg Exp $
  * $OpenBSD: calendar.geschichte,v 1.2 1997/08/27 11:20:38 provos Exp $
  */
 
@@ -180,7 +180,7 @@ LANG=de_DE.ISO_8859-1
 04/21	Zwangsvereinigung von KPD und SPD zur SED, 1946
 05/14	Gründung der Warschauer Paktes, 1955
 06/17	Arbeiteraufstand am 17. Juni 1953
-06/25	Begin der Korea-Krieges, 1950
+06/25	Begin des Korea-Krieges, 1950
 08/13	Bau der Berliner Mauer, 1961
 08/21	Einmarsch des Warschauer Pakts in die Tschechoslowakei, 1968
 10/03	Offizielles Ende der DDR :-)
