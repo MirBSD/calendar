@@ -1,7 +1,7 @@
 /*
  * Holiday
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.holiday,v 1.6 2022/03/19 03:15:17 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.holiday,v 1.7 2023/03/06 02:06:13 tg Exp $
  * $OpenBSD: calendar.holiday,v 1.14 2004/10/31 19:40:51 mickey Exp $
  */
 
@@ -73,7 +73,6 @@
 03/04	Vermont Admission Day (admitted as 14th state in 1791)
 03/05	Independence Day in Equatorial Guinea
 03/06	Lantern Day, Beijing
-03/07*	Purim - Feast of Lots
 03/08	First Annual International Women's Day, 1909
 03/08	International Women's Day in U.S.S.R.
 03/08	Syrian National Day in Libyan Arab Republic
