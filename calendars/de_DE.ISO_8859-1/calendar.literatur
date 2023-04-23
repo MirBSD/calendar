@@ -1,7 +1,7 @@
 /*
  * Literatur
  *
- * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.literatur,v 1.4 2021/10/27 17:53:03 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.literatur,v 1.5 2023/04/23 15:16:41 tg Exp $
  * $OpenBSD: calendar.literatur,v 1.4 2002/10/15 20:48:30 markus Exp $
  */
 
@@ -38,7 +38,7 @@ LANG=de_DE.ISO_8859-1
 
 /* Verlage */
 03/09	"die tageszeitung" als erste täglich aktualisierte deutsche
-	Tageszeitung im WWW, 1995, Betatest, vollständige Ausgabe
+	Tageszeitung im WWW, Betatest, vollständige Ausgabe, 1995
 05/05	Schweriner Volkszeitung als erste deutsche Tageszeitung im WWW, 1995
 05/12	"die tageszeitung" offiziell im WWW, 1995
 08/31	Hitler stellt Frankfurter Zeitung ein, 1943

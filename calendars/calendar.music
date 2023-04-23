@@ -1,7 +1,7 @@
 /*
  * Music
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.music,v 1.7 2022/06/15 21:51:02 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.music,v 1.8 2023/04/23 15:16:38 tg Exp $
  * $OpenBSD: calendar.music,v 1.17 2005/06/15 20:25:36 mickey Exp $
  */
 
@@ -85,7 +85,7 @@
 03/22	Ten Years After plays their last concert, 1974
 03/25	Aretha Franklin is born in Detroit, 1943
 03/25	Bela Bartok is born in Nagyszentmiklos, Hungary, 1881
-03/25	Claude Debussy dies in Paris, France, 1918 to the sound of World War I
+03/25	Claude Debussy dies in Paris, France, to the sound of World War I, 1918
 03/26	Ludwig van Beethoven dies in Vienna, Austria, 1827
 03/26	Emerson, Lake, and Palmer record "Pictures at an Exhibition" live, 1971
 03/28	Sergei Rachmaninov dies in Beverley Hills, California, 1943
@@ -191,8 +191,7 @@
 07/29	Robert Schumann dies in Endenich, Bonn, Germany, 1856
 07/31	Franz Liszt dies shortly before 11:30 in Bayreuth, Germany, 1886
 08/01	The Concert for Bangla Desh takes place at Madison Square Garden, 1971
-08/04	John Lennon points out that "the Beatles are more popular than Jesus",
-	1966
+08/04	John Lennon points out that "the Beatles are more popular than Jesus", 1966
 08/04	William Howard Schuman is born in the Bronx, New York, 1910
 08/09	Dmitri Shostakovich dies of lung cancer in Moscow, Russia, 1975
 08/10	Ian Anderson (Jethro Tull) is born in Edinburgh, Scotland, 1947
@@ -307,7 +306,7 @@
 12/24	Alban Berg dies in Vienna, Austria, 1935
 12/25	John Philip Sousa's "The Stars and Stripes Forever" composed, 1896
 12/25	Leonard Bernstein conducts Beethoven's Symphony No. 9 to honor the
-	fall of the Berlin Wall, 1989, changing "freude" to "freedom".
+	fall of the Berlin Wall, changing "freude" to "freedom", 1989
 12/28	Edgar Winter is born in Beaumont, Texas, 1946
 12/28	Paul Hindemith dies in Frankfurt/Main, Germany, 1963
 12/28	Maurice Ravel dies in Paris, France, 1937
