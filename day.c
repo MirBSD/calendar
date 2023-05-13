@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
- * Copyright (c) 2021
+ * Copyright (c) 2021, 2023
  *	mirabilos <m@mirbsd.org>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.24 2022/02/18 01:04:10 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.25 2023/05/13 22:04:10 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -321,6 +321,7 @@ isnow(char *endp, int bodun)
 	int vwd = 0;	/* Variable weekday */
 	time_t tdiff, ttmp;
 	struct tm tmtmp;
+	const char *lp = endp;
 
 	/*
 	 * CONVENTION
@@ -334,8 +335,10 @@ isnow(char *endp, int bodun)
 
 	/* read first field */
 	/* didn't recognize anything, skip it */
-	if (!(v1 = getfield(endp, &endp, &flags)))
+	if (!(v1 = getfield(endp, &endp, &flags))) {
+		fprintf(stderr, "W: unrecognised first field: %s\n", lp);
 		return (NULL);
+	}
 
 	/* adjust bodun rate */
 	if (bodun && !bodun_always)
@@ -376,8 +379,10 @@ isnow(char *endp, int bodun)
 			interval = MONTHLY;
 		} else if (calendar)
 			adjust_calendar(&day, &month);
-		if ((month > 12) || (month < 1))
+		if ((month > 12) || (month < 1)) {
+			fprintf(stderr, "W: out-of-bounds month: %s\n", lp);
 			return (NULL);
+		}
 	} else if (flags & F_ISMONTH) {
 		/* 2. {Monthname} XYZ ... */
 		month = v1;
@@ -448,8 +453,10 @@ isnow(char *endp, int bodun)
 	    (day > (cumdays1[month + 1] - cumdays1[month]) || day < 1)) {
 		/* Check for silliness.  Note we still catch Feb 29 */
 		if (!((month == 2 && day == 29) ||
-		    (interval == MONTHLY && day <= 31)))
+		    (interval == MONTHLY && day <= 31))) {
+			fprintf(stderr, "W: silly day: %s\n", lp);
 			return (NULL);
+		}
 	}
 
 	if (!(flags & F_SPECIAL)) {
@@ -489,7 +496,7 @@ isnow(char *endp, int bodun)
 				v2 += isleap(tb.tm_year + 1900) ? 366 : 365;
 				if (v2 <= v1)
 					tmtmp.tm_year++;
-				else if(!bodun || (day - tb.tm_yday) != -1)
+				else if (!bodun || (day - tb.tm_yday) != -1)
 					return (NULL);
 			}
 			if ((tmp = calloc(1, sizeof(struct match))) == NULL)
