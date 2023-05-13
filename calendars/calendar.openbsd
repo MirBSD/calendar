@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.23 2021/12/07 01:53:57 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.24 2023/05/13 22:13:00 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -72,7 +72,7 @@ May 02	MirPorts pgp+ gets better entropy collection, 2004
 May 05	MirOS first releases snapshots via BitTorrent, 2004
 May 07	MirOS gains WHIRLPOOL hash, 2007
 May 08	MirOS gains <stdint.h> as per C99, 2004
-May 08	MirOS gains the '0 != NULL' equation and fixes, 2004
+May 08	MirOS NULL-related fixes, 2004
 May 09	First commit to OpenBSD stable branch, OPENBSD_2_7, 2000
 May 09	MirWiki founded, 2004
 May 10	c2k3 hackathon, Calgary, Canada, 51 developers, 2003
