@@ -39,7 +39,7 @@
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.25 2023/05/13 22:04:10 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.26 2023/05/13 22:34:44 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -342,7 +342,7 @@ isnow(char *endp, int bodun)
 
 	/* adjust bodun rate */
 	if (bodun && !bodun_always)
-		bodun = !arc4random_uniform(3);
+		bodun = calendar_bodunratecheck();
 	if (parsecvt)
 		bodun = 0;
 
