@@ -66,7 +66,7 @@
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.46 2023/05/13 22:04:11 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.47 2023/05/13 22:10:49 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -208,6 +208,8 @@ cal(void)
 			while ((ch = getchar()) != '\n' && ch != EOF);
 		for (l = strlen(lp); l > 0 && isspace(lp[l - 1]); l--)
 			;
+		if (l == 0 && lp[0] == '\t')
+			++l;
 		lp[l] = '\0';
 		if (lp[0] == '\0')
 			continue;
