@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
- * Copyright (c) 2019, 2021
+ * Copyright (c) 2019, 2021, 2023
  *	mirabilos <m@mirbsd.org>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,10 +63,10 @@
 #include "pathnames.h"
 #include "calendar.h"
 
-__COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
-	The Regents of the University of California.  All rights reserved.\n");
+__COPYRIGHT("Copyright (c) 1989, 1993\n\
+	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.43 2021/11/01 05:22:25 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.47 2023/05/13 22:10:49 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -208,10 +208,13 @@ cal(void)
 			while ((ch = getchar()) != '\n' && ch != EOF);
 		for (l = strlen(lp); l > 0 && isspace(lp[l - 1]); l--)
 			;
+		if (l == 0 && lp[0] == '\t')
+			++l;
 		lp[l] = '\0';
 		if (lp[0] == '\0')
 			continue;
 		if (strncmp(lp, "LANG=", 5) == 0) {
+			printing = 0;
 #ifdef UNICODE
 			{
 				const char *s_charset;
@@ -253,6 +256,7 @@ cal(void)
 		if (strncmp(lp, "CALENDAR=", 9) == 0) {
 			char *ep;
 
+			printing = 0;
 			if (lp[9] == '\0')
 				calendar = 0;
 			else if (!strcasecmp(lp + 9, "julian")) {
@@ -268,7 +272,10 @@ cal(void)
 				calendar = GREGORIAN;
 			else if (!strcasecmp(lp + 9, "lunar"))
 				calendar = LUNAR;
-		} else if (strncmp(lp, "ANNIV=", 6) == 0) {
+			continue;
+		}
+		if (strncmp(lp, "ANNIV=", 6) == 0) {
+			printing = 0;
 			anniv = 1;
 			if (lp[6] == '1' && !lp[7])
 				continue;
@@ -302,11 +309,16 @@ cal(void)
 					break;
 			}
 			continue;
-		} else if (bodun_maybe && strncmp(lp, "BODUN=", 6) == 0) {
-			bodun++;
-			free(prefix);
-			if ((prefix = strdup(lp + 6)) == NULL)
-				err(1, NULL);
+		}
+		if (strncmp(lp, "BODUN=", 6) == 0) {
+			printing = 0;
+			if (bodun_maybe) {
+				bodun++;
+				free(prefix);
+				if ((prefix = strdup(lp + 6)) == NULL)
+					err(1, NULL);
+			} else
+				fprintf(stderr, "W: no bodun locale: %s\n", lp);
 			continue;
 		}
 		/* User defined names for special events */
@@ -324,14 +336,18 @@ cal(void)
 					i = NUMEV + 1;
 				}
 			}
-			if (i > NUMEV)
+			if (i > NUMEV) {
+				printing = 0;
 				continue;
+			}
 		}
 		if (lp[0] != '\t') {
 			struct match *m;
 			struct extrainfo ei;
 
 			if ((p = strchr(lp, '\t')) == NULL) {
+				fprintf(stderr,
+				    "W: tabless line: %s\n", lp);
 				printing = 0;
 				continue;
 			}
@@ -394,7 +410,9 @@ cal(void)
 			ev1->ldesc[olen] = '\n';
 			memcpy(ev1->ldesc + (olen + 1U), lp, nlen);
 			ev1->ldesc[olen + 1U + nlen] = '\0';
-		}
+		} else if (parsecvt)
+			fprintf(stderr,
+			    "W: non-printing continuation line: %s\n", lp);
 	}
 	tmp = parsecvt ? NULL : events;
 	while (tmp) {
@@ -782,8 +800,8 @@ cvtextra(struct extrainfo *ei, char *lp, char **p)
 			} else if (ei->endh > 23 || ei->endm > 59)
 				goto nohours;
 			n += 5;
-		} else if (n != 5) {
-			/* dash, no valid hourd */
+		} else if (n != 5 && !is(n, ' ') && !is(n, '[')) {
+			/* dash, no valid hours */
 			goto nohours;
 		} else {
 			ei->endh = -1;

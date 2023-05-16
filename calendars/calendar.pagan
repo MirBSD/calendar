@@ -1,7 +1,7 @@
 /*
  * Pagan
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.pagan,v 1.4 2021/10/27 17:53:02 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.pagan,v 1.5 2022/11/05 01:44:19 tg Exp $
  * $OpenBSD: calendar.pagan,v 1.2 2002/03/20 22:53:40 mickey Exp $
  */
 
@@ -17,7 +17,6 @@
 01/25	Old Disting Feast
 01/TueLast	Upelly - old fire festival
 01/31	Honoring the Valkyries
-02/02	1st Cross-Quarter Day
 02/02	Imbolg / Imbolc (other Celtic names) / Brighid / Oimelc
 02/11	The Day the Birds Begin to Sing
 02/14	Festival of Vali
@@ -30,7 +29,6 @@
 03/21	Ostara / Eostre (Saxon goddess of Spring)
 04/30	May Eve / Walpurgisnacht (witches' Sabbath) / Walpurgis Night
 05/01	May Day / Beltane / Bealtaine - Celtic bonfire festival
-05/04	2nd Cross-Quarter Day
 05/12	The Cat Parade
 05/14	Midnight Sun Festival
 05/18	Festival of the Horned God Cennunos
@@ -42,7 +40,6 @@
 08/01	Lugnasad / Lughnasada / Lunasa - Gaelic summer "games of Lug" (sun-god)
 08/02	Lady Godiva Day
 08/04	Loch mo Naire
-08/05	3rd Cross-Quarter Day
 08/10	Puck Faire
 08/14	Day of the Burryma
 08/17	Odin's Ordeal
@@ -59,7 +56,6 @@
 10/27	Allan Apple Day
 10/31	Hallowmas / Allhallowmas / Allhallows
 11/01	Samhain - Celtic feast of departing Sun & new year
-11/05	4th Cross-Quarter Day
 12/06	Festival of Nicolas, an aspect of Odin, leader of the hunt
 12/09	Yule Cleansing - The Danish fetch water for brewing the Yule-Ale
 12/13	Wodan's Jag - the Wild Hunt of Odin and his Army

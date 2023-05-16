@@ -13,7 +13,7 @@
  *
  * ISBN 3-924521-59-X
  *
- * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.geschichte,v 1.4 2020/10/31 01:58:01 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/de_DE.ISO_8859-1/calendar.geschichte,v 1.6 2023/04/23 15:16:40 tg Exp $
  * $OpenBSD: calendar.geschichte,v 1.2 1997/08/27 11:20:38 provos Exp $
  */
 
@@ -93,7 +93,7 @@ LANG=de_DE.ISO_8859-1
 01/14	Konferenz von Casablanca, 1943
 01/31	Kapitulation der 6. deutschen Armee in Stalingrad, 1943
 06/06	Alliierte Landung in Nordwestfrankreich, 1944
-02/04	Konferenz von Jalta, 4.-11.2. 1945
+02/04	Konferenz von Jalta (4.-11.2.), 1945
 04/25	Zusammentreffen von amerikanischen und sowjetischer Truppen
 	bei Torgau an der Elbe, 1945
 05/08	Bedingungslose Kapitulation von Deutschland, 1945
@@ -180,7 +180,7 @@ LANG=de_DE.ISO_8859-1
 04/21	Zwangsvereinigung von KPD und SPD zur SED, 1946
 05/14	Gründung der Warschauer Paktes, 1955
 06/17	Arbeiteraufstand am 17. Juni 1953
-06/25	Begin der Korea-Krieges, 1950
+06/25	Begin des Korea-Krieges, 1950
 08/13	Bau der Berliner Mauer, 1961
 08/21	Einmarsch des Warschauer Pakts in die Tschechoslowakei, 1968
 10/03	Offizielles Ende der DDR :-)

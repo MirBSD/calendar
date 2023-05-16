@@ -32,7 +32,7 @@
  */
 
 #ifndef CALENDAR_H
-#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.15 2021/11/01 05:23:09 tg Exp $"
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.16 2023/05/13 22:34:44 tg Exp $"
 
 extern struct passwd *pw;
 extern unsigned char doall;
@@ -148,5 +148,9 @@ extern u_long julian;
 
 #define sgn(x) (((x) > 0) - ((x) < 0))
 #define isleap(y) ((((y) % 4) == 0 && ((y) % 100) != 0) || ((y) % 400) == 0)
+
+#ifndef calendar_bodunratecheck
+#define calendar_bodunratecheck() (!arc4random_uniform(3))
+#endif
 
 #endif

@@ -1,7 +1,7 @@
 /*
  * Holiday
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.holiday,v 1.5 2021/11/01 00:35:53 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.holiday,v 1.8 2023/04/23 15:16:38 tg Exp $
  * $OpenBSD: calendar.holiday,v 1.14 2004/10/31 19:40:51 mickey Exp $
  */
 
@@ -73,7 +73,6 @@
 03/04	Vermont Admission Day (admitted as 14th state in 1791)
 03/05	Independence Day in Equatorial Guinea
 03/06	Lantern Day, Beijing
-03/07*	Purim - Feast of Lots
 03/08	First Annual International Women's Day, 1909
 03/08	International Women's Day in U.S.S.R.
 03/08	Syrian National Day in Libyan Arab Republic
@@ -94,7 +93,7 @@
 03/17	St. Patrick's Day
 03/19	St. Joseph's Day in Colombia, Costa Rica, Holy See, Liechtenstein,
 	San Marino, Spain, Venezuela
-03/19	Tree Planting Day in Lestho
+03/19	Tree Planting Day in Lesotho
 03/20	Independence Day in Tunsia
 03/20	Youth Day in Oklahoma
 03/21	Afghan New Year in Afghanistan
@@ -302,7 +301,7 @@
 08/15	Independence Day in India
 08/15	Liberation Day in South Korea
 08/15	National Day in Congo
-08/FriThird	Admission Day in Hawaii, 1984 (3rd Friday)
+08/FriThird	Admission Day in Hawaii (3rd Friday), 1984
 08/16	Bennington Battle Day in Vermont
 08/16	Independence Days (3 days) in Gabon
 08/16	Restoration Day in Dominican Republic
@@ -495,7 +494,7 @@
 06/11	Queen's Birthday
 06/12	Peace with Bolivia in Paraguay
 06/13	Corrective Movement in Yemen Arab Republic
-06/16	Bloomsday - Anniversary of Dublin events, 1904, in "Ulysses"
+06/16	Bloomsday - Anniversary of Dublin events, in "Ulysses", 1904
 06/18	Queen's Birthday in Fiji
 06/19	Artigas Birthday in Uruguay
 06/22	Corrective Movement in the People's Democratic Yemen Republic
