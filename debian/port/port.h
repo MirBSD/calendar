@@ -21,8 +21,12 @@
 #ifndef DEBIAN_CALENDAR_MIRBSD_PORT_H
 #define DEBIAN_CALENDAR_MIRBSD_PORT_H
 
+#ifdef __MirBSD__
+#include <sys/param.h>
+#else
 /* really sys/cdefs.h but that’s less portable */
 #include <sys/types.h>
+#endif
 
 /* now for stuff from our cdefs */
 
@@ -45,17 +49,17 @@
 #define __IDSTRING_CONCAT(l,p)		__LINTED__ ## l ## _ ## p
 #define __IDSTRING_EXPAND(l,p)		__IDSTRING_CONCAT(l,p)
 #ifdef MKSH_DONT_EMIT_IDSTRING
-#define __IDSTRING(prefix, string)	/* nothing */
+#define __IDSTRING(prefix,string)	/* nothing */
 #elif defined(__ELF__) && defined(__GNUC__) && \
     !(defined(__GNUC__) && defined(__mips16) && (__GNUC__ >= 8)) && \
     !defined(__llvm__) && !defined(__NWCC__) && !defined(NO_ASM)
-#define __IDSTRING(prefix, string)				\
+#define __IDSTRING(prefix,string)				\
 	__asm__(".section .comment"				\
 	"\n	.ascii	\"@(\"\"#)" #prefix ": \""		\
 	"\n	.asciz	\"" string "\""				\
 	"\n	.previous")
 #else
-#define __IDSTRING(prefix, string)				\
+#define __IDSTRING(prefix,string)				\
 	static const char __IDSTRING_EXPAND(__LINE__,prefix) []	\
 	    __attribute__((__used__)) = "@(""#)" #prefix ": " string
 #endif
