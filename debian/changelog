@@ -10,8 +10,9 @@ calendar-mirbsd (20230516) wtf; urgency=medium
   * opt out of buggy GCC LTO
   * Update UMEGAYA upstream IRC server
   * CPPFLAGS: enable LFS for glibc, thanks lintian
+  * Depends change cpp to cpp:any for Multi-Arch installability
 
- -- Thorsten Glaser <tg@mirbsd.de>  Tue, 16 May 2023 20:18:06 +0200
+ -- Thorsten Glaser <tg@mirbsd.de>  Tue, 16 May 2023 20:18:42 +0200
 
 calendar-mirbsd (20211101) wtf; urgency=medium
 

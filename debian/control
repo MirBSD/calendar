@@ -11,7 +11,7 @@ VCS-Browser: https://github.com/MirBSD/calendar
 Package: calendar-mirbsd
 Architecture: any
 Multi-Arch: foreign
-Depends: ${shlibs:Depends}, ${misc:Depends}, cpp
+Depends: ${shlibs:Depends}, ${misc:Depends}, cpp:any
 Recommends: anacron | cron, default-mta | mail-transport-agent
 Provides: calendar
 Conflicts: calendar
