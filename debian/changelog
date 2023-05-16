@@ -10,7 +10,7 @@ calendar-mirbsd (20230516) wtf; urgency=medium
   * opt out of buggy GCC LTO
   * Update UMEGAYA upstream IRC server
 
- -- Thorsten Glaser <tg@mirbsd.de>  Tue, 16 May 2023 19:55:22 +0200
+ -- Thorsten Glaser <tg@mirbsd.de>  Tue, 16 May 2023 20:08:30 +0200
 
 calendar-mirbsd (20211101) wtf; urgency=medium
 
