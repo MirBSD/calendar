@@ -1,7 +1,7 @@
 {
   "Archive": "The MirOS Project",
   "Bug-Submit": "mailto:miros-discuss@mirbsd.org",
-  "Contact": "irc://irc.freenode.net/MirBSD",
+  "Contact": "irc://irc.oftc.net/MirBSD",
   "Donation": "http://www.mirbsd.org/danke.htm",
   "Name": "calendar",
   "Repository": [

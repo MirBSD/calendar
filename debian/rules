@@ -30,7 +30,7 @@ OUR_CPPFLAGS+=	-DUSE_CUSTOM_USERSWITCH
 OUR_CPPFLAGS+=	-DUSE_GLIBC_ICONV
 
 dpkgbuildflagsmkescape=$(subst \,\\\,$(1))
-export DEB_BUILD_MAINT_OPTIONS:=hardening=+all
+export DEB_BUILD_MAINT_OPTIONS:=hardening=+all optimize=-lto
 export DEB_CPPFLAGS_MAINT_APPEND:=$(call dpkgbuildflagsmkescape,${OUR_CPPFLAGS})
 export DEB_CFLAGS_MAINT_APPEND:=$(call dpkgbuildflagsmkescape,${OUR_CFLAGS})
 export DEB_LDFLAGS_MAINT_APPEND:=$(call dpkgbuildflagsmkescape,${OUR_LDFLAGS})

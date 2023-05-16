@@ -7,8 +7,10 @@ calendar-mirbsd (20230516) wtf; urgency=medium
     • issue diagnostics for some parse errors (to catch mistakes)
     • do output empty tab-led continuation lines
   * Update porting code for calendar_bodunratecheck()
+  * opt out of buggy GCC LTO
+  * Update UMEGAYA upstream IRC server
 
- -- Thorsten Glaser <tg@mirbsd.de>  Tue, 16 May 2023 19:45:50 +0200
+ -- Thorsten Glaser <tg@mirbsd.de>  Tue, 16 May 2023 19:55:22 +0200
 
 calendar-mirbsd (20211101) wtf; urgency=medium
 
