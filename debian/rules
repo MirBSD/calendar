@@ -28,6 +28,7 @@ OUR_CPPFLAGS+=	-I. -DMBSDPORT_H=\"debian/port/port.h\"
 OUR_CPPFLAGS+=	-D_GNU_SOURCE
 OUR_CPPFLAGS+=	-DUSE_CUSTOM_USERSWITCH
 OUR_CPPFLAGS+=	-DUSE_GLIBC_ICONV
+OUR_CPPFLAGS+=	-D_FILE_OFFSET_BITS=64
 
 dpkgbuildflagsmkescape=$(subst \,\\\,$(1))
 export DEB_BUILD_MAINT_OPTIONS:=hardening=+all optimize=-lto
