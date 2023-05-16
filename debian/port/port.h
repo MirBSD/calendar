@@ -83,13 +83,13 @@ __BEGIN_DECLS
 size_t strlcat(char *, const char *, size_t);
 __END_DECLS
 
-#define arc4random_uniform(three) __extension__({	\
+/* ignore small bias here, for bodun only */
+#define calendar_bodunratecheck() __extension__({	\
 	unsigned char rndbyte;				\
 							\
 	if (getentropy(&rndbyte, sizeof(rndbyte)))	\
 		err(1, "getentropy");			\
-	/* ignore minimal bias towards bodun’ing */	\
-	(rndbyte % 3U);					\
+	(!(rndbyte % 3U));				\
 })
 
 /* https://listman.redhat.com/archives/pam-list/2021-November/msg00000.html */
