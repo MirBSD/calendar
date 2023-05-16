@@ -1,3 +1,14 @@
+calendar-mirbsd (20230516) wtf; urgency=medium
+
+  * Merge from CVS:
+    • some cleanup of calendar entries, deduplicate, fix typos
+    • allow open-ended events (“17:00–”) in the time-of-day spec
+    • some cleanup of code and comments
+    • issue diagnostics for some parse errors (to catch mistakes)
+    • do output empty tab-led continuation lines
+
+ -- Thorsten Glaser <tg@mirbsd.de>  Tue, 16 May 2023 19:37:38 +0200
+
 calendar-mirbsd (20211101) wtf; urgency=medium
 
   * Merge from CVS:
