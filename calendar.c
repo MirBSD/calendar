@@ -67,7 +67,7 @@ __IDSTRING(calendar_h, CALENDAR_H);
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.18 2022/02/18 01:04:10 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.19 2023/05/16 18:02:21 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
 const char *calendarHome = ".etc/calendar"; /* HOME */

@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.24 2023/05/13 22:13:00 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.25 2023/05/15 02:15:58 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -198,7 +198,6 @@ Nov 27	MirOS and ekkoBSD exchange code and ideas, 2003
 Nov 27	Unified buffer & VM cache enters OpenBSD, 2001
 Nov 29	Last cvs-1.11.1p1 snapshot build for MirOS, 2004
 Nov 30	OpenBSD gets RAID support w/ a dpt(4) addition, 1999
-Nov 31	MirOS #1 released (diversion from OpenBSD), 2002
 Dec 01	MirOS gets Berkeley DB 4 port, 2003
 Dec 01	OpenBSD 3.0 released, including PF, triple set, 2001
 Dec 02	ProPolice stack smash protector incorporated, 2002
