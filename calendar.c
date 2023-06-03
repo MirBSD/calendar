@@ -67,10 +67,10 @@ __IDSTRING(calendar_h, CALENDAR_H);
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.20 2023/06/03 21:30:32 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.21 2023/06/03 21:33:37 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
-const char *calendarHome = ".etc/calendar"; /* HOME */
+const char calendarHome[] = ".etc/calendar"; /* $HOME */
 static const char *calendarNoMail = "nomail";  /* don't sent mail if this file exists */
 
 struct passwd *pw;

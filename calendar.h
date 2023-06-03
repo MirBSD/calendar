@@ -32,7 +32,7 @@
  */
 
 #ifndef CALENDAR_H
-#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.17 2023/06/03 21:30:32 tg Exp $"
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.18 2023/06/03 21:33:37 tg Exp $"
 
 extern struct passwd *pw;
 extern unsigned char doall;
@@ -40,7 +40,7 @@ extern unsigned char bodun_always;
 extern unsigned char parsecvt;
 extern time_t f_time;
 extern const char *calendarFile;
-extern const char *calendarHome;
+extern const char calendarHome[];
 
 struct fixs {
 	char *name;
