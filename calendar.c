@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
- * Copyright (c) 2021
+ * Copyright (c) 2021, 2023
  *	mirabilos <m@mirbsd.org>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,11 +67,11 @@ __IDSTRING(calendar_h, CALENDAR_H);
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.19 2023/05/16 18:02:21 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.22 2023/06/03 21:39:09 tg Exp $");
 
 const char *calendarFile = "calendar";  /* default calendar file */
-const char *calendarHome = ".etc/calendar"; /* HOME */
-static const char *calendarNoMail = "nomail";  /* don't sent mail if this file exists */
+const char calendarHome[] = ".etc/calendar"; /* $HOME */
+static const char calendarNoMail[] = "nomail";  /* don't sent mail if this file exists */
 
 struct passwd *pw;
 unsigned char doall = 0;
@@ -84,7 +84,10 @@ int f_dayBefore = 0; /* days before current date */
 
 struct specialev spev[NUMEV];
 
+char *cppargv[NCPPARGV];
+
 static void childsig(int);
+static void addcppargv(const char *, int);
 
 int
 main(int argc, char *argv[])
@@ -95,7 +98,18 @@ main(int argc, char *argv[])
 
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "A:aB:bf:Pt:-")) != -1)
+	addcppargv("cpp", 2);
+	addcppargv("-traditional", 2);
+	addcppargv("-undef", 2);
+	addcppargv("-U__GNUC__", 2);
+#ifdef UNICODE
+	addcppargv("-DUNICODE", 2);
+#endif
+	addcppargv("-P", 2);
+	addcppargv("-I.", 2);
+	addcppargv(_PATH_INCLUDE, 2);
+
+	while ((ch = getopt(argc, argv, "A:aB:bD:f:I:Pt:-")) != -1)
 		switch (ch) {
 		case '-':		/* backward contemptible */
 		case 'a':
@@ -106,6 +120,11 @@ main(int argc, char *argv[])
 
 		case 'b':
 			bodun_always = 1;
+			break;
+
+		case 'D':
+		case 'I':
+			addcppargv(optarg, ch);
 			break;
 
 		case 'f': /* other calendar file */
@@ -140,6 +159,9 @@ main(int argc, char *argv[])
 
 	if (argc)
 		usage();
+
+	addcppargv(calendarFile, 1);
+	addcppargv(NULL, 0);
 
 	/* use current time */
 	if (f_time <= 0)
@@ -286,4 +308,57 @@ usage(void)
 void
 childsig(int signo __unused)
 {
+}
+
+
+static void
+addcppargv(const char *fn, int ch)
+{
+	char *what;
+	size_t len;
+	static size_t ncppargv = 0;
+
+	if (ncppargv == NCPPARGV)
+		errx(1, "too many cpp(1) flags");
+	switch (ch) {
+	case 0:
+		/* append sentinel nil */
+		what = NULL;
+		break;
+	case 1:
+		/* escape calendarFile */
+		if (!(fn[0] == '/' || (fn[0] == '-' && !fn[1]))) {
+			/* if it is not absolute / stdin */
+			len = strlen(fn) + 1U;
+			if (!(what = malloc(2U + len)))
+				err(1, "malloc");
+			what[0] = '.';
+			what[1] = '/';
+			memcpy(what + 2, fn, len);
+			break;
+		}
+		/* if it is absolute / stdin, there is no need to escape */
+		/* FALLTHROUGH */
+	case 2: {
+		/* direct assign ignoring const */
+		union {
+			char *cp;
+			const char *ccp;
+		} p;
+
+		p.ccp = fn;
+		what = p.cp;
+		break;
+	}
+	default:
+		/* pass on flag */
+		len = strlen(fn) + 1U;
+		if (!(what = malloc(2U + len)))
+			err(1, "malloc");
+		what[0] = '-';
+		what[1] = ch;
+		memcpy(what + 2, fn, len);
+		break;
+	}
+	cppargv[ncppargv++] = what;
 }

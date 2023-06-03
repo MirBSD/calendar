@@ -34,7 +34,7 @@
 
 #include "calendar.h"
 
-__RCSID("$MirOS: src/usr.bin/calendar/paskha.c,v 1.6 2021/11/01 01:34:01 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/paskha.c,v 1.7 2023/06/03 21:39:10 tg Exp $");
 
 /* return year day for Orthodox Easter using Gauss formula */
 /* (new style result); subtract 13 for old style */
@@ -43,8 +43,8 @@ int
 paskha(/* year */ int R)
 {
 	int a, b, c, d, e;
-	static int x = 15;
-	static int y = 6;
+#define x 15
+#define y 6
 	int cumdays;
 
 	a = R % 19;

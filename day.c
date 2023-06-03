@@ -39,7 +39,7 @@
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.26 2023/05/13 22:34:44 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.27 2023/06/03 21:39:09 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -76,11 +76,11 @@ const int daytab[][14] = {
 	{ 0, -1, 30, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 },
 };
 
-static const char *days[] = {
+static const char * const days[] = {
 	"sun", "mon", "tue", "wed", "thu", "fri", "sat", NULL,
 };
 
-static const char *months[] = {
+static const char * const months[] = {
 	"jan", "feb", "mar", "apr", "may", "jun",
 	"jul", "aug", "sep", "oct", "nov", "dec", NULL,
 };
@@ -648,7 +648,7 @@ isnow(char *endp, int bodun)
 int
 getmonth(char *s)
 {
-	const char **p;
+	const char * const *p;
 	struct fixs *n;
 
 	for (n = fnmonths; n->name; ++n)
@@ -667,7 +667,7 @@ getmonth(char *s)
 int
 getday(char *s)
 {
-	const char **p;
+	const char * const *p;
 	struct fixs *n;
 
 	for (n = fndays; n->name; ++n)

@@ -1,9 +1,9 @@
-.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.17 2021/12/17 15:08:04 tg Exp $
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.19 2023/06/03 21:33:07 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.29 2005/03/22 10:57:27 xsa Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
 .\"     The Regents of the University of California.  All rights reserved.
-.\" Copyright (c) 2019, 2021
+.\" Copyright (c) 2019, 2021, 2023
 .\"	mirabilos <m@mirbsd.org>
 .\"
 .\" Redistribution and use in source and binary forms, with or without
@@ -96,7 +96,7 @@
 .\" with -mandoc, it might implement .Mx itself, but we want to
 .\" use our own definition. And .Dd must come *first*, always.
 .\"
-.Dd $Mdocdate: December 17 2021 $
+.Dd $Mdocdate: June 3 2023 $
 .\"
 .\" Check which macro package we use, and do other -mdoc setup.
 .\"
@@ -208,19 +208,23 @@
 .Nm calendar
 .Nd reminder service
 .Sh SYNOPSIS
+.Bk -words
 .Nm calendar
 .Op Fl abP
 .Op Fl A Ar num
 .Op Fl B Ar num
+.Op Fl D Ar macro Ns Op Ar =defn
 .Op Fl f Ar calendarfile
+.Op Fl I Ar dir
 .Op Fl t Ar [[[cc]yy][mm]]dd
+.Ek
 .Sh DESCRIPTION
 The
 .Nm
 utility checks the current directory or the directory specified by the
 .Ev CALENDAR_DIR
 environment variable for a file named
-.Pa Li calendar
+.Pa calendar
 and displays lines that begin with either today's date
 or tomorrow's.
 On Fridays, events on Friday through Monday are displayed.
@@ -243,11 +247,23 @@ Print lines from today and previous
 days (backward, past).
 .It Fl b
 Enforce special date calculation mode for Cyrillic calendars.
-.It Fl f Pa calendarfile
+.It Fl D Ar macro Ns Op Ar =defn
+Passed on to
+.Xr cpp 1 ,
+for
+.Li #ifdef
+etc.\& in the calendar file.
+.It Fl f Ar calendarfile
 Use
-.Pa calendarfile
+.Ar calendarfile
 .Pq So Li \-\& Sc for stdin
 as the default calendar file.
+.It Fl I Ar dir
+Passed on to
+.Xr cpp 1 ,
+for
+.Li #include
+in the calendar file.
 .It Fl P
 Parse the entire calendar file and convert it to an output format
 intended to be consumed by calendar format conversion utilities,
@@ -433,7 +449,7 @@ would otherwise have printed one) or an equals sign
 .Ql =\& .
 This field, unlike all others, is not followed by a space.
 .It date
-YYYY-MM-DD formatted date of either the first occurrence within
+YYYY\-MM\-DD formatted date of either the first occurrence within
 a given year, if a year is part of the extended day description
 .Pq see above ,
 or the next occurrence after or starting with
@@ -466,7 +482,7 @@ is the day number (01 to 31),
 is the weekday (Sun, Mon, Tue, Wed, Thu, Fri, Sat), and
 .Ar +n
 is either plus or minus and a number, showing the first (+1),
-second (+2), etc.\& or last (-1), penultimate (-2), etc.\&
+second (+2), etc.\& or last (\-1), penultimate (\-2), etc.\&
 occurrence of the given weekday in a month.
 Monthly events show
 .Ic dd
@@ -588,14 +604,14 @@ Musical events, births, and deaths (strongly oriented toward rock'n'roll).
 .It Pa calendar.openbsd
 .Ox
 and
-.Mx
-related events.
+.Mx Ns -related
+events.
 .It Pa calendar.pagan
 Pagan holidays, celebrations and festivals.
 .It Pa calendar.russian
 Russian calendar.
 .It Pa calendar.usholiday
-U.S.\& holidays.
+U.S.A.\& holidays.
 .It Pa calendar.world
 World wide calendar.
 .El
@@ -608,7 +624,7 @@ World wide calendar.
 .Pp
 The
 .Pa evolvis.org
-.Dq Li useful-scripts
+.Dq Li useful\-scripts
 repository.
 .Sh STANDARDS
 The
