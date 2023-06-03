@@ -1,3 +1,10 @@
+calendar-mirbsd (20230603) wtf; urgency=medium
+
+  * Merge from CVS:
+    • pass -D/-I flags to cpp(1)
+
+ -- Thorsten Glaser <tg@mirbsd.de>  Sat, 03 Jun 2023 23:54:42 +0000
+
 calendar-mirbsd (20230516) wtf; urgency=medium
 
   * Merge from CVS:
