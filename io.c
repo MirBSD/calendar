@@ -66,7 +66,7 @@
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.48 2023/06/03 21:30:32 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.49 2023/06/03 21:39:10 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -855,7 +855,7 @@ cvtmatch(struct extrainfo *ei, struct match *m, const char *s)
 	int ofs, d;
 	const char *ccp;
 #define WDAYS(x) wdays[((x) + 7) % 7]
-	static const char *wdays[7] = {
+	static const char * const wdays[7] = {
 		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
 	};
 
