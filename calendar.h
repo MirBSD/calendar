@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
- * Copyright (c) 2021
+ * Copyright (c) 2021, 2023
  *	mirabilos <m@mirbsd.org>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
  */
 
 #ifndef CALENDAR_H
-#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.16 2023/05/13 22:34:44 tg Exp $"
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.17 2023/06/03 21:30:32 tg Exp $"
 
 extern struct passwd *pw;
 extern unsigned char doall;
@@ -104,6 +104,9 @@ char	*toutf(char *, char *, size_t);
 #define touni(x)	(x)
 #define toutf(x,y,z)	(x)
 #endif
+
+#define NCPPARGV 64
+extern char *cppargv[NCPPARGV];
 
 /* some flags */
 #define	F_ISMONTH	0x01 /* month (Januar ...) */

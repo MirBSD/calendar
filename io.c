@@ -66,7 +66,7 @@
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.47 2023/05/13 22:10:49 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.48 2023/06/03 21:30:32 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -566,66 +566,64 @@ FILE *
 opencal(void)
 {
 	int pdes[2];
-	volatile int fdin; /* vfork clobber warning, needs investigation */
 	struct stat st;
 
-	/* open up calendar file as stdin */
+	/* test where calendar file exists */
 	if (calendarFile[0] == '-' && calendarFile[1] == '\0')
-		fdin = STDIN_FILENO;
-	else if ((fdin = open(calendarFile, O_RDONLY)) == -1 ||
-	    fstat(fdin, &st) == -1 || !S_ISREG(st.st_mode)) {
+		/* pass on as-is */;
+	else if (stat(calendarFile, &st) || !S_ISREG(st.st_mode)) {
 		if (!doall) {
 			char *home = getenv("HOME");
 			if (home == NULL || *home == '\0')
 				errx(1, "cannot get home directory");
-			if (!(chdir(home) == 0 &&
-			    chdir(calendarHome) == 0 &&
-			    (fdin = open(calendarFile, O_RDONLY)) != -1))
+			if (chdir(home) ||
+			    chdir(calendarHome) ||
+			    stat(calendarFile, &st) || !S_ISREG(st.st_mode))
 				errx(1, "no calendar file: \"%s\" or \"~/%s/%s\"",
 				    calendarFile, calendarHome, calendarFile);
 		}
 	}
 
 	if (pipe(pdes) == -1) {
-		if (fdin != STDIN_FILENO)
-			close(fdin);
 		return (NULL);
 	}
-	switch (vfork()) {
+	switch (fork()) {
 	case -1:			/* error */
 		(void)close(pdes[0]);
 		(void)close(pdes[1]);
-		if (fdin != STDIN_FILENO)
-			close(fdin);
 		return (NULL);
-	case 0:
-		if (fdin != STDIN_FILENO)
-			dup2(fdin, STDIN_FILENO);
+	case 0: {
+		int fd;
+
 		/* child -- set stdout to pipe input */
 		if (pdes[1] != STDOUT_FILENO) {
 			(void)dup2(pdes[1], STDOUT_FILENO);
 			(void)close(pdes[1]);
 		}
 		(void)close(pdes[0]);
+		/* set stdin to /dev/null unless it is the file */
+		if ((fd = open(_PATH_DEVNULL, O_RDWR, 0)) == -1)
+			err(1, _PATH_DEVNULL);
+		if (calendarFile[0] != '-' || calendarFile[1]) {
+			if (fd != STDIN_FILENO)
+				dup2(fd, STDIN_FILENO);
+		}
 		/*
 		 * Set stderr to /dev/null.  Necessary so that cron does not
 		 * wait for cpp to finish if it's running calendar -a.
 		 */
 		if (doall) {
-			int fderr;
-			fderr = open(_PATH_DEVNULL, O_WRONLY, 0);
-			if (fderr == -1)
-				_exit(0);
-			(void)dup2(fderr, STDERR_FILENO);
-			(void)close(fderr);
-		}
-		execl(_PATH_CPP, "cpp", "-traditional", "-undef", "-U__GNUC__",
-#ifdef UNICODE
-		    "-DUNICODE",
-#endif
-		    "-P", "-I.", _PATH_INCLUDE, (char *)NULL);
-		warn(_PATH_CPP);
-		_exit(1);
+			if (fd != STDERR_FILENO) {
+				dup2(fd, STDERR_FILENO);
+				/* don't leak fd */
+				if (fd != STDIN_FILENO)
+					close(fd);
+			}
+		} else if (fd != STDIN_FILENO)
+			close(fd);
+		execv(_PATH_CPP, cppargv);
+		err(1, _PATH_CPP);
+	    }
 	}
 	/* parent -- set stdin to pipe output */
 	(void)dup2(pdes[0], STDIN_FILENO);
