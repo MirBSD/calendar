@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.25 2023/05/15 02:15:58 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.26 2023/09/28 02:49:16 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -165,7 +165,7 @@ Sep 27	MirPorts djbdns uses ipv6.arpa, 2003
 Sep 27	MirOS gets more papers from 4.4BSD under the Caldera licence, 2003
 Sep 27	MirOS papers now built to text format, 2003
 Sep 27	MirOS sendmail now uses STARTTLS by default, 2003
-Sep 28	MirOS #7 released (commercial-quality product), 2003
+Sep 28	MirOS #7 released, 2003
 Sep 29	OpenBSD/hppa gets PCI bus support, 2003
 Oct 10	MirOS #7bis released (must-update critical fixes), 2003
 Oct 10	MirOS developer Waldemar Brodkorb (wbx) leaves for his diploma, 2004
