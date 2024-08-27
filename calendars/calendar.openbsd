@@ -1,7 +1,7 @@
 /*
  * OpenBSD- (and fork) related dates to celebrate
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.26 2023/09/28 02:49:16 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.openbsd,v 1.27 2024/08/27 22:44:16 tg Exp $
  * $OpenBSD: calendar.openbsd,v 1.26 2005/06/03 20:05:50 jason Exp $
  */
 
@@ -160,7 +160,7 @@ Sep 17	MirOS gains TIGER hash, 2006
 Sep 17	MirOS successfully defaults to -fstack-protector-all, 2004
 Sep 22	MirPorts GNOME2 works, 2003
 Sep 26	OpenSSH born, Sunday 11:56 MST, 1999
-Sep 26	MirOS developer Richard Tyler Ballance (tyler) joins, 2004
+Sep 26	MirOS developer R. Tyler Croy (tyler) joins, 2004
 Sep 27	MirPorts djbdns uses ipv6.arpa, 2003
 Sep 27	MirOS gets more papers from 4.4BSD under the Caldera licence, 2003
 Sep 27	MirOS papers now built to text format, 2003
