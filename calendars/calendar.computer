@@ -1,14 +1,14 @@
 /*
  * Computer
  *
- * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.10 2023/04/23 15:16:37 tg Exp $
+ * $MirOS: src/usr.bin/calendar/calendars/calendar.computer,v 1.11 2024/10/07 01:47:09 tg Exp $
  * $OpenBSD: calendar.computer,v 1.8 2003/12/09 02:39:58 mickey Exp $
  */
 
 #ifndef _calendar_computer_
 #define _calendar_computer_
 
-01/01	The Epoch (Time 0 for UNIX systems, Midnight GMT, 1970)
+01/01	The Epoch (Time 0 for UNIX systems), Midnight GMT, 1970
 01/01	ARPANET converts from NCP to TCP/IP - the Internet is born, 1983
 01/01	AT&T officially divests its local Bell companies, 1984
 01/03	Apple Computer incorporated, 1977
