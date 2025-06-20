@@ -1,6 +1,6 @@
 {
   "Archive": "The MirOS Project",
-  "Bug-Submit": "mailto:miros-discuss@mirbsd.org",
+  "Bug-Submit": "web+ap://toot.mirbsd.org/@mirabilos",
   "Contact": "irc://irc.oftc.net/MirBSD",
   "Donation": "http://www.mirbsd.org/danke.htm",
   "Name": "calendar",
@@ -8,5 +8,5 @@
     ":extssh:_anoncvs@anoncvs.mirbsd.org:/cvs",
     "src/usr.bin/calendar"
   ],
-  "Repository-Browse": "http://www.mirbsd.org/cvs.cgi/src/usr.bin/calendar/"
+  "Repository-Browse": "https://mbsd.evolvis.org/cvs.cgi/src/usr.bin/calendar/"
 }
