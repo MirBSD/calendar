@@ -66,7 +66,7 @@
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.50 2025/06/20 01:20:39 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.51 2025/06/20 09:56:34 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -577,6 +577,8 @@ opencal(void)
 		/* not in basedir, try in home path */
 		char *home = getenv("HOME");
 
+		if (*calendarFile == '/')
+			errx(1, "no calendar file: \"%s\"", calendarFile);
 		if (home == NULL || *home != '/')
 			errx(1, "cannot get home directory");
 		if (chdir(home) ||

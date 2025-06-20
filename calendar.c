@@ -67,7 +67,7 @@ __IDSTRING(calendar_h, CALENDAR_H);
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.23 2025/06/20 01:20:38 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.24 2025/06/20 09:56:34 tg Exp $");
 
 const char *calendarBaseDir = ".";		/* default base directory */
 const char *calendarFile = "calendar";		/* default calendar file */
@@ -128,7 +128,7 @@ main(int argc, char *argv[])
 			break;
 
 		case 'f': /* other calendar file */
-			if (!*optarg || *optarg == '/')
+			if (!*optarg)
 				errx(1, "invalid calendar filename");
 			calendarFile = optarg;
 			break;
@@ -184,6 +184,9 @@ main(int argc, char *argv[])
 		struct stat sbuf;
 		time_t t;
 		unsigned int sleeptime;
+
+		if (*calendarFile == '/')
+			errx(1, "absolute calendar filename");
 
 		signal(SIGCHLD, childsig);
 		runningkids = 0;
