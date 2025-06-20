@@ -6,8 +6,10 @@ calendar-mirbsd (20250620) wtf; urgency=high
     • minor data fixes/updates in calendars/
     • fix the way calendar files are searched: -a only searches
       below the ~username/.etc/calendar directory, sanitise others
+    • make -t optarg parsing more reliable
+    • fixes in the manpage
 
- -- Thorsten Glaser <tg@mirbsd.de>  Fri, 20 Jun 2025 11:20:30 +0000
+ -- Thorsten Glaser <tg@mirbsd.de>  Fri, 20 Jun 2025 13:32:15 +0000
 
 calendar-mirbsd (20230603) wtf; urgency=medium
 
