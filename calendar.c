@@ -3,8 +3,8 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
- * Copyright (c) 2021, 2023
- *	mirabilos <m@mirbsd.org>
+ * Copyright (c) 2021, 2023, 2025
+ *	mirabilos <m$(date +%Y)@mirbsd.de>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -67,11 +67,12 @@ __IDSTRING(calendar_h, CALENDAR_H);
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.22 2023/06/03 21:39:09 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/calendar.c,v 1.23 2025/06/20 01:20:38 tg Exp $");
 
-const char *calendarFile = "calendar";  /* default calendar file */
-const char calendarHome[] = ".etc/calendar"; /* $HOME */
-static const char calendarNoMail[] = "nomail";  /* don't sent mail if this file exists */
+const char *calendarBaseDir = ".";		/* default base directory */
+const char *calendarFile = "calendar";		/* default calendar file */
+const char calendarHome[] = ".etc/calendar";	/* alternate location below $HOME */
+static const char calendarNoMail[] = "nomail";	/* don't sent mail if this file exists */
 
 struct passwd *pw;
 unsigned char doall = 0;
@@ -93,7 +94,6 @@ int
 main(int argc, char *argv[])
 {
 	int ch;
-	char *caldir;
 	int daysAB = 0;
 
 	(void)setlocale(LC_ALL, "");
@@ -128,6 +128,8 @@ main(int argc, char *argv[])
 			break;
 
 		case 'f': /* other calendar file */
+			if (!*optarg || *optarg == '/')
+				errx(1, "invalid calendar filename");
 			calendarFile = optarg;
 			break;
 
@@ -187,32 +189,31 @@ main(int argc, char *argv[])
 		runningkids = 0;
 		t = time(NULL);
 		while ((pw = getpwent()) != NULL) {
+			if (!pw->pw_dir || *pw->pw_dir != '/')
+				continue;
 			acstat = 0;
-			/* Avoid unnecessary forks.  The calendar file is only
+			/*
+			 * Avoid unnecessary forks. The calendar file is only
 			 * opened as the user later; if it can't be opened,
-			 * it's no big deal.  Also, get to correct directory.
+			 * it's no big deal. Also, get to correct directory.
 			 * Note that in an NFS environment root may get EACCES
-			 * on a chdir(), in which case we have to fork.  As long as
-			 * we can chdir() we can stat(), unless the user is
+			 * on a chdir(), in which case we have to fork. As long
+			 * as we can chdir() we can stat(), unless the user is
 			 * modifying permissions while this is running.
 			 */
-			if (chdir(pw->pw_dir)) {
-				if (errno == EACCES)
+			if (chdir(pw->pw_dir) ||
+			    chdir(calendarHome)) {
+				if (errno == EACCES) {
 					acstat = 1;
-				else
-					continue;
-			}
-			if (stat(calendarFile, &sbuf) != 0) {
-				if (chdir(calendarHome)) {
-					if (errno == EACCES)
-						acstat = 1;
-					else
-						continue;
+					goto must_fork;
 				}
-				if (stat(calendarNoMail, &sbuf) == 0 ||
-				    stat(calendarFile, &sbuf) != 0)
-					continue;
+				continue;
 			}
+			if (stat(calendarNoMail, &sbuf) == 0 ||
+			    stat(calendarFile, &sbuf) != 0 ||
+			    !S_ISREG(sbuf.st_mode))
+				continue;
+ must_fork:
 			sleeptime = USERTIMEOUT;
 			switch ((kid = fork())) {
 			case -1:	/* error */
@@ -223,16 +224,18 @@ main(int argc, char *argv[])
 				if (userswitch(pw))
 					err(1, "unable to set user context (uid %u)",
 					    pw->pw_uid);
-				caldir = NULL; /* for bitching compilers */
-				if (acstat && !(caldir = strdup(pw->pw_dir)))
-					err(1, NULL);
+				if (acstat) {
+					calendarBaseDir = strdup(pw->pw_dir);
+					if (!calendarBaseDir)
+						err(1, NULL);
+				}
 				endpwent();
 				if (acstat) {
-					if (chdir(caldir) ||
-					    stat(calendarFile, &sbuf) != 0 ||
+					if (chdir(calendarBaseDir) ||
 					    chdir(calendarHome) ||
 					    stat(calendarNoMail, &sbuf) == 0 ||
-					    stat(calendarFile, &sbuf) != 0)
+					    stat(calendarFile, &sbuf) != 0 ||
+					    !S_ISREG(sbuf.st_mode))
 						exit(0);
 				}
 				cal();
@@ -270,8 +273,8 @@ main(int argc, char *argv[])
 				(void)kill(kid, SIGTERM);
 				warnx("uid %u did not finish in time", pw->pw_uid);
 			}
-			if (time(NULL) - t >= 86400)
-				errx(2, "'calendar -a' took more than a day; stopped at uid %u",
+			if (time(NULL) - t >= 3600*12)
+				errx(2, "'calendar -a' took more than half a day; stopped at uid %u",
 				    pw->pw_uid);
 		}
 		endpwent();
@@ -285,9 +288,11 @@ main(int argc, char *argv[])
 			warnx("%d child processes still running when 'calendar -a' finished",
 			    runningkids);
 	} else {
-		if ((caldir = getenv("CALENDAR_DIR")) != NULL &&
-		    chdir(caldir))
-			err(1, "chdir");
+		if ((calendarBaseDir = getenv("CALENDAR_DIR")) == NULL ||
+		    !*calendarBaseDir)
+			calendarBaseDir = ".";
+		else if (chdir(calendarBaseDir))
+			err(1, "%s: chdir", calendarBaseDir);
 		cal();
 	}
 
@@ -300,7 +305,7 @@ usage(void)
 {
 	(void)fprintf(stderr,
 	    "usage: calendar [-abP] [-A num] [-B num] [-f calendarfile] "
-	    "[-t [[[cc]yy][mm]]dd]\n");
+	    "[-t [[[cc]yy]mm]dd]\n");
 	exit(1);
 }
 

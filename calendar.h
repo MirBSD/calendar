@@ -3,8 +3,8 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
- * Copyright (c) 2021, 2023
- *	mirabilos <m@mirbsd.org>
+ * Copyright (c) 2021, 2023, 2025
+ *	mirabilos <m$(date +%Y)@mirbsd.de>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -32,13 +32,14 @@
  */
 
 #ifndef CALENDAR_H
-#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.18 2023/06/03 21:33:37 tg Exp $"
+#define CALENDAR_H "$MirOS: src/usr.bin/calendar/calendar.h,v 1.19 2025/06/20 01:20:39 tg Exp $"
 
 extern struct passwd *pw;
 extern unsigned char doall;
 extern unsigned char bodun_always;
 extern unsigned char parsecvt;
 extern time_t f_time;
+extern const char *calendarBaseDir;
 extern const char *calendarFile;
 extern const char calendarHome[];
 

@@ -3,8 +3,8 @@
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
- * Copyright (c) 2021, 2023
- *	mirabilos <m@mirbsd.org>
+ * Copyright (c) 2021, 2023, 2025
+ *	mirabilos <m$(date +%Y)@mirbsd.de>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -39,7 +39,7 @@
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.27 2023/06/03 21:39:09 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/day.c,v 1.28 2025/06/20 01:20:39 tg Exp $");
 
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -205,7 +205,7 @@ settime(int offset_specified)
 	setnnames();
 }
 
-/* convert [Year][Month]Day into unix time (since 1970)
+/* convert [[Year]Month]Day into unix time (since 1970)
  * Year: two or four digits, Month: two digits, Day: two digits
  */
 time_t
@@ -220,7 +220,7 @@ Mktime(char *date)
 		err(1, "localtime_r");
 
 	len = strlen(date);
-	if (len < 2)
+	if (len < 2 || len == 3 || len == 5 || len == 7)
 		return ((time_t)-1);
 	tm.tm_sec = 0;
 	tm.tm_min = 0;
@@ -247,10 +247,11 @@ Mktime(char *date)
 		tm.tm_year = atoi(date);
 
 		/* tm_year up TM_YEAR_BASE ... */
-		if (tm.tm_year < 69)
-			/* Y2K */
-			tm.tm_year += 2000 - 1900;
-		else if (tm.tm_year > 1900)
+		if (len == 6 && tm.tm_year >= 0) {
+			/* 1969‥2068 */
+			if (tm.tm_year < 69)
+				tm.tm_year += 2000 - 1900;
+		} else
 			tm.tm_year -= 1900;
 	}
 
