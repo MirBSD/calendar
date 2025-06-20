@@ -9,7 +9,7 @@ calendar-mirbsd (20250620) wtf; urgency=high
     • make -t optarg parsing more reliable
     • fixes in the manpage
 
- -- Thorsten Glaser <tg@mirbsd.de>  Fri, 20 Jun 2025 13:32:15 +0000
+ -- Thorsten Glaser <tg@mirbsd.de>  Fri, 20 Jun 2025 13:42:36 +0000
 
 calendar-mirbsd (20230603) wtf; urgency=medium
 
