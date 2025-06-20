@@ -1,9 +1,9 @@
-.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.23 2025/04/25 22:06:24 tg Exp $
+.\"	$MirOS: src/usr.bin/calendar/calendar.1,v 1.24 2025/06/20 01:20:38 tg Exp $
 .\"	$OpenBSD: calendar.1,v 1.29 2005/03/22 10:57:27 xsa Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993
 .\"     The Regents of the University of California.  All rights reserved.
-.\" Copyright © 2019, 2021, 2023
+.\" Copyright © 2019, 2021, 2023, 2025
 .\"	mirabilos <m$(date +%Y)@mirbsd.de>
 .\"
 .\" Redistribution and use in source and binary forms, with or without
@@ -69,7 +69,7 @@
 .\" .Dd must come before most everything, because when called
 .\" with -mandoc it loads -mdoc via .so in .Dd (first macro).
 .\"
-.Dd $Mdocdate: April 25 2025 $
+.Dd $Mdocdate: June 20 2025 $
 .\"
 .\" Check which macro package we use, and do other -mdoc setup.
 .\"
@@ -240,7 +240,7 @@
 .Op Fl D Ar macro Ns Op Ar =defn
 .Op Fl f Ar calendarfile
 .Op Fl I Ar dir
-.Op Fl t Ar [[[cc]yy][mm]]dd
+.Op Fl t Ar [[[cc]yy]mm]dd
 .Ek
 .Sh DESCRIPTION
 The
@@ -261,9 +261,8 @@ Print lines from today and next
 days (forward, future).
 .It Fl a
 Process the
-.Dq Li calendar
-files of all users and mail the results
-to them.
+.Pa calendar
+files in all users' home directories and mail the results to them.
 This requires superuser privileges.
 .It Fl B Ar num
 Print lines from today and previous
@@ -295,10 +294,11 @@ representing the information from the original entries including
 year and time-of-day extensions (see below).
 When given twice, the original first line is also quoted before
 each event heading.
-.It Fl t Ar [[[cc]yy][mm]]dd
+.It Fl t Ar [[[cc]yy]mm]dd
 Act like the specified value is
-.Dq today
+.Dq today ,
 instead of using the current date.
+Two-digit years map to 1969 through 2068.
 .El
 .Pp
 To handle calendars in different encodings, specify
@@ -582,20 +582,37 @@ Ostern\-2\fB\et\fRGood Friday (2 days before Easter)
 Paskha\fB\et\fROrthodox Easter
 Advent+21\fB\et\fR4th Sunday of Advent
 .Ed
-.Sh FILES
-.Bl -tag -width ~/.etc/calendar/calendar -compact
-.It Pa calendar
-File in current directory.
-.It Pa ~/.etc/calendar
-Directory in the user's home directory (which
-.Nm
-changes into, if it exists).
-.It Pa ~/.etc/calendar/calendar
-File to use if no
+.Sh ENVIRONMENT
+.Bl -tag -width CALENDAR_DIR -compact
+.It Ev CALENDAR_DIR
+Unless
+.Fl a
+is given, this directory instead of the current working directory
+is used as base directory to search for
 .Pa calendar
-file exists in the current directory.
+files in.
+.El
+.Sh FILES
+.Bl -tag -width ~/.etc/calendar/nomail -compact
+.It Pa calendar
+File in current directory
+.Pq Fl f No overrides .
+.It Pa ~/.etc/calendar
+In
+.Fl a
+mode, or when no
+.Pa calendar
+file exists in
+.Ev $CALENDAR_DIR
+or the current directory,
+.Nm
+changes into this directory in the user's
+.Ev $HOME
+and looks again for the
+.Pa calendar No file Pq Fl f .
 .It Pa ~/.etc/calendar/nomail
 .Nm
+.Fl a
 will not mail if this file exists.
 .It Pa calendar.all
 International and national calendar files.
@@ -617,7 +634,7 @@ German calendar.
 .It Pa calendar.history
 Everything else, mostly U.S.\& historical events.
 .It Pa calendar.holiday
-Other holidays (including the not-well-known, obscure, and
+Other holidays (including the not-well-known, the obscure, and the
 .Em really
 obscure).
 .It Pa calendar.judaic

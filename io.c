@@ -1,10 +1,10 @@
-/*	$OpenBSD: io.c,v 1.29+backports from 1.49 2005/04/15 14:28:56 otto Exp $	*/
+/*	$OpenBSD: io.c,v 1.29+backports from 1.50 2005/04/15 14:28:56 otto Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
- * Copyright (c) 2019, 2021, 2023
- *	mirabilos <m@mirbsd.org>
+ * Copyright (c) 2019, 2021, 2023, 2025
+ *	mirabilos <m$(date +%Y)@mirbsd.de>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -66,7 +66,7 @@
 __COPYRIGHT("Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.");
 __SCCSID("@(#)calendar.c  8.3 (Berkeley) 3/25/94");
-__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.49 2023/06/03 21:39:10 tg Exp $");
+__RCSID("$MirOS: src/usr.bin/calendar/io.c,v 1.50 2025/06/20 01:20:39 tg Exp $");
 
 #ifndef ioweg
 #define ioweg iovec /* cf. MirBSD writev(2) manpage */
@@ -565,36 +565,39 @@ getfield(char *p, char **endp, int *flags)
 FILE *
 opencal(void)
 {
-	int pdes[2];
+	int pdes[2], fd;
 	struct stat st;
 
-	/* test where calendar file exists */
+	/* test whether calendar is not stdin and file exists */
 	if (calendarFile[0] == '-' && calendarFile[1] == '\0')
 		/* pass on as-is */;
+	else if (doall)
+		/* stat’d in calendar.c already */;
 	else if (stat(calendarFile, &st) || !S_ISREG(st.st_mode)) {
-		if (!doall) {
-			char *home = getenv("HOME");
-			if (home == NULL || *home == '\0')
-				errx(1, "cannot get home directory");
-			if (chdir(home) ||
-			    chdir(calendarHome) ||
-			    stat(calendarFile, &st) || !S_ISREG(st.st_mode))
-				errx(1, "no calendar file: \"%s\" or \"~/%s/%s\"",
-				    calendarFile, calendarHome, calendarFile);
-		}
+		/* not in basedir, try in home path */
+		char *home = getenv("HOME");
+
+		if (home == NULL || *home != '/')
+			errx(1, "cannot get home directory");
+		if (chdir(home) ||
+		    chdir(calendarHome) ||
+		    stat(calendarFile, &st) || !S_ISREG(st.st_mode))
+			errx(1, "no calendar file: \"%s/%s\" or \"~/%s/%s\"",
+			    calendarBaseDir, calendarFile,
+			    calendarHome, calendarFile);
 	}
 
 	if (pipe(pdes) == -1) {
+		warn("pipe");
 		return (NULL);
 	}
 	switch (fork()) {
 	case -1:			/* error */
+		warn("fork");
 		(void)close(pdes[0]);
 		(void)close(pdes[1]);
 		return (NULL);
-	case 0: {
-		int fd;
-
+	case 0:
 		/* child -- set stdout to pipe input */
 		if (pdes[1] != STDOUT_FILENO) {
 			(void)dup2(pdes[1], STDOUT_FILENO);
@@ -602,17 +605,14 @@ opencal(void)
 		}
 		(void)close(pdes[0]);
 		/* set stdin to /dev/null unless it is the file */
-		if ((fd = open(_PATH_DEVNULL, O_RDWR, 0)) == -1)
+		if ((fd = open(_PATH_DEVNULL, O_RDWR)) == -1)
 			err(1, _PATH_DEVNULL);
 		if (calendarFile[0] != '-' || calendarFile[1]) {
 			if (fd != STDIN_FILENO)
 				dup2(fd, STDIN_FILENO);
 		}
-		/*
-		 * Set stderr to /dev/null.  Necessary so that cron does not
-		 * wait for cpp to finish if it's running calendar -a.
-		 */
 		if (doall) {
+			/* set stderr to /dev/null so cron does not wait for cpp */
 			if (fd != STDERR_FILENO) {
 				dup2(fd, STDERR_FILENO);
 				/* don't leak fd */
@@ -623,7 +623,6 @@ opencal(void)
 			close(fd);
 		execv(_PATH_CPP, cppargv);
 		err(1, _PATH_CPP);
-	    }
 	}
 	/* parent -- set stdin to pipe output */
 	(void)dup2(pdes[0], STDIN_FILENO);
@@ -654,8 +653,12 @@ closecal(FILE *fp)
 		goto done;
 	if (pipe(pdes) == -1)
 		goto done;
-	switch ((pid = vfork())) {
+	/* used to be vfork, but that makes warn() below unsafe */
+	/* MirBSD vfork is actually fork but with an ordering guarantee */
+	/* (that will likely not matter here) */
+	switch ((pid = fork())) {
 	case -1:			/* error */
+		warn("fork");
 		(void)close(pdes[0]);
 		(void)close(pdes[1]);
 		goto done;
