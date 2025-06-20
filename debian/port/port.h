@@ -1,6 +1,6 @@
 /*-
  * Copyright © 2004, 2006, 2009, 2010, 2020, 2021
- *	mirabilos <m@mirbsd.org>
+ *	mirabilos <m$(date +%Y)@mirbsd.de>
  *
  * Provided that these terms and disclaimer and all copyright notices
  * are retained or reproduced in an accompanying document, permission

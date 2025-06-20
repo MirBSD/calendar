@@ -1,3 +1,14 @@
+calendar-mirbsd (20250620) wtf; urgency=high
+
+  * Merge from CVS:
+    • update portmdoc to cope with groff’s incompatible changes
+      in trixie/sid, correct .An angle brackets, formatting fixes
+    • minor data fixes/updates in calendars/
+    • fix the way calendar files are searched: -a only searches
+      below the ~username/.etc/calendar directory, sanitise others
+
+ -- Thorsten Glaser <tg@mirbsd.de>  Fri, 20 Jun 2025 11:20:30 +0000
+
 calendar-mirbsd (20230603) wtf; urgency=medium
 
   * Merge from CVS:
